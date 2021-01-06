@@ -39,19 +39,19 @@ class ScanEvent(object):
     def get_personal_number(self):
         print("Checking Number")
         self.identiy = self.DatabaseConnect.read_single(self,
-            "Select personalnummer,vorname from personal where hash=%s;"%(self.hash))
-        if len(identiy) == 0:
+            "Select Personalnummer,Vorname from Personal where Hash=%s;"%(self.hash))
+        if len(self.identiy) == 0:
             raise PersonUnknown
         self.vorname = self.identiy[vorname]
         self.personalnummer = self.identity[personalnummer]
     
     def check_dead_time(self):
-        if len(self.DatabaseConnect.read_single("Select * from zeiten where personalnummer=%s and updated > (NOW() - INTERVAL 10 SECONDS);") % (self.personalnummer)) > 0:
+        if len(self.DatabaseConnect.read_single("Select * from Dienste where Personalnummer=%s and Updated > (NOW() - INTERVAL 10 SECONDS);") % (self.personalnummer)) > 0:
             raise DeadTime
 
     def check_open_entries(self):
         self.openEntries = self.DatabaseConnect.read_single(
-            "Select * from zeiten where personalnummer=%s and Dienstende is Null") % (self.personalnummer)
+            "Select * from Dienste where Personalnummer=%s and Dienstende is NULL") % (self.personalnummer)
         if len(self.openEntries) == 0:
             self.direction = "Dienstbeginn"
         elif len(self.openEntries) == 1:
