@@ -2,7 +2,7 @@
 # coding=utf-8
 import os
 import glob
-import pymysql
+import MySQLdb
 import time
 import math
 import sys
@@ -23,13 +23,10 @@ class Database(object):
             self.__user = read_config("MariaDB", "user")
             self.__passwd = read_config("MariaDB", "pw")
             self.__dbName = read_config("MariaDB", "db")
-            self.__dbPort = read_config("MariaDB", "port")
-            self.connection = pymyqsl.connect(
-                host=self.__host, user=self.__user, password=self.__passwd, database=self.__dbName, port=self.__dbPort)
+            self.connection = MySQLdb.connect(
+                host=self.__host, user=self.__user, passwd=self.__passwd, db=self.__dbName)
             self.cursor = self.connection.cursor()
         except Exception as err:
-            self.cursor.close()
-            self.connection.close()
             print(err)
 
 #Insert,Update, read_all and read_single
@@ -53,12 +50,18 @@ class Database(object):
         if self.result is not None:
             return self.result
         else:
-            return 0
+            pass
 
-    def read_single(self, query):
+    def read_single(self,query):
         self.cursor.execute(query)
         self.result = self.cursor.fetchone()
         if self.result is not None:
             return self.result
         else:
-            return 0
+            pass
+
+
+if __name__ == "__main__":
+    test = Database()
+    sql = 'Select * from Personal'
+    test.read_single(query = sql)
