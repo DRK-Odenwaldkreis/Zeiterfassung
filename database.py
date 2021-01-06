@@ -40,22 +40,25 @@ class Database:
         
 
             self.sql_make_personal= """
-            CREATE TABLE IF NOT EXISTS personal (
+            CREATE TABLE IF NOT EXISTS Personal (
             id INTEGER PRIMARY KEY, 
-            nachname VARCHAR(50),
-            vorname VARCHAR(50),
-            personalnummer INT UNIQUE,
-            hash CHAR(64) UNIQUE
+            Nachname VARCHAR(50),
+            Vorname VARCHAR(50),
+            Personalnummer INT UNIQUE,
+            Hash CHAR(64) UNIQUE
             );
             """
 
+
+
+
             self.sql_make_zeiten= """
-            CREATE TABLE IF NOT EXISTS zeiten (
+            CREATE TABLE IF NOT EXISTS Dienste (
             id INTEGER PRIMARY KEY,
-            personalnummer INT,
-            kommen TIMESTAMP,
-            gehen TIMESTAMP,
-            art INT
+            Personalnummer INT,
+            Dienstbegin TIMESTAMP,
+            Dienstende TIMESTAMP,
+            Art INT
             );
             """
             self.cursor.execute(self.sql_make_personal)
