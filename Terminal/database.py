@@ -3,11 +3,14 @@
 import os
 import MySQLdb
 import sys
+import logging
 
+logger = logging.getLogger('Database')
+logger.debug('Logger for database was initialised')
 
 from readconfig import read_config
 
-class Disconntect(Exception):
+class Disconnect(Exception):
     pass
 
 class InsertError(Exception):
@@ -24,6 +27,7 @@ class Database(object):
     # Constructor
     def __init__(self):
         try:
+            logger.debug('Constructor was called')
             self.__host = read_config("MariaDB", "host")
             self.__user = read_config("MariaDB", "user")
             self.__passwd = read_config("MariaDB", "pw")
@@ -31,18 +35,18 @@ class Database(object):
             self.connection = MySQLdb.connect(
                 host=self.__host, user=self.__user, passwd=self.__passwd, db=self.__dbName)
             self.cursor = self.connection.cursor()
-        except Exception as err:
-            print(err)
+        except Exception as e:
+            logger.error('The following error occured in constructor of database: %s' % (e))
+            raise Disconnect
 
 #Insert,Update, read_all and read_single
     def insert(self, query, tupel):
         try:
             self.cursor.execute(query, tupel)
-        except:
-            raise InsertError
-        try:
             self.connection.commit()
-        except:
+        except Exception as e:
+            logger.error(
+                'The following error occured in inserting: %s' % (e))
             self.connection.rollback()
             raise UpdateError
         finally:
@@ -51,13 +55,12 @@ class Database(object):
     def update(self, query):
         try:
             self.cursor.execute(query)
-        except:
-            raise UpdateError
-        try:
             self.connection.commit()
-        except:
+        except Exception as e:
+            logger.error(
+                'The following error occured in updating: %s' % (e))
             self.connection.rollback()
-            raise InsertError
+            raise UpdateError
         finally:
             self.cursor.close()
 
@@ -65,24 +68,23 @@ class Database(object):
         try:
             self.cursor.execute(query)
             self.result = self.cursor.fetchall()
-        except:
+            if self.result is not None:
+                return self.result
+        except Exception as e:
+            logger.error(
+                'The following error occured in read all: %s' % (e))
             raise QueryError
-        if self.result is not None:
-            return self.result
-        else:
-            pass
 
     def read_single(self,query):
         try:
             self.cursor.execute(query)
             self.result = self.cursor.fetchone()
-        except:
+            if self.result is not None:
+                return self.result
+        except Exception as e:
+            logger.error(
+                'The following error occured in read all: %s' % (e))
             raise QueryError
-        if self.result is not None:
-            return self.result
-        else:
-            pass
-
 
 if __name__ == "__main__":
     test = Database()
