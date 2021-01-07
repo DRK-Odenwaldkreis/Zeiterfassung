@@ -51,7 +51,7 @@ class App:
             elif self.event.direction == "Dienstende":
                 self.event.close_shift()
                 self.textMain = "GEHEN"
-                self.textSub = "Danke %s %s" % (self.event.vorname, self.event.nachname)
+                self.textSub = "Danke %s %s - Dienstdauer: %s:%s" % (self.event.vorname, self.event.nachname, self.event.shiftDurationHours, self.event.shiftDurationMinutes)
             self.mainLabel.configure(text=self.textMain, bg="Green")
             self.subInfoLabel.configure(text=self.textSub)
             self.mainLabel.after(1000, lambda: self.mainLabel.config(bg='white', text=""))
@@ -68,5 +68,9 @@ class App:
         except UnknownState:
             self.mainLabel.configure(text="Unbekannter Fehler", bg="Red")
             self.mainLabel.after(2000, lambda: self.mainLabel.config(bg='white', text=""))
+        except UnableToWrite:
+            self.mainLabel.configure(text="Zeiten konnten nicht gebucht werden", bg="Red")
+            self.mainLabel.after(
+                2000, lambda: self.mainLabel.config(bg='white', text=""))
         finally:
             self.inputTextField.delete(0, END)
