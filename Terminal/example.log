@@ -1,0 +1,37 @@
+2021-01-07 14:25:58,431 - Main - DEBUG - Starting
+2021-01-07 14:26:00,973 - Application - DEBUG - The following input was received, starting event process: 1234
+2021-01-07 14:26:00,973 - ScanEvent - DEBUG - Constructor was called
+2021-01-07 14:26:00,973 - ScanEvent - DEBUG - The following Hash was scanned: 1234
+2021-01-07 14:26:00,973 - ScanEvent - DEBUG - Starting Databaseconnect
+2021-01-07 14:26:00,973 - Database - DEBUG - Constructor was called
+2021-01-07 14:26:01,100 - ScanEvent - DEBUG - Checking if QR is valid
+2021-01-07 14:26:01,100 - ScanEvent - DEBUG - QR is valid
+2021-01-07 14:26:01,102 - Failover in local DB - DEBUG - Creating local copy of data from following hash: 1234
+2021-01-07 14:26:01,102 - ScanEvent - DEBUG - Getting the Personalnummer and names, using the following query: Select Personalnummer, Vorname, Nachname from Personal where Hash=1234;
+2021-01-07 14:26:01,105 - Failover in local DB - DEBUG - Wiriting to database using the following query: INSERT INTO Dienste ("Hash") Values (1234)
+2021-01-07 14:26:01,159 - ScanEvent - DEBUG - Person is known, received the following identity: (6001, 'Murat', 'Bayram')
+2021-01-07 14:26:01,159 - ScanEvent - DEBUG - Found the following Personalnummer, Vorname, Name in the identity: 6001, Murat, Bayram
+2021-01-07 14:26:01,159 - ScanEvent - DEBUG - Checking if same code was scanned the last 5 secondsusing the following query: Select * from Dienste where Personalnummer=6001 and Updated > (NOW() - INTERVAL 5 SECOND);
+2021-01-07 14:26:01,161 - ScanEvent - DEBUG - Code was not scanned within the last 5 seconds
+2021-01-07 14:26:01,161 - ScanEvent - DEBUG - Checking whether there are open entries, using the following query: Select * from Dienste where Personalnummer=6001 and Dienstende is NULL
+2021-01-07 14:26:01,164 - ScanEvent - DEBUG - Received the following entries: ((70, 6001, datetime.datetime(2021, 1, 7, 13, 29, 28), None, 'Normal', datetime.datetime(2021, 1, 7, 13, 29, 28), 0),)
+2021-01-07 14:26:01,164 - ScanEvent - DEBUG - One entry found, seems to be Dienstende
+2021-01-07 14:26:01,164 - ScanEvent - DEBUG - Found shift start at: 2021-01-07 13:29:28
+2021-01-07 14:26:01,164 - ScanEvent - DEBUG - Closing shift, using the following query: Update Dienste SET Dienstende = current_timestamp(), AutoClosed = '0' WHERE Personalnummer = 6001 and Dienstende is NULL ORDER BY Dienstbegin DESC LIMIT 1
+2021-01-07 14:26:01,293 - ScanEvent - DEBUG - Calculating sum of the shift
+2021-01-07 14:26:01,293 - ScanEvent - DEBUG - Shift sum is 00 hours and 56 minutes
+2021-01-07 14:26:01,293 - Application - DEBUG - Wiping all information from screen
+2021-01-07 14:26:16,371 - Main - DEBUG - Starting
+2021-01-07 14:26:18,532 - Application - DEBUG - The following input was received, starting event process: 1233
+2021-01-07 14:26:18,532 - ScanEvent - DEBUG - Constructor was called
+2021-01-07 14:26:18,532 - ScanEvent - DEBUG - The following Hash was scanned: 1233
+2021-01-07 14:26:18,532 - ScanEvent - DEBUG - Starting Databaseconnect
+2021-01-07 14:26:18,532 - Database - DEBUG - Constructor was called
+2021-01-07 14:26:18,548 - ScanEvent - DEBUG - Checking if QR is valid
+2021-01-07 14:26:18,548 - ScanEvent - DEBUG - QR is valid
+2021-01-07 14:26:18,549 - Failover in local DB - DEBUG - Creating local copy of data from following hash: 1233
+2021-01-07 14:26:18,549 - ScanEvent - DEBUG - Getting the Personalnummer and names, using the following query: Select Personalnummer, Vorname, Nachname from Personal where Hash=1233;
+2021-01-07 14:26:18,549 - Failover in local DB - DEBUG - Wiriting to database using the following query: INSERT INTO Dienste ("Hash") Values (1233)
+2021-01-07 14:26:18,551 - ScanEvent - WARNING - Person is unknown
+2021-01-07 14:26:18,551 - Application - DEBUG - Displaying Person is unknown
+2021-01-07 14:26:18,551 - Application - DEBUG - Wiping all information from screen
