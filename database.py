@@ -63,8 +63,7 @@ class Database:
         hash = hashlib.sha256(input[2]).hexdigest()
         tupel = (input[0], input[1], input[2], hash)
         try:
-            self.cursor.execute(
-                "INSERT INTO Personal VALUES (NULL,?,?,?,?)", tupel)
+          self.cursor.execute("INSERT INTO Personal VALUES (NULL,?,?,?,?)", tupel)
         except sqlite3.IntegrityError as e:
             raise Database_error("FEHLER: Personalnummer bereits vergeben")
         self.connection.commit()
@@ -81,10 +80,9 @@ class Database:
         zeit = datetime.datetime.now()
         hash = (input,)
         self.cursor.execute("SELECT * FROM Personal WHERE Hash=?", hash)
-        result = self.cursor.fetchone()
+        result=self.cursor.fetchone()
         tupel = (result[3], zeit)
-        self.cursor.execute(
-            "INSERT INTO Dienste VALUES (NULL, ?, ?, NULL, 1)", tupel)
+        self.cursor.execute("INSERT INTO Dienste VALUES (NULL, ?, ?, NULL, 1)", tupel)
         self.connection.commit()
 
 #Erwartet den hash der personalnummer als input
@@ -92,15 +90,13 @@ class Database:
         zeit = datetime.datetime.now()
         hash = (input,)
         self.cursor.execute("SELECT * FROM Personal WHERE hash=?", hash)
-        result = self.cursor.fetchone()
+        result=self.cursor.fetchone()
         tupel = (result[3],)
-        self.cursor.execute(
-            "SELECT * FROM Dienste WHERE Personalnummer=? AND Dienstende IS NULL", tupel)
-        self.result = self.cursor.fetchall()
+        self.cursor.execute("SELECT * FROM Dienste WHERE Personalnummer=? AND Dienstende IS NULL", tupel)
+        self.result=self.cursor.fetchall()
         try:
-            tupel2 = (zeit, self.result[-1][0])
-            self.cursor.execute(
-                "UPDATE Dienste SET Dienstende=? WHERE id=?", tupel2)
+            tupel2=(zeit,self.result[-1][0])
+            self.cursor.execute("UPDATE Dienste SET Dienstende=? WHERE id=?", tupel2)
         except:
             pass
         if not len(self.result) == 1:
@@ -111,7 +107,7 @@ class Database:
 
     def history(self):
         self.cursor.execute("SELECT * FROM Dienste")
-        self.result = self.cursor.fetchall()
+        self.result=self.cursor.fetchall()
         print("Zeiten:")
         for r in self.result:
             print(r)
