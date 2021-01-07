@@ -28,10 +28,10 @@ class App:
         self.scanLabel.grid(column=1, row=2, padx=0, pady=20)
         self.mainLabel = Label(
             self.frame, text="", font=("Helvetica", 86),bg='white')
-        self.mainLabel.grid(column=1, row=5, padx=0, pady=10)
+        self.mainLabel.grid(column=1, row=5, padx=0, pady=70)
         self.subInfoLabel = Label(
             self.frame, text="", font=("Helvetica", 40), bg='white')
-        self.subInfoLabel.grid(column=1, row=6, padx=0, pady=200)
+        self.subInfoLabel.grid(column=1, row=6, padx=0, pady=50)
         self.inputTextField.focus_set()
 
 
@@ -51,11 +51,14 @@ class App:
             elif self.event.direction == "Dienstende":
                 self.event.close_shift()
                 self.textMain = "GEHEN"
-                self.textSub = "Danke %s %s - Dienstdauer: %s:%s" % (self.event.vorname, self.event.nachname, self.event.shiftDurationHours, self.event.shiftDurationMinutes)
+                self.textSub = "Danke %s %s - Dienstdauer: %s:%s" % (
+                    self.event.vorname, self.event.nachname, self.event.shiftDurationHours, self.event.shiftDurationMinutes)
+            else:
+                raise UnknownState
             self.mainLabel.configure(text=self.textMain, bg="Green")
             self.subInfoLabel.configure(text=self.textSub)
-            self.mainLabel.after(1000, lambda: self.mainLabel.config(bg='white', text=""))
-            self.subInfoLabel.after(1000, lambda: self.subInfoLabel.config(bg='white', text=""))
+            self.mainLabel.after(1500, lambda: self.mainLabel.config(bg='white', text=""))
+            self.subInfoLabel.after(1500, lambda: self.subInfoLabel.config(bg='white', text=""))
         except QRInvalid:
             self.mainLabel.configure(text="Ungültiger QR Code", bg="Red")
             self.mainLabel.after(2000, lambda: self.mainLabel.config(bg='white', text=""))

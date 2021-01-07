@@ -1,10 +1,7 @@
 #!/usr/bin/python3
 # coding=utf-8
 import os
-import glob
 import MySQLdb
-import time
-import math
 import sys
 
 
@@ -13,6 +10,14 @@ from readconfig import read_config
 class Disconntect(Exception):
     pass
 
+class InsertError(Exception):
+    pass
+
+class UpdateError(Exception):
+    pass
+
+class QueryError(Exception):
+    pass
 
 class Database(object):
 
@@ -31,30 +36,48 @@ class Database(object):
 
 #Insert,Update, read_all and read_single
     def insert(self, query, tupel):
-        self.cursor.execute(query, tupel)
+        try:
+            self.cursor.execute(query, tupel)
+        except:
+            raise InsertError
         try:
             self.connection.commit()
         except:
             self.connection.rollback()
+            raise UpdateError
+        finally:
+            self.cursor.close()
 
     def update(self, query):
-        self.cursor.execute(query)
+        try:
+            self.cursor.execute(query)
+        except:
+            raise UpdateError
         try:
             self.connection.commit()
         except:
             self.connection.rollback()
+            raise InsertError
+        finally:
+            self.cursor.close()
 
     def read_all(self, query):
-        self.cursor.execute(query)
-        self.result = self.cursor.fetchall()
+        try:
+            self.cursor.execute(query)
+            self.result = self.cursor.fetchall()
+        except:
+            raise QueryError
         if self.result is not None:
             return self.result
         else:
             pass
 
     def read_single(self,query):
-        self.cursor.execute(query)
-        self.result = self.cursor.fetchone()
+        try:
+            self.cursor.execute(query)
+            self.result = self.cursor.fetchone()
+        except:
+            raise QueryError
         if self.result is not None:
             return self.result
         else:

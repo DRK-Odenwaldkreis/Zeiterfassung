@@ -21,6 +21,9 @@ class DeadTime(Exception):
 class UnknownState(Exception):
     pass
 
+class UnableToWrite(Exception):
+    pass
+
 class ScanEvent(object):
 
     # Constructor
@@ -46,7 +49,7 @@ class ScanEvent(object):
         self.nachname = self.identity[2]
     
     def check_dead_time(self):
-        self.sql = "Select * from Dienste where Personalnummer=%s and Updated > (NOW() - INTERVAL 2 SECOND);" % (
+        self.sql = "Select * from Dienste where Personalnummer=%s and Updated > (NOW() - INTERVAL 5 SECOND);" % (
             self.personalnummer)
         if self.DatabaseConnect.read_single(self.sql) != None:
             raise DeadTime
@@ -63,14 +66,38 @@ class ScanEvent(object):
             raise UnknownState
 
     def create_shift(self):
-        self.sql = "Insert into Dienste (Personalnummer) VALUES ('%s')"
-        self.tupel = (self.personalnummer,)
-        self.DatabaseConnect.insert(self.sql, self.tupel)
+        try:
+            self.sql = "Insert into Dienste (Personalnummer) VALUES ('%s')"
+            self.tupel = (self.personalnummer,)
+            self.DatabaseConnect.insert(self.sql, self.tupel)
+        except:
+            raise UnableToWrite
 
     def close_shift(self):
-        self.sql = "Update Dienste SET Dienstende = current_timestamp() WHERE Personalnummer = %s ORDER BY Dienstbegin DESC LIMIT 1" % (self.personalnummer)
-        self.DatabaseConnect.update(self.sql)
-    
-    def get_sum(self):
-        pass
-        #self.sum=self.startTime - datetime.datetime.now
+        try:
+            self.sql = "Update Dienste SET Dienstende = current_timestamp() WHERE Personalnummer = %s ORDER BY Dienstbegin DESC LIMIT 1" % (self.personalnummer)
+            self.DatabaseConnect.update(self.sql)
+        except:
+            raise UnableToWrite
+        finally:
+            self.calc_shift()
+            
+    def calc_shift(self):
+        try:
+            self.shiftDuration = (datetime.datetime.now() - self.startTime)
+            self.shiftDurationHours = (self.shiftDuration.seconds//3600)
+            if self.shiftDurationHours < 10:
+                self.shiftDurationHours = '0%s' % int(self.shiftDurationHours)
+            else:
+                self.shiftDurationHours = '%s' % int(self.shiftDurationHours)
+            self.shiftDurationMinutes = (self.shiftDuration.seconds % 3600)//60
+            if self.shiftDurationMinutes < 10:
+                self.shiftDurationMinutes = '0%s' % int(self.shiftDurationMinutes)
+            else:
+                self.shiftDurationMinutes = '%s' % int(self.shiftDurationMinutes)
+        except:
+            self.shiftDurationHours = '00'
+            self.shiftDurationMinutes = '00'
+
+
+
