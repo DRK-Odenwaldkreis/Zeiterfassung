@@ -54,6 +54,7 @@ class ScanEvent(object):
         if self.DatabaseConnect.read_single(self.sql) != None:
             raise DeadTime
 
+
     def check_open_entries(self):
         self.sql = "Select * from Dienste where Personalnummer=%s and Dienstende is NULL" % (self.personalnummer)
         self.openEntries = self.DatabaseConnect.read_all(self.sql)

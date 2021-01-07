@@ -1,9 +1,8 @@
 #!/usr/bin/python3
 # coding=utf-8
 from tkinter import *
-import sqlite3
 import time
-
+from failoverdatabase import create_backup_event
 from booking import *
 from readconfig import read_config
 
@@ -43,6 +42,7 @@ class App:
             self.event.check_validity()
             self.event.get_personal_number()
             self.event.check_dead_time()
+            create_backup_event(self.hash)
             self.event.check_open_entries()
             if self.event.direction == "Dienstbegin":
                 self.event.create_shift()
