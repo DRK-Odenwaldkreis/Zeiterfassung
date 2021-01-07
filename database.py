@@ -24,7 +24,7 @@ class Database:
 # Constructor
     def __init__(self, new):
 
-        self.connection = sqlite3.connect("./dummy.db")
+        self.connection = sqlite3.connect("/Users/philippscior/Zeiterfassung/EinzelAbrechnungPDF/dummy.db")
         self.connection.text_factory = str
 
         self.cursor = self.connection.cursor()
@@ -60,7 +60,7 @@ class Database:
 
 #erwartet ein Tupel als input = (Name, Vorname, Personalnummer)
     def neuer_mitarbeiter(self, input):
-        hash = hashlib.sha256(input[2]).hexdigest()
+        hash = hashlib.sha256(str(input[2]).encode('utf-8')).hexdigest()
         tupel = (input[0], input[1], input[2], hash)
         try:
           self.cursor.execute("INSERT INTO Personal VALUES (NULL,?,?,?,?)", tupel)
@@ -111,7 +111,33 @@ class Database:
         print("Zeiten:")
         for r in self.result:
             print(r)
+#erwartet personalnummer und den Abrechnungsmonat als integer als inputs
+    def monatsuebersicht_einzeln(self, personalnummer, monat):
+            if monat < 9:
+                dummy1 = "0{}".format(monat)
+                dummy2 = "0{}".format(monat+1)
+            elif monat==9:
+                dummy1 = "0{}".format(monat)
+                dummy2 = "{}".format(monat+1)
+            else:
+                dummy1 = "{}".format(monat)
+                dummy2 = "{}".format(monat+1)
+            tupel = (personalnummer, "2021-{}-01 00:00:00.000000".format(dummy1),"2021-{}-01 00:00:00.000000".format(dummy2))
+            self.cursor.execute("SELECT * FROM Dienste WHERE Personalnummer=? AND Dienstbegin > ? AND Dienstbegin < ? AND Dienstende IS NOT NULL", tupel)
+            self.result = self.cursor.fetchall()  
+            # print(self.result)
+            return self.result
 
+#nur für testzwecke
+    def dienst_anlegen(self, personalnummer, anfang, ende, art):
+        tupel = (personalnummer, datetime.datetime.strptime(anfang, '%Y-%m-%d %H:%M:%S.%f'), datetime.datetime.strptime(ende, '%Y-%m-%d %H:%M:%S.%f'), art)
+        self.cursor.execute("INSERT INTO Dienste VALUES (NULL, ?, ?, ?, ?)", tupel)
+        self.connection.commit()
+
+    def find_mitarbeiter(self, personalnummer):
+        self.cursor.execute("SELECT * FROM personal WHERE Personalnummer=?", (personalnummer,))
+        self.result=self.cursor.fetchone()
+        return self.result[1], self.result[2]
 
 def main():
     Personal = Database(1)
@@ -120,6 +146,27 @@ def main():
         Personal.neuer_mitarbeiter(("Bayram", "Murat", "6001"))
     except Database_error as e:
         print("Personalnummer schon vergeben")
+
+    Personal.dienst_anlegen(6001,"2021-01-05 09:10:00.000000", "2021-01-05 16:50:00.000000", 1)
+    Personal.dienst_anlegen(6001,"2021-01-06 09:10:00.000000", "2021-01-06 16:50:00.000000", 1)
+    Personal.dienst_anlegen(6001,"2021-01-05 09:10:00.000000", "2021-01-05 16:50:00.000000", 1)
+    Personal.dienst_anlegen(6001,"2021-01-06 09:10:00.000000", "2021-01-06 16:50:00.000000", 2)
+    Personal.dienst_anlegen(6001,"2021-01-05 09:10:00.000000", "2021-01-05 16:50:00.000000", 1)
+    Personal.dienst_anlegen(6001,"2021-01-06 09:10:00.000000", "2021-01-06 16:50:00.000000", 1)
+    Personal.dienst_anlegen(6001,"2021-01-05 09:10:00.000000", "2021-01-05 16:50:00.000000", 1)
+    Personal.dienst_anlegen(6001,"2021-01-06 09:10:00.000000", "2021-01-06 16:50:00.000000", 1)
+    Personal.dienst_anlegen(6001,"2021-01-05 09:10:00.000000", "2021-01-05 16:50:00.000000", 2)
+    Personal.dienst_anlegen(6001,"2021-01-06 09:10:00.000000", "2021-01-06 16:50:00.000000", 1)
+    Personal.dienst_anlegen(6001,"2021-01-05 09:10:00.000000", "2021-01-05 16:50:00.000000", 1)
+    Personal.dienst_anlegen(6001,"2021-01-06 09:10:00.000000", "2021-01-06 16:50:00.000000", 1)
+    Personal.dienst_anlegen(6001,"2021-01-05 09:10:00.000000", "2021-01-05 16:50:00.000000", 3)
+    Personal.dienst_anlegen(6001,"2021-01-06 09:10:00.000000", "2021-01-06 16:50:00.000000", 3)
+    Personal.dienst_anlegen(6001,"2021-01-05 09:10:00.000000", "2021-01-05 16:50:00.000000", 3)
+    Personal.dienst_anlegen(6001,"2021-01-06 09:10:00.000000", "2021-01-06 16:50:00.000000", 3)
+    Personal.dienst_anlegen(6001,"2021-01-05 09:10:00.000000", "2021-01-05 16:50:00.000000", 3)
+    Personal.dienst_anlegen(6001,"2021-01-06 09:10:00.000000", "2021-01-06 16:50:00.000000", 3)
+
+    Personal.dienst_anlegen(6000,"2021-01-05 09:10:00.000000", "2021-01-05 16:50:00.000000", 2)
 
     Personal.print_mitarbeiter()
     # Personal.kommen("f4e99211184a248ac2b1bb736b2f241982bdbfb599a6a1b62d5c50a1cb7ddbe6")
