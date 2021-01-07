@@ -72,6 +72,10 @@ class Database:
             raise Database_error("FEHLER: Personalnummer bereits vergeben")
         self.connection.commit()
 
+    def find_mitarbeiter(self, personalnummer):
+        self.cursor.execute("SELECT * FROM personal WHERE personalnummer=?", (personalnummer,))
+        self.result=self.cursor.fetchone()
+        return self.result[1], self.result[2]
 
     def print_mitarbeiter(self):
         self.cursor.execute("SELECT * FROM personal")
@@ -139,7 +143,7 @@ class Database:
 
 
 def main():
-    Personal = Database(1)
+    Personal = Database(0)
     try:
         Personal.neuer_mitarbeiter(("Scior", "Philipp", 6000))
         Personal.neuer_mitarbeiter(("Bayram", "Murat", 6001))
@@ -151,6 +155,22 @@ def main():
 
     Personal.dienst_anlegen(6001,"2021-01-05 09:10:00.000000", "2021-01-05 16:50:00.000000", 1)
     Personal.dienst_anlegen(6001,"2021-01-06 09:10:00.000000", "2021-01-06 16:50:00.000000", 1)
+    Personal.dienst_anlegen(6001,"2021-01-05 09:10:00.000000", "2021-01-05 16:50:00.000000", 1)
+    Personal.dienst_anlegen(6001,"2021-01-06 09:10:00.000000", "2021-01-06 16:50:00.000000", 2)
+    Personal.dienst_anlegen(6001,"2021-01-05 09:10:00.000000", "2021-01-05 16:50:00.000000", 1)
+    Personal.dienst_anlegen(6001,"2021-01-06 09:10:00.000000", "2021-01-06 16:50:00.000000", 1)
+    Personal.dienst_anlegen(6001,"2021-01-05 09:10:00.000000", "2021-01-05 16:50:00.000000", 1)
+    Personal.dienst_anlegen(6001,"2021-01-06 09:10:00.000000", "2021-01-06 16:50:00.000000", 1)
+    Personal.dienst_anlegen(6001,"2021-01-05 09:10:00.000000", "2021-01-05 16:50:00.000000", 2)
+    Personal.dienst_anlegen(6001,"2021-01-06 09:10:00.000000", "2021-01-06 16:50:00.000000", 1)
+    Personal.dienst_anlegen(6001,"2021-01-05 09:10:00.000000", "2021-01-05 16:50:00.000000", 1)
+    Personal.dienst_anlegen(6001,"2021-01-06 09:10:00.000000", "2021-01-06 16:50:00.000000", 1)
+    Personal.dienst_anlegen(6001,"2021-01-05 09:10:00.000000", "2021-01-05 16:50:00.000000", 3)
+    Personal.dienst_anlegen(6001,"2021-01-06 09:10:00.000000", "2021-01-06 16:50:00.000000", 3)
+    Personal.dienst_anlegen(6001,"2021-01-05 09:10:00.000000", "2021-01-05 16:50:00.000000", 3)
+    Personal.dienst_anlegen(6001,"2021-01-06 09:10:00.000000", "2021-01-06 16:50:00.000000", 3)
+    Personal.dienst_anlegen(6001,"2021-01-05 09:10:00.000000", "2021-01-05 16:50:00.000000", 3)
+    Personal.dienst_anlegen(6001,"2021-01-06 09:10:00.000000", "2021-01-06 16:50:00.000000", 3)
 
     Personal.dienst_anlegen(6000,"2021-01-05 09:10:00.000000", "2021-01-05 16:50:00.000000", 2)
 
@@ -166,7 +186,7 @@ def main():
 
     Personal.history()
 
-    Personal.monatsuebersicht_einzeln(6001,1)
+    # Personal.monatsuebersicht_einzeln(6001,1)
 
 if __name__ == "__main__":
     main()
