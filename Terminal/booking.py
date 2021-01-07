@@ -75,7 +75,7 @@ class ScanEvent(object):
 
     def close_shift(self):
         try:
-            self.sql = "Update Dienste SET Dienstende = current_timestamp() WHERE Personalnummer = %s ORDER BY Dienstbegin DESC LIMIT 1" % (self.personalnummer)
+            self.sql = "Update Dienste SET Dienstende = current_timestamp() WHERE Personalnummer = %s and Dienstende is NULL ORDER BY Dienstbegin DESC LIMIT 1" % (self.personalnummer)
             self.DatabaseConnect.update(self.sql)
         except:
             raise UnableToWrite
