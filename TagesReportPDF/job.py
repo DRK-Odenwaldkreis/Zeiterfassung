@@ -21,5 +21,6 @@ if __name__ == "__main__":
         logger.debug('Received the following entries: %s' % (str(content)))
         PDF = PDFgenerator(content)
         PDF.generate()
+        logger.debug('Done')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
