@@ -74,11 +74,11 @@ class PDFgenerator:
 		pdf.ln(10)
 		pdf.cell(20, 10, 'Dienste:', 0, 1)
 
-		pdf.cell(40, 10, 'Personalnummer', 0, 0)
-		#pdf.cell(40, 10, 'Vorname', 0, 0)
-		#pdf.cell(40, 10, 'Nachname', 0, 0)
+		pdf.cell(40, 10, 'Personal-Nr.', 0, 0)
 		pdf.cell(40, 10, 'Begin', 0, 0)
 		pdf.cell(40, 10, 'Ende', 0, 0)
+		pdf.cell(40, 10, 'Vorname', 0, 0)
+		pdf.cell(40, 10, 'Nachname', 0, 0)
 		pdf.cell(40, 10, 'Art', 0 ,0)
 		pdf.cell(40, 10, 'Kontrolle Notwendig', 0, 1)
 
@@ -95,11 +95,11 @@ class PDFgenerator:
 			if pdf.y + 10 > pdf.page_break_trigger:
 				pdf.set_font('GNU', 'B' , 14)
 
-				pdf.cell(40, 10, 'Personalnummer', 0, 0)
-				#pdf.cell(40, 10, 'Vorname', 0, 0)
-				#pdf.cell(40, 10, 'Nachname', 0, 0)
+				pdf.cell(40, 10, 'Personal-Nr.', 0, 0)
 				pdf.cell(40, 10, 'Begin', 0, 0)
 				pdf.cell(40, 10, 'Ende', 0, 0)
+				pdf.cell(40, 10, 'Vorname', 0, 0)
+				pdf.cell(40, 10, 'Nachname', 0, 0)
 				pdf.cell(40, 10, 'Art', 0 ,0)
 				pdf.cell(40, 10, 'Kontrolle Notwendig', 0, 1)
 
@@ -110,14 +110,16 @@ class PDFgenerator:
 
 				pdf.set_font('GNU', '', 14)
 			else:
-				begin = str(i[2].time())
-				ende = str(i[3].time())		
-				pdf.cell(40, 10, str(i[1]), 0, 0)
+				begin = str(i[1].time())
+				ende = str(i[2].time())		
+				pdf.cell(40, 10, str(i[0]), 0, 0)
 				pdf.cell(40, 10, begin, 0, 0)
 				pdf.cell(40, 10, ende, 0, 0)
+				pdf.cell(40, 10, str(i[3]), 0, 0)
 				pdf.cell(40, 10, str(i[4]), 0, 0)
+				pdf.cell(40, 10, str(i[5]), 0, 0)
 				pdf.cell(40, 10, str(i[6]), 0, 0)
-				pdf.cell(40, 10, '{},{} h'.format(len(str(i[2]))/60,len(str(i[2]))%60/6*10), 0, 1)
+				pdf.cell(40, 10, '{},{} h'.format(len(str(i[1]))/60,len(str(i[1]))%60/6*10), 0, 1)
 		
 		current_x =pdf.get_x()
 		current_y =pdf.get_y()

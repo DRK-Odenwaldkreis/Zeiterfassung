@@ -15,10 +15,10 @@ logger.debug('Starting')
 if __name__ == "__main__":
     #try:
         DatabaseConnect = Database()
-        sql = "Select * from Dienste where Dienstbegin > (NOW() - INTERVAL 24 HOUR);"
+        sql = "Select Dienste.Personalnummer, Dienste.Dienstbegin, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art, Dienste.AutoClosed FROM Dienste JOIN Personal ON Personal.Personalnummer = Dienste.Personalnummer where Dienstbegin > (NOW() - INTERVAL 24 HOUR);"
         logger.debug('Getting all Events from Yesterday with the following query: %s' % (sql))
         content = DatabaseConnect.read_all(sql)
-       #logger.debug('Received the following entries: %s' % (str(content)))
+        #logger.debug('Received the following entries: %s' % (str(content)))
         PDF = PDFgenerator(content)
         PDF.generate()
     #except Exception as e:
