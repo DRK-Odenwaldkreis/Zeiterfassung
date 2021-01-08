@@ -70,17 +70,15 @@ class PDFgenerator:
 
 		pdf.cell(20, 10, 'Erstellt: {}'.format(datetime.datetime.now().strftime("%Y-%m-%d um %H:%M:%S"), ln=1))
 
-		pdf.set_font('GNU', 'B' , 14)
-		pdf.ln(10)
+		pdf.set_font('GNU', 'B' , 20)
+		pdf.ln(15)
 		pdf.cell(20, 10, 'Dienste:', 0, 1)
-
+		pdf.set_font('GNU', 'B', 14)
 		pdf.cell(40, 10, 'Personal-Nr.', 0, 0)
+		pdf.cell(40, 10, 'Nachname', 0, 0)
 		pdf.cell(40, 10, 'Begin', 0, 0)
 		pdf.cell(40, 10, 'Ende', 0, 0)
-		pdf.cell(40, 10, 'Vorname', 0, 0)
-		pdf.cell(40, 10, 'Nachname', 0, 0)
 		pdf.cell(40, 10, 'Art', 0 ,0)
-		pdf.cell(40, 10, 'Kontrolle Notwendig', 0, 1)
 
 
 		current_x =pdf.get_x()
@@ -96,12 +94,10 @@ class PDFgenerator:
 				pdf.set_font('GNU', 'B' , 14)
 
 				pdf.cell(40, 10, 'Personal-Nr.', 0, 0)
+				pdf.cell(40, 10, 'Nachname', 0, 0)
 				pdf.cell(40, 10, 'Begin', 0, 0)
 				pdf.cell(40, 10, 'Ende', 0, 0)
-				pdf.cell(40, 10, 'Vorname', 0, 0)
-				pdf.cell(40, 10, 'Nachname', 0, 0)
 				pdf.cell(40, 10, 'Art', 0 ,0)
-				pdf.cell(40, 10, 'Kontrolle Notwendig', 0, 1)
 
 				current_x =pdf.get_x()
 				current_y =pdf.get_y()
@@ -110,16 +106,20 @@ class PDFgenerator:
 
 				pdf.set_font('GNU', '', 14)
 			else:
+				if i[6] == 0:
+					pdf.set_text_color(0, 0, 0)
+				else:
+					pdf.set_text_color(255,0,0)
 				begin = str(i[1].time())
 				ende = str(i[2].time())		
 				pdf.cell(40, 10, str(i[0]), 0, 0)
+				#pdf.cell(40, 10, str(i[3]), 0, 0)
+				pdf.cell(40, 10, str(i[4]), 0, 0)
 				pdf.cell(40, 10, begin, 0, 0)
 				pdf.cell(40, 10, ende, 0, 0)
-				pdf.cell(40, 10, str(i[3]), 0, 0)
-				pdf.cell(40, 10, str(i[4]), 0, 0)
 				pdf.cell(40, 10, str(i[5]), 0, 0)
-				pdf.cell(40, 10, str(i[6]), 0, 0)
 				pdf.cell(40, 10, '{},{} h'.format(len(str(i[1]))/60,len(str(i[1]))%60/6*10), 0, 1)
+				pdf.set_text_color(0, 0, 0)
 		
 		current_x =pdf.get_x()
 		current_y =pdf.get_y()
