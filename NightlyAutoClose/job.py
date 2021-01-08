@@ -5,7 +5,7 @@ import logging
 import sys
 from database import Database
 
-logFile = 'rotationJob.log'
+logFile = './Log/rotationJob.log'
 logging.basicConfig(filename=logFile, level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Nightly Auto Clean')

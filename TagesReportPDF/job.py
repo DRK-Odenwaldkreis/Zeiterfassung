@@ -6,8 +6,8 @@ import sys
 from database import Database
 from pdfcreator.pdf import PDFgenerator
 
-logFile = 'reportJob.log'
-logging.basicConfig(level=logging.DEBUG,
+logFile = './Log/reportJob.log'
+logging.basicConfig(filename = logFile,level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Daily Report')
 logger.debug('Starting')
