@@ -23,7 +23,7 @@ window.geometry(str(width) + "x" + str(height))
 app = App(window)
 
 
-logFile = 'output.log'
+logFile = './Log/output.log'
 logging.basicConfig(filename=logFile,level=logging.DEBUG,format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Main')
 logger.debug('Starting')
