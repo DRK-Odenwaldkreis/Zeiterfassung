@@ -84,7 +84,7 @@ class PDFgenerator:
 		pdf.cell(35, 10, 'Begin', 0, 0)
 		pdf.cell(35, 10, 'Ende', 0, 0)
 		pdf.cell(35, 10, 'Summe', 0, 0)
-		pdf.cell(35, 10, 'Art', 0 ,0)
+		pdf.cell(35, 10, 'Art', 0 ,1)
 
 
 		current_x =pdf.get_x()
@@ -103,7 +103,7 @@ class PDFgenerator:
 				pdf.cell(35, 10, 'Begin', 0, 0)
 				pdf.cell(35, 10, 'Ende', 0, 0)
 				pdf.cell(35, 10, 'Summe', 0, 0)
-				pdf.cell(35, 10, 'Art', 0 ,0)
+				pdf.cell(35, 10, 'Art', 0 ,1)
 
 				current_x =pdf.get_x()
 				current_y =pdf.get_y()
