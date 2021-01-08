@@ -33,7 +33,6 @@ class MyPDF(FPDF):
 		self.add_font('GNU', '', FreeSans, uni=True)
 		self.set_font('GNU', '', 11)
 		self.cell(40, 10, 'Impfzentrum Odenwaldkreis:', ln=0)
-		self.cell(0,10, 'Rot bedeuted correctur', align='R', ln=1)
 		#self.cell(0,10, time.strftime("%d.%m.%Y", self.time), align='R', ln=1)
 		self.ln(10)
 
@@ -53,6 +52,7 @@ class PDFgenerator:
 	def __init__(self, content):
 		self.content=content
 		self.date=datetime.date.today()
+		self.gesamtSeconds=0
 
 
 	def generate(self):
@@ -72,16 +72,19 @@ class PDFgenerator:
 		pdf.set_font('GNU', '', 14)
 
 		pdf.cell(20, 10, 'Erstellt: {}'.format(datetime.datetime.now().strftime("%Y-%m-%d um %H:%M:%S"), ln=1))
-
+		pdf.set_text_color(255,0,0)
+		pdf.cell(0,10, 'Rote Einträge prüfen', align='R', ln=1)
+		pdf.set_text_color(0,0,0)
 		pdf.set_font('GNU', 'B' , 20)
 		pdf.ln(15)
 		pdf.cell(20, 10, 'Dienste:', 0, 1)
 		pdf.set_font('GNU', 'B', 14)
-		pdf.cell(40, 10, 'Personal-Nr.', 0, 0)
-		pdf.cell(40, 10, 'Nachname', 0, 0)
-		pdf.cell(40, 10, 'Begin', 0, 0)
-		pdf.cell(40, 10, 'Ende', 0, 0)
-		pdf.cell(40, 10, 'Art', 0 ,0)
+		pdf.cell(35, 10, 'Personal-Nr.', 0, 0)
+		pdf.cell(35, 10, 'Nachname', 0, 0)
+		pdf.cell(35, 10, 'Begin', 0, 0)
+		pdf.cell(35, 10, 'Ende', 0, 0)
+		pdf.cell(35, 10, 'Summe', 0, 0)
+		pdf.cell(35, 10, 'Art', 0 ,0)
 
 
 		current_x =pdf.get_x()
@@ -95,12 +98,12 @@ class PDFgenerator:
 		for i in self.content:
 			if pdf.y + 10 > pdf.page_break_trigger:
 				pdf.set_font('GNU', 'B' , 14)
-
-				pdf.cell(40, 10, 'Personal-Nr.', 0, 0)
-				pdf.cell(40, 10, 'Nachname', 0, 0)
-				pdf.cell(40, 10, 'Begin', 0, 0)
-				pdf.cell(40, 10, 'Ende', 0, 0)
-				pdf.cell(40, 10, 'Art', 0 ,0)
+				pdf.cell(35, 10, 'Personal-Nr.', 0, 0)
+				pdf.cell(35, 10, 'Nachname', 0, 0)
+				pdf.cell(35, 10, 'Begin', 0, 0)
+				pdf.cell(35, 10, 'Ende', 0, 0)
+				pdf.cell(35, 10, 'Summe', 0, 0)
+				pdf.cell(35, 10, 'Art', 0 ,0)
 
 				current_x =pdf.get_x()
 				current_y =pdf.get_y()
@@ -108,6 +111,7 @@ class PDFgenerator:
 				pdf.line(current_x, current_y, current_x+190, current_y)
 
 				pdf.set_font('GNU', '', 14)
+
 			else:
 				print(i)
 				if i[6] == 0:
@@ -115,23 +119,32 @@ class PDFgenerator:
 				else:
 					pdf.set_text_color(255,0,0)
 				begin = str(i[1].time())
-				ende = str(i[2].time())		
-				pdf.cell(40, 10, str(i[0]), 0, 0)
+				ende = str(i[2].time())
+				duration = i[2] - i[1]
+				self.gesamtSeconds = self.gesamtSeconds + int(duration.seconds)
+				self.durationHours = duration.seconds//3600
+				self.durationMinutes = (duration.seconds % 3600)//60
+				if self.durationMinutes < 10:
+					self.durationMinutes = '0%s' % (self.durationMinutes)	
+				pdf.cell(35, 10, str(i[0]), 0, 0)
 				#pdf.cell(40, 10, str(i[3]), 0, 0)
-				pdf.cell(40, 10, str(i[4]), 0, 0)
-				pdf.cell(40, 10, begin, 0, 0)
-				pdf.cell(40, 10, ende, 0, 0)
-				pdf.cell(40, 10, str(i[5]), 0, 0)
-				pdf.cell(40, 10, '{},{} h'.format(len(str(i[1]))/60,len(str(i[1]))%60/6*10), 0, 1)
+				pdf.cell(35, 10, str(i[4]), 0, 0)
+				pdf.cell(35, 10, begin, 0, 0)
+				pdf.cell(35, 10, ende, 0, 0)
+				pdf.cell(35,10,'%s:%s' % (self.durationHours,self.durationMinutes),0,0)
+				pdf.cell(35, 10, str(i[5]), 0, 1)
 				pdf.set_text_color(0, 0, 0)
-		
+		self.gesamtHours, self.remainder = divmod(self.gesamtSeconds,3600)
+		self.gesamtMinutes, x = divmod(self.remainder,60)
+		if self.gesamtMinutes < 10:
+			self.gesamtMinutes = '0%s' % (self.gesamtMinutes)		
 		current_x =pdf.get_x()
 		current_y =pdf.get_y()
 		pdf.line(current_x, current_y, current_x+190, current_y)
 		pdf.set_font('GNU', 'B' , 14)
-		pdf.cell(135,20,'',0,0)
-		#pdf.cell(40,20,'{},{} h'.format(int(self.gesamt/60),int((self.gesamt%60)/6*10)),0,1,)
-
+		pdf.cell(100,20,'',0,0)
+		pdf.cell(40,20,'Summe',0,0)
+		pdf.cell(40,20,'%s:%s'%(self.gesamtHours,self.gesamtMinutes),0,1)
 		pdf.output("Tagesreport_" + str(self.date) + ".pdf")
 
 aux=FPDF('P', 'mm', 'A4')
