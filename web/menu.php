@@ -34,11 +34,11 @@ $G_html_header='<html lang="en">
 // HTML body with menu
 // contains start of <body> element
 $G_html_menu='<body>';
-$G_html_menu_login='<body style="background-color:#101010;">';
+$G_html_menu_login='<body style="background-color:#ccc;">';
 $G_html_menu2='<nav class="navbar navbar-inverse navbar-fixed-top FAIR-navbar">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="index.php"><span style="color:#eee;">ImpfZEr</span><span class="shorten"> Impfzentrum Zeiterfassung</span></a>';
+          <a class="navbar-brand" href="index.php"><span style="color:#eee;">DRK</span><span class="shorten"> Impfzentrum Zeiterfassung</span></a>';
 if($_SESSION['uid']>0) {
 	$G_html_menu2.='<ul class="nav navbar-nav navbar-left">';
 	

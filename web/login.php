@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$pwd_lock) {
 			
 			// Check correct password hash
 			if (!password_verify($password, $db_hash)) {
-				$errorhtml1 =  H_build_boxinfo( 322, '<span class="glyphicon glyphicon-warning-sign"></span> Daten nicht korrekt.', 'red' );
+				$errorhtml1 =  H_build_boxinfo( 322, 'Daten nicht korrekt.', 'red' );
 				S_set_data($Db,'UPDATE li_user SET login_attempts=login_attempts+1 WHERE id='.$uid.';');
 			} else {
 			
@@ -131,7 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$pwd_lock) {
 			}
 			
 		} else {
-			$errorhtml1 =  H_build_boxinfo( 322, '<span class="glyphicon glyphicon-warning-sign"></span> Daten nicht korrekt.', 'red' );
+			$errorhtml1 =  H_build_boxinfo( 322, 'Daten nicht korrekt.', 'red' );
 		}
 		
 	}
@@ -150,7 +150,7 @@ if ( $FLAG_SHUTDOWN=='false' && $login_user_id>0 && $tokenreceived!='' ) {
 	// Check if received token is correct
 	$db_hash=S_get_entry($Db,'SELECT token FROM li_token WHERE id='.$token_id.'');
 	if (!password_verify($tokenreceived, $db_hash)) {
-		$errorhtml1 =  H_build_boxinfo( 322, '<span class="glyphicon glyphicon-warning-sign"></span> Daten nicht korrekt.', 'red' );
+		$errorhtml1 =  H_build_boxinfo( 322, 'Daten nicht korrekt.', 'red' );
 		// increase failed login counter
 		S_set_data($Db,'UPDATE li_user SET login_attempts=login_attempts+1 WHERE id='.$login_user_id.';');
 
@@ -234,7 +234,7 @@ Bitte mit diesem Link das Passwort neu setzen:\n";
       	$errorhtml1 =  H_build_boxinfo( 0, 'Eine Nachricht wurde verschickt an (*):<br><strong>' . $email . '</strong><br>Bitte Ihr Postfach prüfen.<br><br>(*) Nur wenn die Adresse registriert ist.', 'green' );
       	
 	} else {
-      	$errorhtml1 =  H_build_boxinfo( 0, '<span class="icon-warning"></span> Bitte eine gültige E-Mail-Adresse eingeben.', 'red' );
+      	$errorhtml1 =  H_build_boxinfo( 0, 'Bitte eine gültige E-Mail-Adresse eingeben.', 'red' );
 	}
 		
 	// -------------------- //
@@ -266,13 +266,20 @@ echo '<div style="text-align: center;">';
 
 echo '<div style="margin-bottom:45px; margin-top:0px;">';
 
+echo "<br>pwd_lock: ".$pwd_lock;
+echo "<br>session uid: ".$_SESSION['uid'];
+echo "<br>FLAG_SHUTDOWN: ".$FLAG_SHUTDOWN;
+echo "<br>pwd_reset: ".$pwd_reset;
+
+
+
 if($pwd_lock) {
 	
 	// //////////////
 	// LOGIN ATTEMPTS
 	
 	$html_box_login .= '<div style="text-align: left; display: inline-block; vertical-align: top;">';
-	$html_box_login .= H_build_boxhead( $box_width, 'boxlock', '<span class="icon-spam"></span> Account gesperrt', 0 );
+	$html_box_login .= H_build_boxhead( $box_width, 'boxlock', 'Account gesperrt', 0 );
 	$html_box_login .= '<div class="FAIR-ed-label">Achtung: Ihr Account ist aufgrund einer hohen Zahl fehlgeschlagener Anmeldeversuche gesperrt. Wenden Sie sich bitte an den <a title="Impressum und Administration" href="impressum.php">Administrator</a>.</div>';
 	$html_box_login .= H_build_boxfoot( );
 	$html_box_login .= '</div>';
@@ -304,7 +311,7 @@ if($pwd_lock) {
 	$html_box_login.= '</div>';
 	$html_box_login.= $errorhtml1;
 	$html_box_login.= '<div class="FAIR-si-button">';
-	$html_box_login.= '<input type="submit" class="btn btn-warning" value="Passwort zurücksetzen" name="button-reset" />';
+	$html_box_login.= '<input type="submit" class="btn btn-danger" value="Passwort zurücksetzen" name="button-reset" />';
 	$html_box_login.= '</div></form>';
 	$html_box_login.= '</div>';
 	
@@ -312,14 +319,59 @@ if($pwd_lock) {
 	$html_box_login.='<ul class="FAIR-editmenu-ul">';
 	$html_box_login.='<li class="FAIR-editmenu-sep"></li>';
 	$html_box_login.= '<li class="FAIR-editmenu-ul"><a class="FAIR-editmenu-td" href="'.$current_site.'.php">
-	<div class="FAIR-editmenu-left"><span class="icon-arrow-left10"></span><span style="margin-left:10px;"></span>Zurück</div><div class="FAIR-editmenu-right"></div>
+	<div class="FAIR-editmenu-left"><span style="margin-left:10px;"></span>Zurück</div><div class="FAIR-editmenu-right"></div>
 	</a></li>';
 	$html_box_login.='<li class="FAIR-editmenu-sep"></li>';
 	$html_box_login.= '</ul>';
 	
 	$html_box_login.= H_build_boxfoot( );
 	$html_box_login.= '</div>';
-			
+
+} elseif ($FLAG_SHUTDOWN!='true') {
+		
+	// //////////////
+	// PASSWORD LOGIN
+	
+	$html_box_login.='<div style="text-align: left; display: inline-block; vertical-align: top;">';
+	$html_box_login.=H_build_boxhead( $box_width, 'boxl1', 'Bitte melden Sie sich an' );
+	
+	if($FLAG_SHUTDOWN=='true') {
+		$html_box_login.=H_build_boxinfo( 0, 'Diese Website und die Datenbank sind derzeit geschlossen.<br>Diese Anmeldung ist nur für Administratoren.', 'blue' );	
+	}
+	
+	$html_box_login.='<div class="FAIR-foldbox-static-part">';
+	$html_box_login.='
+	<form action="'.$current_site.'.php" method="post">
+	<div class="FAIR-si-box">';
+	$html_box_login.='<input type="text" class="FAIR-textbox-large" name="username" placeholder="E-Mail" autofocus="autofocus"/>';
+	$html_box_login.='</div>';
+	$html_box_login.='<div class="FAIR-si-box">';
+	$html_box_login.='<input type="password" class="FAIR-textbox-large" name="password" placeholder="Passwort" />';
+	$html_box_login.='</div>';
+	$html_box_login.=$errorhtml1;
+	$html_box_login.='<div class="FAIR-si-button">';
+	$html_box_login.='<input type="submit" class="btn btn-danger" value="Anmelden" name="button" />';
+	$html_box_login.='</div></form>';
+	$html_box_login.='</div>';
+	
+	$html_box_login.='<p></p>';
+	$html_box_login.='<ul class="FAIR-editmenu-ul">';
+	$html_box_login.='<li class="FAIR-editmenu-sep"></li>';
+	$html_box_login.='<li class="FAIR-editmenu-ul"><a class="FAIR-editmenu-td" href="'.$current_site.'.php?b=1">
+	<div class="FAIR-editmenu-left">Passwort vergessen?</div><div class="FAIR-editmenu-right"></div>
+	</a></li>';
+	if($FLAG_SHUTDOWN=='true') {
+		$html_box_login.='<li class="FAIR-editmenu-sep"></li>';
+		$html_box_login.='<li class="FAIR-editmenu-ul"><a class="FAIR-editmenu-td" href="'.$current_site.'.php">
+		<div class="FAIR-editmenu-left"><span style="margin-left:10px;"></span>Zurück</div><div class="FAIR-editmenu-right"></div>
+		</a></li>';
+	}
+	$html_box_login.='<li class="FAIR-editmenu-sep"></li>';
+	$html_box_login.='</ul>';
+	
+	$html_box_login.=H_build_boxfoot( );
+	$html_box_login.='</div>';
+		
 } elseif($FLAG_SHUTDOWN=='true') {
 	
 	// //////////////
@@ -327,12 +379,12 @@ if($pwd_lock) {
 	
 	$html_box_login.='<div style="text-align: left; display: inline-block; vertical-align: top;">';
 	$html_box_login.=H_build_boxhead( $box_width, 'boxl1', 'Dienst vorübergehend nicht verfügbar' );
-	$html_box_login.=H_build_boxinfo( 0, '<span class="icon-spam"></span><br><br>Diese Website und die Datenbank sind derzeit geschlossen. Bitte versuchen Sie es zu einem späteren Zeitpunkt noch einmal.', 'red' );		
+	$html_box_login.=H_build_boxinfo( 0, 'Diese Website und die Datenbank sind derzeit geschlossen. Bitte versuchen Sie es zu einem späteren Zeitpunkt noch einmal.', 'red' );		
 	$html_box_login.= '<p></p>';
 	$html_box_login.='<ul class="FAIR-editmenu-ul">';
 	$html_box_login.='<li class="FAIR-editmenu-sep"></li>';
 	$html_box_login.= '<li class="FAIR-editmenu-ul"><a class="FAIR-editmenu-td" href="'.$current_site.'.php?a=1">
-	<div class="FAIR-editmenu-left">Administrator Login</div><div class="FAIR-editmenu-right"><span class="icon-uniE89D"></span></div>
+	<div class="FAIR-editmenu-left">Administrator Login</div><div class="FAIR-editmenu-right"></div>
 	</a></li>';
 	$html_box_login.='<li class="FAIR-editmenu-sep"></li>';
 	$html_box_login.= '</ul>';
