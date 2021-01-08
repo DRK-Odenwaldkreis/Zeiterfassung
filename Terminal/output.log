@@ -1567,3 +1567,197 @@ Starting
 2021-01-08 14:38:24,265 - ScanEvent - WARNING - Person is unknown
 2021-01-08 14:38:24,265 - Application - DEBUG - Displaying Person is unknown
 2021-01-08 14:38:24,265 - Application - DEBUG - Wiping all information from screen
+2021-01-08 14:45:47,155 - Main - DEBUG - Starting
+2021-01-08 14:45:48,209 - Application - DEBUG - The following input was received, starting event process: 1234
+2021-01-08 14:45:48,210 - ScanEvent - DEBUG - Constructor was called
+2021-01-08 14:45:48,210 - ScanEvent - DEBUG - The following Hash was scanned: 1234
+2021-01-08 14:45:48,210 - ScanEvent - DEBUG - Starting Databaseconnect
+2021-01-08 14:45:48,210 - Database - DEBUG - Constructor was called
+2021-01-08 14:45:48,224 - ScanEvent - DEBUG - Checking if QR is valid
+2021-01-08 14:45:48,224 - ScanEvent - DEBUG - QR is valid
+2021-01-08 14:45:48,224 - Failover in local DB - DEBUG - Creating local copy of data from following hash: 1234
+2021-01-08 14:45:48,225 - ScanEvent - DEBUG - Getting the Personalnummer and names, using the following query: Select Personalnummer, Vorname, Nachname from Personal where Hash=1234;
+2021-01-08 14:45:48,225 - Failover in local DB - DEBUG - Wiriting to database using the following query: INSERT INTO Dienste ("Hash") Values (1234)
+2021-01-08 14:45:48,227 - ScanEvent - DEBUG - Person is known, received the following identity: (6001, 'Murat', 'Bayram')
+2021-01-08 14:45:48,227 - ScanEvent - DEBUG - Found the following Personalnummer, Vorname, Name in the identity: 6001, Murat, Bayram
+2021-01-08 14:45:48,227 - ScanEvent - DEBUG - Checking if same code was scanned the last 5 secondsusing the following query: Select * from Dienste where Personalnummer=6001 and Updated > (NOW() - INTERVAL 5 SECOND);
+2021-01-08 14:45:48,229 - ScanEvent - DEBUG - Code was not scanned within the last 5 seconds
+2021-01-08 14:45:48,229 - ScanEvent - DEBUG - Checking whether there are open entries, using the following query: Select * from Dienste where Personalnummer=6001 and Dienstende is NULL
+2021-01-08 14:45:48,232 - ScanEvent - DEBUG - Received the following entries: ()
+2021-01-08 14:45:48,232 - ScanEvent - DEBUG - No other entries found, seems to be Dienstbegin
+2021-01-08 14:45:48,232 - ScanEvent - DEBUG - Opening shift, using the following query and tupel: Insert into Dienste (Personalnummer) VALUES ('%s'), (6001,)
+2021-01-08 14:45:48,331 - Application - DEBUG - Wiping all information from screen
+2021-01-08 14:45:49,177 - Application - DEBUG - The following input was received, starting event process: 1233
+2021-01-08 14:45:49,177 - ScanEvent - DEBUG - Constructor was called
+2021-01-08 14:45:49,177 - ScanEvent - DEBUG - The following Hash was scanned: 1233
+2021-01-08 14:45:49,178 - ScanEvent - DEBUG - Starting Databaseconnect
+2021-01-08 14:45:49,178 - Database - DEBUG - Constructor was called
+2021-01-08 14:45:49,188 - ScanEvent - DEBUG - Checking if QR is valid
+2021-01-08 14:45:49,188 - ScanEvent - DEBUG - QR is valid
+2021-01-08 14:45:49,189 - Failover in local DB - DEBUG - Creating local copy of data from following hash: 1233
+2021-01-08 14:45:49,189 - ScanEvent - DEBUG - Getting the Personalnummer and names, using the following query: Select Personalnummer, Vorname, Nachname from Personal where Hash=1233;
+2021-01-08 14:45:49,190 - Failover in local DB - DEBUG - Wiriting to database using the following query: INSERT INTO Dienste ("Hash") Values (1233)
+2021-01-08 14:45:49,191 - ScanEvent - WARNING - Person is unknown
+2021-01-08 14:45:49,192 - Application - DEBUG - Displaying Person is unknown
+2021-01-08 14:45:49,192 - Application - DEBUG - Wiping all information from screen
+2021-01-08 14:45:51,041 - Application - DEBUG - The following input was received, starting event process: 1234
+2021-01-08 14:45:51,041 - ScanEvent - DEBUG - Constructor was called
+2021-01-08 14:45:51,042 - ScanEvent - DEBUG - The following Hash was scanned: 1234
+2021-01-08 14:45:51,042 - ScanEvent - DEBUG - Starting Databaseconnect
+2021-01-08 14:45:51,042 - Database - DEBUG - Constructor was called
+2021-01-08 14:45:51,050 - ScanEvent - DEBUG - Checking if QR is valid
+2021-01-08 14:45:51,050 - ScanEvent - DEBUG - QR is valid
+2021-01-08 14:45:51,050 - Failover in local DB - DEBUG - Creating local copy of data from following hash: 1234
+2021-01-08 14:45:51,050 - ScanEvent - DEBUG - Getting the Personalnummer and names, using the following query: Select Personalnummer, Vorname, Nachname from Personal where Hash=1234;
+2021-01-08 14:45:51,052 - Failover in local DB - DEBUG - Wiriting to database using the following query: INSERT INTO Dienste ("Hash") Values (1234)
+2021-01-08 14:45:51,053 - ScanEvent - DEBUG - Person is known, received the following identity: (6001, 'Murat', 'Bayram')
+2021-01-08 14:45:51,053 - ScanEvent - DEBUG - Found the following Personalnummer, Vorname, Name in the identity: 6001, Murat, Bayram
+2021-01-08 14:45:51,053 - ScanEvent - DEBUG - Checking if same code was scanned the last 5 secondsusing the following query: Select * from Dienste where Personalnummer=6001 and Updated > (NOW() - INTERVAL 5 SECOND);
+2021-01-08 14:45:51,055 - ScanEvent - WARNING - Code was scanned in the last 5 seconds, dropping scan event.
+2021-01-08 14:45:51,055 - Application - DEBUG - Displaying that code was already scanned
+2021-01-08 14:45:51,056 - Application - DEBUG - Wiping all information from screen
+2021-01-08 14:45:53,161 - Application - DEBUG - The following input was received, starting event process: 1232
+2021-01-08 14:45:53,162 - ScanEvent - DEBUG - Constructor was called
+2021-01-08 14:45:53,162 - ScanEvent - DEBUG - The following Hash was scanned: 1232
+2021-01-08 14:45:53,162 - ScanEvent - DEBUG - Starting Databaseconnect
+2021-01-08 14:45:53,162 - Database - DEBUG - Constructor was called
+2021-01-08 14:45:53,172 - ScanEvent - DEBUG - Checking if QR is valid
+2021-01-08 14:45:53,172 - ScanEvent - DEBUG - QR is valid
+2021-01-08 14:45:53,172 - Failover in local DB - DEBUG - Creating local copy of data from following hash: 1232
+2021-01-08 14:45:53,172 - ScanEvent - DEBUG - Getting the Personalnummer and names, using the following query: Select Personalnummer, Vorname, Nachname from Personal where Hash=1232;
+2021-01-08 14:45:53,173 - Failover in local DB - DEBUG - Wiriting to database using the following query: INSERT INTO Dienste ("Hash") Values (1232)
+2021-01-08 14:45:53,175 - ScanEvent - WARNING - Person is unknown
+2021-01-08 14:45:53,175 - Application - DEBUG - Displaying Person is unknown
+2021-01-08 14:45:53,175 - Application - DEBUG - Wiping all information from screen
+2021-01-08 14:45:53,897 - Application - DEBUG - The following input was received, starting event process: 12
+2021-01-08 14:45:53,897 - ScanEvent - DEBUG - Constructor was called
+2021-01-08 14:45:53,898 - ScanEvent - DEBUG - The following Hash was scanned: 12
+2021-01-08 14:45:53,898 - ScanEvent - DEBUG - Starting Databaseconnect
+2021-01-08 14:45:53,898 - Database - DEBUG - Constructor was called
+2021-01-08 14:45:53,908 - ScanEvent - DEBUG - Checking if QR is valid
+2021-01-08 14:45:53,908 - ScanEvent - WARNING - The QR is not a valid QR Code
+2021-01-08 14:45:53,908 - Application - DEBUG - Displaying that QR is not valid
+2021-01-08 14:45:53,908 - Application - DEBUG - Wiping all information from screen
+2021-01-08 14:45:54,882 - Application - DEBUG - The following input was received, starting event process: 123
+2021-01-08 14:45:54,882 - ScanEvent - DEBUG - Constructor was called
+2021-01-08 14:45:54,882 - ScanEvent - DEBUG - The following Hash was scanned: 123
+2021-01-08 14:45:54,882 - ScanEvent - DEBUG - Starting Databaseconnect
+2021-01-08 14:45:54,882 - Database - DEBUG - Constructor was called
+2021-01-08 14:45:54,891 - ScanEvent - DEBUG - Checking if QR is valid
+2021-01-08 14:45:54,891 - ScanEvent - WARNING - The QR is not a valid QR Code
+2021-01-08 14:45:54,891 - Application - DEBUG - Displaying that QR is not valid
+2021-01-08 14:45:54,891 - Application - DEBUG - Wiping all information from screen
+2021-01-08 14:45:56,065 - Application - DEBUG - The following input was received, starting event process: 1234
+2021-01-08 14:45:56,065 - ScanEvent - DEBUG - Constructor was called
+2021-01-08 14:45:56,065 - ScanEvent - DEBUG - The following Hash was scanned: 1234
+2021-01-08 14:45:56,065 - ScanEvent - DEBUG - Starting Databaseconnect
+2021-01-08 14:45:56,065 - Database - DEBUG - Constructor was called
+2021-01-08 14:45:56,074 - ScanEvent - DEBUG - Checking if QR is valid
+2021-01-08 14:45:56,074 - ScanEvent - DEBUG - QR is valid
+2021-01-08 14:45:56,074 - Failover in local DB - DEBUG - Creating local copy of data from following hash: 1234
+2021-01-08 14:45:56,074 - ScanEvent - DEBUG - Getting the Personalnummer and names, using the following query: Select Personalnummer, Vorname, Nachname from Personal where Hash=1234;
+2021-01-08 14:45:56,075 - Failover in local DB - DEBUG - Wiriting to database using the following query: INSERT INTO Dienste ("Hash") Values (1234)
+2021-01-08 14:45:56,082 - ScanEvent - DEBUG - Person is known, received the following identity: (6001, 'Murat', 'Bayram')
+2021-01-08 14:45:56,082 - ScanEvent - DEBUG - Found the following Personalnummer, Vorname, Name in the identity: 6001, Murat, Bayram
+2021-01-08 14:45:56,082 - ScanEvent - DEBUG - Checking if same code was scanned the last 5 secondsusing the following query: Select * from Dienste where Personalnummer=6001 and Updated > (NOW() - INTERVAL 5 SECOND);
+2021-01-08 14:45:56,084 - ScanEvent - DEBUG - Code was not scanned within the last 5 seconds
+2021-01-08 14:45:56,084 - ScanEvent - DEBUG - Checking whether there are open entries, using the following query: Select * from Dienste where Personalnummer=6001 and Dienstende is NULL
+2021-01-08 14:45:56,087 - ScanEvent - DEBUG - Received the following entries: ((93, 6001, datetime.datetime(2021, 1, 8, 14, 45, 48), None, 'Normal', datetime.datetime(2021, 1, 8, 14, 45, 48), 0),)
+2021-01-08 14:45:56,087 - ScanEvent - DEBUG - One entry found, seems to be Dienstende
+2021-01-08 14:45:56,087 - ScanEvent - DEBUG - Found shift start at: 2021-01-08 14:45:48
+2021-01-08 14:45:56,087 - ScanEvent - DEBUG - Closing shift, using the following query: Update Dienste SET Dienstende = current_timestamp(), AutoClosed = '0' WHERE Personalnummer = 6001 and Dienstende is NULL ORDER BY Dienstbegin DESC LIMIT 1
+2021-01-08 14:45:56,151 - ScanEvent - DEBUG - Calculating sum of the shift
+2021-01-08 14:45:56,151 - ScanEvent - DEBUG - Shift sum is 00 hours and 00 minutes
+2021-01-08 14:45:56,152 - Application - DEBUG - Wiping all information from screen
+2021-01-08 14:45:58,721 - Application - DEBUG - The following input was received, starting event process: 1234
+2021-01-08 14:45:58,722 - ScanEvent - DEBUG - Constructor was called
+2021-01-08 14:45:58,722 - ScanEvent - DEBUG - The following Hash was scanned: 1234
+2021-01-08 14:45:58,722 - ScanEvent - DEBUG - Starting Databaseconnect
+2021-01-08 14:45:58,722 - Database - DEBUG - Constructor was called
+2021-01-08 14:45:58,732 - ScanEvent - DEBUG - Checking if QR is valid
+2021-01-08 14:45:58,732 - ScanEvent - DEBUG - QR is valid
+2021-01-08 14:45:58,733 - Failover in local DB - DEBUG - Creating local copy of data from following hash: 1234
+2021-01-08 14:45:58,733 - ScanEvent - DEBUG - Getting the Personalnummer and names, using the following query: Select Personalnummer, Vorname, Nachname from Personal where Hash=1234;
+2021-01-08 14:45:58,734 - Failover in local DB - DEBUG - Wiriting to database using the following query: INSERT INTO Dienste ("Hash") Values (1234)
+2021-01-08 14:45:58,735 - ScanEvent - DEBUG - Person is known, received the following identity: (6001, 'Murat', 'Bayram')
+2021-01-08 14:45:58,735 - ScanEvent - DEBUG - Found the following Personalnummer, Vorname, Name in the identity: 6001, Murat, Bayram
+2021-01-08 14:45:58,735 - ScanEvent - DEBUG - Checking if same code was scanned the last 5 secondsusing the following query: Select * from Dienste where Personalnummer=6001 and Updated > (NOW() - INTERVAL 5 SECOND);
+2021-01-08 14:45:58,738 - ScanEvent - DEBUG - Code was not scanned within the last 5 seconds
+2021-01-08 14:45:58,738 - ScanEvent - DEBUG - Checking whether there are open entries, using the following query: Select * from Dienste where Personalnummer=6001 and Dienstende is NULL
+2021-01-08 14:45:58,740 - ScanEvent - DEBUG - Received the following entries: ()
+2021-01-08 14:45:58,741 - ScanEvent - DEBUG - No other entries found, seems to be Dienstbegin
+2021-01-08 14:45:58,741 - ScanEvent - DEBUG - Opening shift, using the following query and tupel: Insert into Dienste (Personalnummer) VALUES ('%s'), (6001,)
+2021-01-08 14:45:58,827 - Application - DEBUG - Wiping all information from screen
+2021-01-08 14:46:00,234 - Application - DEBUG - The following input was received, starting event process: 1233
+2021-01-08 14:46:00,234 - ScanEvent - DEBUG - Constructor was called
+2021-01-08 14:46:00,235 - ScanEvent - DEBUG - The following Hash was scanned: 1233
+2021-01-08 14:46:00,235 - ScanEvent - DEBUG - Starting Databaseconnect
+2021-01-08 14:46:00,235 - Database - DEBUG - Constructor was called
+2021-01-08 14:46:00,244 - ScanEvent - DEBUG - Checking if QR is valid
+2021-01-08 14:46:00,244 - ScanEvent - DEBUG - QR is valid
+2021-01-08 14:46:00,245 - Failover in local DB - DEBUG - Creating local copy of data from following hash: 1233
+2021-01-08 14:46:00,245 - ScanEvent - DEBUG - Getting the Personalnummer and names, using the following query: Select Personalnummer, Vorname, Nachname from Personal where Hash=1233;
+2021-01-08 14:46:00,246 - Failover in local DB - DEBUG - Wiriting to database using the following query: INSERT INTO Dienste ("Hash") Values (1233)
+2021-01-08 14:46:00,247 - ScanEvent - WARNING - Person is unknown
+2021-01-08 14:46:00,248 - Application - DEBUG - Displaying Person is unknown
+2021-01-08 14:46:00,248 - Application - DEBUG - Wiping all information from screen
+2021-01-08 14:46:01,689 - Application - DEBUG - The following input was received, starting event process: 1234
+2021-01-08 14:46:01,689 - ScanEvent - DEBUG - Constructor was called
+2021-01-08 14:46:01,689 - ScanEvent - DEBUG - The following Hash was scanned: 1234
+2021-01-08 14:46:01,689 - ScanEvent - DEBUG - Starting Databaseconnect
+2021-01-08 14:46:01,689 - Database - DEBUG - Constructor was called
+2021-01-08 14:46:01,701 - ScanEvent - DEBUG - Checking if QR is valid
+2021-01-08 14:46:01,701 - ScanEvent - DEBUG - QR is valid
+2021-01-08 14:46:01,702 - Failover in local DB - DEBUG - Creating local copy of data from following hash: 1234
+2021-01-08 14:46:01,702 - ScanEvent - DEBUG - Getting the Personalnummer and names, using the following query: Select Personalnummer, Vorname, Nachname from Personal where Hash=1234;
+2021-01-08 14:46:01,704 - Failover in local DB - DEBUG - Wiriting to database using the following query: INSERT INTO Dienste ("Hash") Values (1234)
+2021-01-08 14:46:01,705 - ScanEvent - DEBUG - Person is known, received the following identity: (6001, 'Murat', 'Bayram')
+2021-01-08 14:46:01,705 - ScanEvent - DEBUG - Found the following Personalnummer, Vorname, Name in the identity: 6001, Murat, Bayram
+2021-01-08 14:46:01,705 - ScanEvent - DEBUG - Checking if same code was scanned the last 5 secondsusing the following query: Select * from Dienste where Personalnummer=6001 and Updated > (NOW() - INTERVAL 5 SECOND);
+2021-01-08 14:46:01,707 - ScanEvent - WARNING - Code was scanned in the last 5 seconds, dropping scan event.
+2021-01-08 14:46:01,707 - Application - DEBUG - Displaying that code was already scanned
+2021-01-08 14:46:01,708 - Application - DEBUG - Wiping all information from screen
+2021-01-08 14:46:02,905 - Application - DEBUG - The following input was received, starting event process: 1232
+2021-01-08 14:46:02,905 - ScanEvent - DEBUG - Constructor was called
+2021-01-08 14:46:02,905 - ScanEvent - DEBUG - The following Hash was scanned: 1232
+2021-01-08 14:46:02,905 - ScanEvent - DEBUG - Starting Databaseconnect
+2021-01-08 14:46:02,905 - Database - DEBUG - Constructor was called
+2021-01-08 14:46:02,915 - ScanEvent - DEBUG - Checking if QR is valid
+2021-01-08 14:46:02,915 - ScanEvent - DEBUG - QR is valid
+2021-01-08 14:46:02,915 - Failover in local DB - DEBUG - Creating local copy of data from following hash: 1232
+2021-01-08 14:46:02,915 - ScanEvent - DEBUG - Getting the Personalnummer and names, using the following query: Select Personalnummer, Vorname, Nachname from Personal where Hash=1232;
+2021-01-08 14:46:02,916 - Failover in local DB - DEBUG - Wiriting to database using the following query: INSERT INTO Dienste ("Hash") Values (1232)
+2021-01-08 14:46:02,918 - ScanEvent - WARNING - Person is unknown
+2021-01-08 14:46:02,918 - Application - DEBUG - Displaying Person is unknown
+2021-01-08 14:46:02,918 - Application - DEBUG - Wiping all information from screen
+2021-01-08 14:46:03,640 - Application - DEBUG - The following input was received, starting event process: 12
+2021-01-08 14:46:03,641 - ScanEvent - DEBUG - Constructor was called
+2021-01-08 14:46:03,641 - ScanEvent - DEBUG - The following Hash was scanned: 12
+2021-01-08 14:46:03,641 - ScanEvent - DEBUG - Starting Databaseconnect
+2021-01-08 14:46:03,641 - Database - DEBUG - Constructor was called
+2021-01-08 14:46:03,650 - ScanEvent - DEBUG - Checking if QR is valid
+2021-01-08 14:46:03,650 - ScanEvent - WARNING - The QR is not a valid QR Code
+2021-01-08 14:46:03,650 - Application - DEBUG - Displaying that QR is not valid
+2021-01-08 14:46:03,650 - Application - DEBUG - Wiping all information from screen
+2021-01-08 14:46:05,330 - Application - DEBUG - The following input was received, starting event process: 1234
+2021-01-08 14:46:05,330 - ScanEvent - DEBUG - Constructor was called
+2021-01-08 14:46:05,330 - ScanEvent - DEBUG - The following Hash was scanned: 1234
+2021-01-08 14:46:05,330 - ScanEvent - DEBUG - Starting Databaseconnect
+2021-01-08 14:46:05,330 - Database - DEBUG - Constructor was called
+2021-01-08 14:46:05,339 - ScanEvent - DEBUG - Checking if QR is valid
+2021-01-08 14:46:05,339 - ScanEvent - DEBUG - QR is valid
+2021-01-08 14:46:05,340 - Failover in local DB - DEBUG - Creating local copy of data from following hash: 1234
+2021-01-08 14:46:05,340 - ScanEvent - DEBUG - Getting the Personalnummer and names, using the following query: Select Personalnummer, Vorname, Nachname from Personal where Hash=1234;
+2021-01-08 14:46:05,341 - Failover in local DB - DEBUG - Wiriting to database using the following query: INSERT INTO Dienste ("Hash") Values (1234)
+2021-01-08 14:46:05,343 - ScanEvent - DEBUG - Person is known, received the following identity: (6001, 'Murat', 'Bayram')
+2021-01-08 14:46:05,343 - ScanEvent - DEBUG - Found the following Personalnummer, Vorname, Name in the identity: 6001, Murat, Bayram
+2021-01-08 14:46:05,343 - ScanEvent - DEBUG - Checking if same code was scanned the last 5 secondsusing the following query: Select * from Dienste where Personalnummer=6001 and Updated > (NOW() - INTERVAL 5 SECOND);
+2021-01-08 14:46:05,345 - ScanEvent - DEBUG - Code was not scanned within the last 5 seconds
+2021-01-08 14:46:05,345 - ScanEvent - DEBUG - Checking whether there are open entries, using the following query: Select * from Dienste where Personalnummer=6001 and Dienstende is NULL
+2021-01-08 14:46:05,347 - ScanEvent - DEBUG - Received the following entries: ((94, 6001, datetime.datetime(2021, 1, 8, 14, 45, 59), None, 'Normal', datetime.datetime(2021, 1, 8, 14, 45, 59), 0),)
+2021-01-08 14:46:05,347 - ScanEvent - DEBUG - One entry found, seems to be Dienstende
+2021-01-08 14:46:05,347 - ScanEvent - DEBUG - Found shift start at: 2021-01-08 14:45:59
+2021-01-08 14:46:05,347 - ScanEvent - DEBUG - Closing shift, using the following query: Update Dienste SET Dienstende = current_timestamp(), AutoClosed = '0' WHERE Personalnummer = 6001 and Dienstende is NULL ORDER BY Dienstbegin DESC LIMIT 1
+2021-01-08 14:46:05,571 - ScanEvent - DEBUG - Calculating sum of the shift
+2021-01-08 14:46:05,572 - ScanEvent - DEBUG - Shift sum is 00 hours and 00 minutes
+2021-01-08 14:46:05,573 - Application - DEBUG - Wiping all information from screen

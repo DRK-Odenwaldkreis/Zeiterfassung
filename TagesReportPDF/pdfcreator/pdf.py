@@ -4,6 +4,7 @@
 #PDFOutput v 1.0
 
 #Copyright Philipp Scior philipp.scior@drk-forum.de
+#Adapted by Murat :-)
 
 #contains all routines to print a nice pdf 
 

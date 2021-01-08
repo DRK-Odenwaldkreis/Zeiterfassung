@@ -46,7 +46,7 @@ class ScanEvent(object):
         except Exception as e:
             logger.error('The following error occured in the constructor such that DatabaseDisconnect exception will be raised: %s'%(e))
             raise DatabaseDisconnect
-
+    #Currently hash is only 4 characters long, for dev
     def check_validity(self):
         logger.debug('Checking if QR is valid')
         if len(self.hash) != 4:
