@@ -114,10 +114,10 @@ class PDFgenerator:
 
 			else:
 				print(i)
-				if i[6] == 0:
-					pdf.set_text_color(0, 0, 0)
-				else:
+				if i[6] == 1:
 					pdf.set_text_color(255,0,0)
+				else:
+					pdf.set_text_color(0, 0, 0)
 				begin = str(i[1].time())
 				ende = str(i[2].time())
 				duration = i[2] - i[1]
@@ -143,7 +143,7 @@ class PDFgenerator:
 		pdf.line(current_x, current_y, current_x+190, current_y)
 		pdf.set_font('GNU', 'B' , 14)
 		pdf.cell(100,20,'',0,0)
-		pdf.cell(40,20,'Summe',0,0)
+		pdf.cell(40,20,'Gesamtsumme',0,0)
 		pdf.cell(40,20,'%s:%s'%(self.gesamtHours,self.gesamtMinutes),0,1)
 		pdf.output("Tagesreport_" + str(self.date) + ".pdf")
 
