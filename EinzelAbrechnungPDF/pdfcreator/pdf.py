@@ -68,6 +68,7 @@ class PDFgenerator:
 		# pdf.name=self.name
 		pdf.alias_nb_pages()
 		pdf.add_page()
+		pdf.set_auto_page_break(True, 25)
 		pdf.add_font('GNU', '', FreeSans, uni=True)
 		pdf.add_font('GNU', 'B', FreeSansBold, uni=True)
 

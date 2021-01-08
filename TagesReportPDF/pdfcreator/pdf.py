@@ -33,6 +33,7 @@ class MyPDF(FPDF):
 		self.add_font('GNU', '', FreeSans, uni=True)
 		self.set_font('GNU', '', 11)
 		self.cell(40, 10, 'Impfzentrum Odenwaldkreis:', ln=0)
+		self.cell(0,10, 'Rot bedeuted correctur', align='R', ln=1)
 		#self.cell(0,10, time.strftime("%d.%m.%Y", self.time), align='R', ln=1)
 		self.ln(10)
 
@@ -61,6 +62,7 @@ class PDFgenerator:
 		# pdf.name=self.name
 		pdf.alias_nb_pages()
 		pdf.add_page()
+		pdf.set_auto_page_break(True, 25)
 		pdf.add_font('GNU', '', FreeSans, uni=True)
 		pdf.add_font('GNU', 'B', FreeSansBold, uni=True)
 		
@@ -107,6 +109,7 @@ class PDFgenerator:
 
 				pdf.set_font('GNU', '', 14)
 			else:
+				print(i)
 				if i[6] == 0:
 					pdf.set_text_color(0, 0, 0)
 				else:
