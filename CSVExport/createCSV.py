@@ -10,7 +10,7 @@ netShiftTime=0
 netShiftTimeHours=0
 netShiftTimeMinutes=0
 
-def create_CSV(content,month,year):
+def create_CSV(content, month, year):
     with open('../Exports/export.csv', mode='w', newline='') as csvfile:
         writeEntry = csv.writer(csvfile, delimiter=';')
         writeEntry.writerow(["Satzart", 
