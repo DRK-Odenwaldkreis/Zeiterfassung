@@ -17,5 +17,6 @@ if __name__ == "__main__":
         sql = "Update Dienste SET Dienstende = current_timestamp(), AutoClosed = '1' WHERE Dienstende is NULL"
         logger.debug('Closing shift, using the following query: %s' % (sql))
         DatabaseConnect.update(sql)
+        logger.debug('Done')
     except Exception as e:
         logging.error("Error")
