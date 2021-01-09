@@ -11,7 +11,7 @@ from utils.database import Database
 from createCSV import create_CSV
 
 logFile = '../Logs/CSVExportJob.log'
-logging.basicConfig(level=logging.DEBUG,
+logging.basicConfig(filename=logFile,level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('CSV Export')
 logger.debug('Starting')
@@ -30,7 +30,7 @@ if __name__ == "__main__":
         DatabaseConnect = Database()
         sql = "Select Dienste.Personalnummer, Dienste.Dienstbegin, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art FROM Dienste JOIN Personal ON Personal.Personalnummer = Dienste.Personalnummer WHERE MONTH(Dienstbegin)=%s AND YEAR(Dienstbegin)= %s AND Dienstende is not Null;" % (
             requestedMonth, requestedYear)
-        logger.debug('Getting all Events for employee of the month with the following query: %s' % (sql))
+        logger.debug('Getting all Events for employee of the month and year with the following query: %s' % (sql))
         exportEvents = DatabaseConnect.read_all(sql)
         logger.debug('Received the following entries: %s' %
                      (str(exportEvents)))
