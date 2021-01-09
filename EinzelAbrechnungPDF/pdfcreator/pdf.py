@@ -22,7 +22,7 @@ from utils.month import monthInt_to_string
 
 FreeSans = './pdfcreator/FreeSans.ttf'
 FreeSansBold = './pdfcreator/FreeSansBold.ttf'
-
+Logo ='../utils/logo.jpeg'
 class MyPDF(FPDF):
 
     #it sucks that these members do not belong to specific object instances, but I can use __init__
@@ -36,7 +36,8 @@ class MyPDF(FPDF):
 	def header(self):
 		self.add_font('GNU', '', FreeSans, uni=True)
 		self.set_font('GNU', '', 11)
-		self.cell(40, 10, 'Impfzentrum Odenwaldkreis:', ln=0)
+		# self.cell(40, 10, 'Impfzentrum Odenwaldkreis:', ln=0)
+		self.image(Logo, x=7, y=10, w=100, h=24, type='JPEG')
 		self.cell(0, 10, datetime.date.today().strftime("%d.%m.%Y"), align='R', ln=1)
 		self.ln(10)
 
@@ -75,6 +76,8 @@ class PDFgenerator:
 		pdf.add_font('GNU', 'B', FreeSansBold, uni=True)
 
 		pdf.set_font('GNU', 'B', 14)
+
+		pdf.cell(10, 10, '', ln=1)
 
 		pdf.cell(20, 10, 'Arbeitszeitabrechnung', ln=1)
 
