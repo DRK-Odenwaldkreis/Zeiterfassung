@@ -19,24 +19,41 @@ function S_open_db () {
 	/* Database connection information */
 	$gaSql=$GLOBALS['gaSql_server'];
 	
-	// Connect to DB
-	$gaSql['link'] = pg_connect(
-        " host=".$gaSql['server'].
-		" port=".$gaSql['port'].
-        " dbname=".$gaSql['db'].
-        " user=".$gaSql['user'].
-        " password=".$gaSql['password'].
-		" sslmode=require" );// or die('Could not connect. Error code: ' . pg_last_error());
+	echo "<br>connect to ";
+	echo "<br>".'"'.$gaSql['server'].'",'.
+	'"'.$gaSql['user'].'",'.
+	'"'.'",'.
+	'"'.$gaSql['db'].'",'.
+	''.$gaSql['port'].'';
 
-  if (!$gaSql['link']) {
+	// Connect to DB
+	$gaSql['link'] = mysqli_connect(
+        "'".$gaSql['server']."',".
+        "'".$gaSql['user']."',".
+		"'".$gaSql['password']."',".
+		"'".$gaSql['db']."',".
+		"".$gaSql['port']."".
+		"" );// or die('Could not connect. Error code: ' . pg_last_error());
+echo "<br> TEST";
+	if (!$gaSql['link']) {
+		echo "Fehler: konnte nicht mit MySQL verbinden." . PHP_EOL;
+		echo "Debug-Fehlernummer: " . mysqli_connect_errno() . PHP_EOL;
+		echo "Debug-Fehlermeldung: " . mysqli_connect_error() . PHP_EOL;
+		exit;
+	}
+
+	echo 'Success... ' . mysqli_get_host_info($gaSql['link']) . "\n";
+
+  /*if (!$gaSql['link']) {
 	  header('Location: error.php?e=err80');
-  }
+  }*/
 	// Return the database object
 	return $gaSql['link'];
 }
 
 // Close DB connection
 function S_close_db ($Db) {
+	mysqli_close($Db);
 	return 0;
 }
 

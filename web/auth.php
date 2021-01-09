@@ -22,6 +22,7 @@ $hostname = $_SERVER['HTTP_HOST'];
 $path = dirname($_SERVER['PHP_SELF']);
 
 include_once('val/admin01.php');
+include_once('server_settings.php');
 include_once('tools.php');
  
 $linked_URL=$_SERVER['REQUEST_URI'];

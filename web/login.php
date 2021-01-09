@@ -61,7 +61,7 @@ if( isset($_GET['u']) ) {
 
 
 // Open database connection
-//$Db=S_open_db();
+$Db=S_open_db();
 
 // Forward after login to refering site
 	// Is referer url not a login site
@@ -412,6 +412,6 @@ echo '</div>';
 echo $GLOBALS['G_html_footer'];
 
 // Close connection to database
-//S_close_db($Db);
+S_close_db($Db);
 
 ?>
