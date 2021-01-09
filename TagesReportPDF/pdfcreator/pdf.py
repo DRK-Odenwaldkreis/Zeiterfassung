@@ -123,10 +123,9 @@ class PDFgenerator:
 					pdf.set_text_color(0, 0, 0)
 				self.begin = str(i[1].time())
 				self.ende = str(i[2].time())
-				self.netShiftTime = calculate_net_shift_time(i[1], i[2])
+				self.netShiftTime, self.netShiftTimeHours, self.netShiftTimeMinutes = calculate_net_shift_time(
+					i[1], i[2])
 				self.totalSeconds = self.totalSeconds + int(self.netShiftTime.seconds)
-				self.netShiftTimeHours = self.netShiftTime.seconds//3600
-				self.netShiftTimeMinutes = (self.netShiftTime.seconds % 3600)//60
 				if self.netShiftTimeMinutes < 10:
 					self.netShiftTimeMinutes = '0%s' % (self.netShiftTimeMinutes)
 				pdf.cell(35, 10, str(i[0]), 0, 0)

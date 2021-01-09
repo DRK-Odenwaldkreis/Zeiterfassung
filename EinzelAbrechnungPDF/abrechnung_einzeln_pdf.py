@@ -9,7 +9,7 @@ import logging
 
 
 logFile = '../Logs/singleReportJob.log'
-logging.basicConfig(level=logging.DEBUG,
+logging.basicConfig(filename=logFile,level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Single Report')
 logger.debug('Starting')
@@ -23,19 +23,22 @@ locale.setlocale(locale.LC_ALL, 'de_DE.UTF-8')
 
 if __name__ == "__main__":
     try:
-        if len(sys.argv) != 3:
-            logger.debug('Input parameters are not correct, Personalnummer and Month needed')
+        if len(sys.argv) != 4:
+            logger.debug('Input parameters are not correct, Personalnummer and Month and Year needed')
             raise Exception
         logger.debug(
             'Was started for the following personalnummer: %s' % (sys.argv[1]))
         logger.debug(
             'Was started for the following month: %s' % (sys.argv[2]))
+        logger.debug(
+            'Was started for the following year: %s' % (sys.argv[3]))
         requestedPersonalnummer = sys.argv[1]
         requestedMonth = sys.argv[2]
+        requestedYear = sys.argv[3]
         
         DatabaseConnect = Database()
 
-        sql = "SELECT Dienstbegin, Dienstende, Art FROM Dienste WHERE Personalnummer = %s AND MONTH(Dienstbegin)=%s AND Dienstende IS NOT NULL;" % (requestedPersonalnummer,requestedMonth)
+        sql = "SELECT Dienstbegin, Dienstende, Art FROM Dienste WHERE Personalnummer = %s AND MONTH(Dienstbegin)=%s AND YEAR(Dienstbegin)=%s AND Dienstende IS NOT NULL;" % (requestedPersonalnummer,requestedMonth,requestedYear)
         logger.debug('Getting all Events for employee of the month with the following query: %s' % (sql))
         shiftTimes = DatabaseConnect.read_all(sql)
         logger.debug('Received the following entries: %s' % (str(shiftTimes)))
@@ -47,7 +50,7 @@ if __name__ == "__main__":
         logger.debug('Received the following employee: %s' % (str(employee)))
         vorname = employee[0]
         nachname = employee[1]
-        PDF = PDFgenerator(shiftTimes, nachname, vorname, requestedPersonalnummer, requestedMonth)
+        PDF = PDFgenerator(shiftTimes, nachname, vorname, requestedPersonalnummer, requestedMonth, requestedYear)
         PDF.generate()
         logger.debug('Done')
     except Exception as e:

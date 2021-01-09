@@ -53,12 +53,13 @@ class MyPDF(FPDF):
 
 class PDFgenerator:
 
-	def __init__(self, content, nachname, vorname, personalnummer, monat):
+	def __init__(self, content, nachname, vorname, personalnummer, monat, year):
 		self.content=content
 		self.nachname=nachname
 		self.vorname=vorname
 		self.personalnummer=personalnummer
 		self.date = datetime.date.today()
+		self.year = year
 		self.monat=monthInt_to_string(int(monat))
 		self.totalSeconds = 0
 
@@ -120,18 +121,15 @@ class PDFgenerator:
 			else:
 				self.begin = str(i[0].time())
 				self.ende = str(i[1].time())
-				self.netShiftTime = calculate_net_shift_time(i[0], i[1])
+				self.netShiftTime, self.netShiftTimeHours, self.netShiftTimeMinutes = calculate_net_shift_time(i[0], i[1])
 				self.totalSeconds = self.totalSeconds + int(self.netShiftTime.seconds)
-				self.netShiftTimeHours = self.netShiftTime.seconds//3600
-				self.netShiftTimeMinutes = (self.netShiftTime.seconds % 3600)//60
 				if self.netShiftTimeMinutes < 10:
 					self.netShiftTimeMinutes = '0%s' % (self.netShiftTimeMinutes)
 				pdf.cell(40, 10, i[0].strftime("%d.%m.%Y"),0,0)
 				pdf.cell(40, 10, self.begin, 0, 0)
 				pdf.cell(40, 10, self.ende, 0, 0)
 				pdf.cell(40, 10, i[2], 0, 0)
-				pdf.cell(40, 10, '%s:%s' %
-				         (self.netShiftTimeHours, self.netShiftTimeMinutes), 0, 1)
+				pdf.cell(40, 10, '%s:%s' %(self.netShiftTimeHours, self.netShiftTimeMinutes), 0, 1)
 		self.totalHours, self.remainder = divmod(self.totalSeconds, 3600)
 		self.totalMinutes, self.rest = divmod(self.remainder, 60)
 		if self.totalMinutes < 10:
@@ -143,6 +141,6 @@ class PDFgenerator:
 		pdf.cell(135,20,'',0,0)
 		pdf.cell(25,20,'Summe = ',0,0)
 		pdf.cell(40, 20, '%s:%s' % (self.totalHours, self.totalMinutes), 0, 1)
-		pdf.output("../Reports/Einzelnachweis_" + self.nachname+"_" + self.vorname + "_" + str(datetime.date.today()) + ".pdf")
+		pdf.output("../Reports/Einzelnachweis_" + self.monat + '_' + self.year + '_' + self.nachname+"_" + self.vorname + "_" + str(datetime.date.today()) + ".pdf")
 
 aux=FPDF('P', 'mm', 'A4')
