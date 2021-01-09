@@ -6,5 +6,5 @@ import configparser
 
 def read_config(section,variable):
     config = configparser.ConfigParser()
-    config.read('./config.ini')
+    config.read('../config.ini')
     return config.get(section,variable)

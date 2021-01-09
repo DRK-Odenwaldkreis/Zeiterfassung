@@ -3,10 +3,11 @@
 from os import path
 import logging
 import sys
-from database import Database
+sys.path.append("..")
+from utils.database import Database
 from pdfcreator.pdf import PDFgenerator
 
-logFile = './Log/reportJob.log'
+logFile = '../Logs/reportJob.log'
 logging.basicConfig(filename = logFile,level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Daily Report')

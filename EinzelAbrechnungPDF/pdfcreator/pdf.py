@@ -4,18 +4,24 @@
 #PDFOutput v 1.0
 
 #Copyright Philipp Scior philipp.scior@drk-forum.de
+#Adapted by Murat :-)
 
 #contains all routines to print a nice pdf 
 
 
-
+import sys
 from fpdf import FPDF
 import time
 import os
 import os.path
+import datetime
+sys.path.append("..")
 
-FreeSans=os.path.join(os.getcwd(), '/Users/philippscior/Zeiterfassung/EinzelAbrechnungPDF/pdfcreator/FreeSans.ttf')   
-FreeSansBold = os.path.join(os.getcwd(), '/Users/philippscior/Zeiterfassung/EinzelAbrechnungPDF/pdfcreator/FreeSansBold.ttf')
+from utils.pausen import calculate_net_shift_time
+from utils.month import monthInt_to_string
+
+FreeSans = './pdfcreator/FreeSans.ttf'
+FreeSansBold = './pdfcreator/FreeSansBold.ttf'
 
 class MyPDF(FPDF):
 
@@ -31,7 +37,7 @@ class MyPDF(FPDF):
 		self.add_font('GNU', '', FreeSans, uni=True)
 		self.set_font('GNU', '', 11)
 		self.cell(40, 10, 'Impfzentrum Odenwaldkreis:', ln=0)
-		self.cell(0,10, time.strftime("%d.%m.%Y", self.time), align='R', ln=1)
+		self.cell(0, 10, datetime.date.today().strftime("%d.%m.%Y"), align='R', ln=1)
 		self.ln(10)
 
 
@@ -47,24 +53,19 @@ class MyPDF(FPDF):
 
 class PDFgenerator:
 
-	def __init__(self, content, nachname, vorname, personalnummer, monat, time):
+	def __init__(self, content, nachname, vorname, personalnummer, monat):
 		self.content=content
 		self.nachname=nachname
 		self.vorname=vorname
 		self.personalnummer=personalnummer
-		self.time=time
-		self.monat=monat
-		self.gesamt=0
-		for i in self.content:
-			self.gesamt += i[3]
-
-
-
+		self.date = datetime.date.today()
+		self.monat=monthInt_to_string(int(monat))
+		self.totalSeconds = 0
 
 	def generate(self):
 
 		pdf=MyPDF()
-		pdf.time=self.time
+		pdf.time = self.date
 		# pdf.name=self.name
 		pdf.alias_nb_pages()
 		pdf.add_page()
@@ -80,7 +81,7 @@ class PDFgenerator:
 
 		pdf.cell(20, 10, 'Mitarbeiter: {}'.format(self.nachname)+", "+self.vorname, ln=1)
 		pdf.cell(20, 10, 'Personalnummer: {}'.format(self.personalnummer), ln=1)
-		pdf.cell(20, 10, 'Abrechnungszeitraum: {}'.format(self.monat), ln=1)
+		pdf.cell(20, 10, 'Arbeitszeitnachweis: {}'.format(self.monat), ln=1)
 
 		pdf.set_font('GNU', 'B' , 14)
 		pdf.ln(10)
@@ -89,7 +90,7 @@ class PDFgenerator:
 		pdf.cell(40, 10, 'Tag', 0, 0)
 		pdf.cell(40, 10, 'Begin', 0, 0)
 		pdf.cell(40, 10, 'Ende', 0, 0)
-		pdf.cell(40, 10, 'Art', 0 ,0)
+		pdf.cell(40, 10, 'Art', 0, 0)
 		pdf.cell(40, 10, 'Zeit', 0, 1)
 
 		current_x =pdf.get_x()
@@ -107,7 +108,7 @@ class PDFgenerator:
 				pdf.cell(40, 10, 'Tag', 0, 0)
 				pdf.cell(40, 10, 'Begin', 0, 0)
 				pdf.cell(40, 10, 'Ende', 0, 0)
-				pdf.cell(40, 10, 'Art', 0 ,0)
+				pdf.cell(40, 10, 'Art', 0, 0)
 				pdf.cell(40, 10, 'Zeit', 0, 1)
 
 				current_x =pdf.get_x()
@@ -116,21 +117,32 @@ class PDFgenerator:
 				pdf.line(current_x, current_y, current_x+190, current_y)
 
 				pdf.set_font('GNU', '', 14)
-			else:		
-				pdf.cell(40, 10, i[0], 0, 0)
-				pdf.cell(40, 10, i[1], 0, 0)
+			else:
+				self.begin = str(i[0].time())
+				self.ende = str(i[1].time())
+				self.netShiftTime = calculate_net_shift_time(i[0], i[1])
+				self.totalSeconds = self.totalSeconds + int(self.netShiftTime.seconds)
+				self.netShiftTimeHours = self.netShiftTime.seconds//3600
+				self.netShiftTimeMinutes = (self.netShiftTime.seconds % 3600)//60
+				if self.netShiftTimeMinutes < 10:
+					self.netShiftTimeMinutes = '0%s' % (self.netShiftTimeMinutes)
+				pdf.cell(40, 10, i[0].strftime("%d.%m.%Y"),0,0)
+				pdf.cell(40, 10, self.begin, 0, 0)
+				pdf.cell(40, 10, self.ende, 0, 0)
 				pdf.cell(40, 10, i[2], 0, 0)
-				pdf.cell(40, 10, i[4], 0, 0)
-				pdf.cell(40, 10, '{},{} h'.format(int(i[3]/60),int((i[3]%60)/6*10)), 0, 1)
-		
+				pdf.cell(40, 10, '%s:%s' %
+				         (self.netShiftTimeHours, self.netShiftTimeMinutes), 0, 1)
+		self.totalHours, self.remainder = divmod(self.totalSeconds, 3600)
+		self.totalMinutes, self.rest = divmod(self.remainder, 60)
+		if self.totalMinutes < 10:
+			self.totalMinutes = '0%s' % (self.totalMinutes)
 		current_x =pdf.get_x()
 		current_y =pdf.get_y()
 		pdf.line(current_x, current_y, current_x+190, current_y)
 		pdf.set_font('GNU', 'B' , 14)
 		pdf.cell(135,20,'',0,0)
 		pdf.cell(25,20,'Summe = ',0,0)
-		pdf.cell(40,20,'{},{} h'.format(int(self.gesamt/60),int((self.gesamt%60)/6*10)),0,1,)
-
-		pdf.output(self.nachname+"_"+self.vorname+".pdf")
+		pdf.cell(40, 20, '%s:%s' % (self.totalHours, self.totalMinutes), 0, 1)
+		pdf.output("../Reports/Einzelnachweis_" + self.nachname+"_" + self.vorname + "_" + str(datetime.date.today()) + ".pdf")
 
 aux=FPDF('P', 'mm', 'A4')

@@ -9,12 +9,16 @@
 #contains all routines to print a nice pdf 
 
 
-
+import sys
 from fpdf import FPDF
 import time
 import os
 import os.path
 import datetime
+sys.path.append("..")
+
+from utils.pausen import calculate_net_shift_time
+from utils.month import monthInt_to_string
 
 FreeSans='./pdfcreator/FreeSans.ttf'
 FreeSansBold = './pdfcreator/FreeSansBold.ttf'
@@ -52,7 +56,7 @@ class PDFgenerator:
 	def __init__(self, content):
 		self.content=content
 		self.date=datetime.date.today()
-		self.gesamtSeconds=0
+		self.totalSeconds=0
 
 
 	def generate(self):
@@ -83,8 +87,8 @@ class PDFgenerator:
 		pdf.cell(35, 10, 'Nachname', 0, 0)
 		pdf.cell(35, 10, 'Begin', 0, 0)
 		pdf.cell(35, 10, 'Ende', 0, 0)
-		pdf.cell(35, 10, 'Summe', 0, 0)
-		pdf.cell(35, 10, 'Art', 0 ,1)
+		pdf.cell(35, 10, 'Art', 0, 0)
+		pdf.cell(35, 10, 'Zeit', 0, 1)
 
 
 		current_x =pdf.get_x()
@@ -102,8 +106,8 @@ class PDFgenerator:
 				pdf.cell(35, 10, 'Nachname', 0, 0)
 				pdf.cell(35, 10, 'Begin', 0, 0)
 				pdf.cell(35, 10, 'Ende', 0, 0)
-				pdf.cell(35, 10, 'Summe', 0, 0)
-				pdf.cell(35, 10, 'Art', 0 ,1)
+				pdf.cell(35, 10, 'Art', 0, 0)
+				pdf.cell(35, 10, 'Zeit', 0, 1)
 
 				current_x =pdf.get_x()
 				current_y =pdf.get_y()
@@ -113,38 +117,37 @@ class PDFgenerator:
 				pdf.set_font('GNU', '', 14)
 
 			else:
-				print(i)
 				if i[6] == 1:
 					pdf.set_text_color(255,0,0)
 				else:
 					pdf.set_text_color(0, 0, 0)
-				begin = str(i[1].time())
-				ende = str(i[2].time())
-				duration = i[2] - i[1]
-				self.gesamtSeconds = self.gesamtSeconds + int(duration.seconds)
-				self.durationHours = duration.seconds//3600
-				self.durationMinutes = (duration.seconds % 3600)//60
-				if self.durationMinutes < 10:
-					self.durationMinutes = '0%s' % (self.durationMinutes)	
+				self.begin = str(i[1].time())
+				self.ende = str(i[2].time())
+				self.netShiftTime = calculate_net_shift_time(i[1], i[2])
+				self.totalSeconds = self.totalSeconds + int(self.netShiftTime.seconds)
+				self.netShiftTimeHours = self.netShiftTime.seconds//3600
+				self.netShiftTimeMinutes = (self.netShiftTime.seconds % 3600)//60
+				if self.netShiftTimeMinutes < 10:
+					self.netShiftTimeMinutes = '0%s' % (self.netShiftTimeMinutes)
 				pdf.cell(35, 10, str(i[0]), 0, 0)
 				#pdf.cell(40, 10, str(i[3]), 0, 0)
 				pdf.cell(35, 10, str(i[4]), 0, 0)
-				pdf.cell(35, 10, begin, 0, 0)
-				pdf.cell(35, 10, ende, 0, 0)
-				pdf.cell(35,10,'%s:%s' % (self.durationHours,self.durationMinutes),0,0)
-				pdf.cell(35, 10, str(i[5]), 0, 1)
+				pdf.cell(35, 10, self.begin, 0, 0)
+				pdf.cell(35, 10, self.ende, 0, 0)
+				pdf.cell(35, 10, str(i[5]), 0, 0)
+				pdf.cell(35,10,'%s:%s' % (self.netShiftTimeHours,self.netShiftTimeMinutes),0,1)
 				pdf.set_text_color(0, 0, 0)
-		self.gesamtHours, self.remainder = divmod(self.gesamtSeconds,3600)
-		self.gesamtMinutes, x = divmod(self.remainder,60)
-		if self.gesamtMinutes < 10:
-			self.gesamtMinutes = '0%s' % (self.gesamtMinutes)		
+		self.totalHours, self.remainder = divmod(self.totalSeconds, 3600)
+		self.totalMinutes, self.rest = divmod(self.remainder, 60)
+		if self.totalMinutes < 10:
+			self.totalMinutes = '0%s' % (self.totalMinutes)
 		current_x =pdf.get_x()
 		current_y =pdf.get_y()
 		pdf.line(current_x, current_y, current_x+190, current_y)
 		pdf.set_font('GNU', 'B' , 14)
-		pdf.cell(100,20,'',0,0)
+		pdf.cell(135,20,'',0,0)
 		pdf.cell(40,20,'Gesamtsumme',0,0)
-		pdf.cell(40,20,'%s:%s'%(self.gesamtHours,self.gesamtMinutes),0,1)
-		pdf.output("Tagesreport_" + str(self.date) + ".pdf")
+		pdf.cell(40, 20, '%s:%s' % (self.totalHours, self.totalMinutes), 0, 1)
+		pdf.output("../Reports/Tagesreport_" + str(self.date) + ".pdf")
 
 aux=FPDF('P', 'mm', 'A4')

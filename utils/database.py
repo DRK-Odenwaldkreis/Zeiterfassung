@@ -8,7 +8,7 @@ import logging
 logger = logging.getLogger('Database')
 logger.debug('Logger for database was initialised')
 
-from readconfig import read_config
+from utils.readconfig import read_config
 
 class Disconnect(Exception):
     pass

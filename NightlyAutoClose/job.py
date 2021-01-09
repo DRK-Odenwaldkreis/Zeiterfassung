@@ -3,9 +3,10 @@
 from os import path
 import logging
 import sys
-from database import Database
+sys.path.append("..")
+from utils.database import Database
 
-logFile = './Log/rotationJob.log'
+logFile = '../Logs/rotationJob.log'
 logging.basicConfig(filename=logFile, level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Nightly Auto Clean')
