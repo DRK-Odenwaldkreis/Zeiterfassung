@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#PDFOutput v 1.0
+#PDFOutput v 2.0
 
 #Copyright Philipp Scior philipp.scior@drk-forum.de
 #Adapted by Murat :-)
@@ -37,7 +37,7 @@ class MyPDF(FPDF):
 		self.add_font('GNU', '', FreeSans, uni=True)
 		self.set_font('GNU', '', 11)
 		self.cell(40, 10, 'Impfzentrum Odenwaldkreis:', ln=0)
-		#self.cell(0,10, time.strftime("%d.%m.%Y", self.time), align='R', ln=1)
+		self.cell(0, 10, datetime.date.today().strftime("%d.%m.%Y"), align='R', ln=1)
 		self.ln(10)
 
 

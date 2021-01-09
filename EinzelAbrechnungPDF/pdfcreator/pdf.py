@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#PDFOutput v 1.0
+#PDFOutput v 2.0
 
 #Copyright Philipp Scior philipp.scior@drk-forum.de
 #Adapted by Murat :-)
