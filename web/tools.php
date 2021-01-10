@@ -19,36 +19,22 @@ function S_open_db () {
 	/* Database connection information */
 	$gaSql=$GLOBALS['gaSql_server'];
 	
-	echo "<br>connect to ";
-	echo "<br>".'"'.$gaSql['server'].'",'.
-	'"'.$gaSql['user'].'",'.
-	'"'.'",'.
-	'"'.$gaSql['db'].'",'.
-	''.$gaSql['port'].'';
-
 	// Connect to DB
-	$gaSql['link'] = mysqli_connect(
-        "'".$gaSql['server']."',".
-        "'".$gaSql['user']."',".
-		"'".$gaSql['password']."',".
-		"'".$gaSql['db']."',".
-		"".$gaSql['port']."".
-		"" );// or die('Could not connect. Error code: ' . pg_last_error());
-echo "<br> TEST";
-	if (!$gaSql['link']) {
-		echo "Fehler: konnte nicht mit MySQL verbinden." . PHP_EOL;
-		echo "Debug-Fehlernummer: " . mysqli_connect_errno() . PHP_EOL;
-		echo "Debug-Fehlermeldung: " . mysqli_connect_error() . PHP_EOL;
+	$link=mysqli_connect($gaSql['server'],$gaSql['user'],$gaSql['password'],$gaSql['db']);
+	if (!$link) {
+		echo "<br>Fehler: konnte nicht mit MySQL verbinden.";
+		echo "<br>Debug-Fehlernummer: " . mysqli_connect_errno();
+		echo "<br>Debug-Fehlermeldung: " . mysqli_connect_error();
+		echo "<br>";
 		exit;
 	}
 
-	echo 'Success... ' . mysqli_get_host_info($gaSql['link']) . "\n";
+	if (!$link) {
+		header('Location: error.php?e=err80');
+	}
 
-  /*if (!$gaSql['link']) {
-	  header('Location: error.php?e=err80');
-  }*/
 	// Return the database object
-	return $gaSql['link'];
+	return $link;
 }
 
 // Close DB connection
@@ -60,23 +46,15 @@ function S_close_db ($Db) {
 
 // Return query result from SQL database - first entry only
 function S_get_entry ($Db,$sQuery) {
-    $rResult = pg_query( $Db, $sQuery ) or die(pg_last_error());
-	$r=false;
-	while ($row = pg_fetch_row($rResult)) {
-		$r=$row[0];
-		break;
-	}
-	
+	$result = mysqli_query( $Db, $sQuery );
+	$r = mysqli_fetch_all($result);
+
 	// Return result of SQL query
-	return $r;
+	return $r[0][0];
 }
 
 function S_set_data ($Db,$sQuery) {
-    $rResult = pg_query( $Db, $sQuery ) or die(pg_last_error());
-	$r=false;
-	while ($row = pg_fetch_row($rResult)) {
-		$r=$row[0];
-	}
+    $r = mysqli_query( $Db, $sQuery );
 	
 	// Return result of SQL query
 	return $r;

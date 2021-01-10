@@ -11,7 +11,7 @@ January 2021
 include_once 'preload.php';
 if( isset($GLOBALS['G_sessionname']) ) { session_name ($GLOBALS['G_sessionname']); }
 session_start();
-$sec_level=0;
+$sec_level=1;
 
 // Include functions
 include_once 'tools.php';

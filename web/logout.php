@@ -17,6 +17,6 @@ setcookie('drk-cookie', '', time() - 7*24*60*60);
 
 $hostname = $_SERVER['HTTP_HOST'];
 $path = dirname($_SERVER['PHP_SELF']);
-$FLAG_http='https';
+$FLAG_http='http';
 header('Location: '.$FLAG_http.'://'.$hostname.($path == '/' ? '' : $path).'/login.php');
 ?>

@@ -59,9 +59,10 @@ if( isset($_GET['u']) ) {
 	$token_id=0;
 }
 
-
 // Open database connection
 $Db=S_open_db();
+
+
 
 // Forward after login to refering site
 	// Is referer url not a login site
@@ -76,15 +77,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$pwd_lock) {
 		// ----------------------------- //
 		// -- Begin: PASSWORD SIGN IN -- //
 		// ----------------------------- //
-		
 		$username = strtolower($_POST['username']);
 		$password = $_POST['password'];
 
 		// Benutzername und Passwort werden überprüft
 		if($username!='') {
-			$uid=S_get_entry($Db,'SELECT id FROM li_user WHERE lower(username)=\''.$username.'\'');
+			$uid=S_get_entry($Db,'SELECT id FROM li_user WHERE lower(username)=\''.$username.'\';');
 			if($uid>0) {
-				$db_hash=S_get_entry($Db,'SELECT password_hash FROM li_user WHERE id='.$uid.'');
+				$db_hash=S_get_entry($Db,'SELECT password_hash FROM li_user WHERE id='.$uid.';');
 			} else {
 				$db_hash='';
 			}
@@ -216,7 +216,7 @@ if( isset($_POST['button-reset']) ) {
 			S_set_data($Db,'INSERT INTO li_token (id_user,timestamp,token) VALUES ('.$uid.',\''.$timestamp.'\',\''.$tokenhash.'\');');
 			$token_id=S_get_entry($Db,'SELECT id FROM li_token WHERE id_user='.$uid.' AND timestamp=\''.$timestamp.'\' AND token=\''.$tokenhash.'\';');
 			
-			$header = "From: example@example.de\r\n";
+			$header = "From: impfzentrum@familie-bayram.de\r\n";
 			$header .= "Content-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit";
 			$content="Lieber Nutzer, liebe Nutzerin,\n
 es wurde eine Anfrage zum Zurücksetzen Ihres Passwortes für die DRK Impfzentrum Zeiterfassung gestellt. Falls diese Anfrage von Ihnen nicht initiiert wurde, können Sie diese Nachricht ignorieren.\n
@@ -226,7 +226,8 @@ Bitte mit diesem Link das Passwort neu setzen:\n";
 	Mit freundlichen Grüßen\n
 	Das Team vom DRK";
 			$title='DRK Impfzentrum Zeiterfassung - Passwort zurücksetzen';
-			mail($email, $title, $content, $header);	
+			//echo "$email <br> $content";
+			$res=mail($email, $title, $content, $header, "-r impfzentrum@familie-bayram.de");	
 			
 			
 		}
@@ -265,12 +266,6 @@ $box_width=400;
 echo '<div style="text-align: center;">';
 
 echo '<div style="margin-bottom:45px; margin-top:0px;">';
-
-echo "<br>pwd_lock: ".$pwd_lock;
-echo "<br>session uid: ".$_SESSION['uid'];
-echo "<br>FLAG_SHUTDOWN: ".$FLAG_SHUTDOWN;
-echo "<br>pwd_reset: ".$pwd_reset;
-
 
 
 if($pwd_lock) {
