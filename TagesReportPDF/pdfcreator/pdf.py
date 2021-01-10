@@ -123,8 +123,8 @@ class PDFgenerator:
 					pdf.set_text_color(255,0,0)
 				else:
 					pdf.set_text_color(0, 0, 0)
-				self.begin = str(i[1].time())
-				self.ende = str(i[2].time())
+				self.begin = i[1].strftime("%H:%M")
+				self.ende = i[2].strftime("%H:%M")
 				self.netShiftTime, self.netShiftTimeHours, self.netShiftTimeMinutes = calculate_net_shift_time(
 					i[1], i[2])
 				self.totalSeconds = self.totalSeconds + int(self.netShiftTime.seconds)

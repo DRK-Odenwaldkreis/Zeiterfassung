@@ -122,8 +122,8 @@ class PDFgenerator:
 
 				pdf.set_font('GNU', '', 14)
 			else:
-				self.begin = str(i[0].time())
-				self.ende = str(i[1].time())
+				self.begin = i[0].strftime("%H:%M")
+				self.ende = i[1].strftime("%H:%M")
 				self.netShiftTime, self.netShiftTimeHours, self.netShiftTimeMinutes = calculate_net_shift_time(i[0], i[1])
 				self.totalSeconds = self.totalSeconds + int(self.netShiftTime.seconds)
 				if self.netShiftTimeMinutes < 10:
