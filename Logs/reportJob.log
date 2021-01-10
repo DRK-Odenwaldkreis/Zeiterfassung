@@ -92,3 +92,18 @@
 2021-01-10 10:39:25,324 - Daily Report - DEBUG - Getting all Events from Yesterday with the following query: Select Dienste.Personalnummer, Dienste.Dienstbegin, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art, Dienste.AutoClosed FROM Dienste JOIN Personal ON Personal.Personalnummer = Dienste.Personalnummer where Dienstende is not Null AND Dienstbegin > (NOW() - INTERVAL 24 HOUR);
 2021-01-10 10:39:25,339 - Daily Report - DEBUG - Received the following entries: ((6001, datetime.datetime(2021, 1, 10, 10, 34, 51), datetime.datetime(2021, 1, 10, 10, 34, 51), 'Murat', 'Bayram', 'Normal', 0),)
 2021-01-10 10:39:25,383 - Daily Report - DEBUG - Done
+2021-01-10 11:40:42,982 - Daily Report - DEBUG - Starting
+2021-01-10 11:40:42,982 - Database - DEBUG - Constructor was called
+2021-01-10 11:40:43,484 - Daily Report - DEBUG - Getting all Events from Yesterday with the following query: Select Dienste.Personalnummer, Dienste.Dienstbegin, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art, Dienste.AutoClosed FROM Dienste JOIN Personal ON Personal.Personalnummer = Dienste.Personalnummer where Dienstende is not Null AND Dienstbegin > (NOW() - INTERVAL 24 HOUR);
+2021-01-10 11:40:43,499 - Daily Report - DEBUG - Received the following entries: ((6001, datetime.datetime(2021, 1, 10, 10, 34, 51), datetime.datetime(2021, 1, 10, 10, 34, 51), 'Murat', 'Bayram', 'Normal', 0),)
+2021-01-10 11:40:43,514 - root - ERROR - The following error occured: FPDF error: Missing or incorrect image file: ../utils/logo_2021-01-10_Impfzentrum-1.png. error: No JPEG marker found
+2021-01-10 11:42:18,067 - Daily Report - DEBUG - Starting
+2021-01-10 11:42:18,067 - Database - DEBUG - Constructor was called
+2021-01-10 11:42:18,083 - Daily Report - DEBUG - Getting all Events from Yesterday with the following query: Select Dienste.Personalnummer, Dienste.Dienstbegin, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art, Dienste.AutoClosed FROM Dienste JOIN Personal ON Personal.Personalnummer = Dienste.Personalnummer where Dienstende is not Null AND Dienstbegin > (NOW() - INTERVAL 24 HOUR);
+2021-01-10 11:42:18,083 - Daily Report - DEBUG - Received the following entries: ((6001, datetime.datetime(2021, 1, 10, 10, 34, 51), datetime.datetime(2021, 1, 10, 10, 34, 51), 'Murat', 'Bayram', 'Normal', 0),)
+2021-01-10 11:42:18,083 - root - ERROR - The following error occured: FPDF error: Missing or incorrect image file: ../utils/logo_2021-01-10_Impfzentrum-1.png. error: No JPEG marker found
+2021-01-10 11:43:20,328 - Daily Report - DEBUG - Starting
+2021-01-10 11:43:20,328 - Database - DEBUG - Constructor was called
+2021-01-10 11:43:20,334 - Daily Report - DEBUG - Getting all Events from Yesterday with the following query: Select Dienste.Personalnummer, Dienste.Dienstbegin, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art, Dienste.AutoClosed FROM Dienste JOIN Personal ON Personal.Personalnummer = Dienste.Personalnummer where Dienstende is not Null AND Dienstbegin > (NOW() - INTERVAL 24 HOUR);
+2021-01-10 11:43:20,334 - Daily Report - DEBUG - Received the following entries: ((6001, datetime.datetime(2021, 1, 10, 10, 34, 51), datetime.datetime(2021, 1, 10, 10, 34, 51), 'Murat', 'Bayram', 'Normal', 0),)
+2021-01-10 11:43:20,994 - Daily Report - DEBUG - Done

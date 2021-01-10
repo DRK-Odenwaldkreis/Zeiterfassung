@@ -22,7 +22,7 @@ from utils.month import monthInt_to_string
 
 FreeSans = './pdfcreator/FreeSans.ttf'
 FreeSansBold = './pdfcreator/FreeSansBold.ttf'
-Logo ='../utils/logo.jpeg'
+Logo = '../utils/logo_2021-01-10_Impfzentrum-1.png'
 class MyPDF(FPDF):
 
     #it sucks that these members do not belong to specific object instances, but I can use __init__
@@ -37,7 +37,7 @@ class MyPDF(FPDF):
 		self.add_font('GNU', '', FreeSans, uni=True)
 		self.set_font('GNU', '', 11)
 		# self.cell(40, 10, 'Impfzentrum Odenwaldkreis:', ln=0)
-		self.image(Logo, x=7, y=10, w=100, h=24, type='JPEG')
+		self.image(Logo, x=7, y=10, w=100, h=24, type='PNG')
 		self.cell(0, 10, datetime.date.today().strftime("%d.%m.%Y"), align='R', ln=1)
 		self.ln(10)
 
