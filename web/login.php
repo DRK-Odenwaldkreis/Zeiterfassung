@@ -399,6 +399,7 @@ echo '<div style="padding-top:25px;"></div>';
 echo $html_box_login;
 echo '</div>';
 
+echo '<img src="img/logo.jpg"></img>';
 
 echo '</div>';
 echo '</div>';

@@ -21,8 +21,8 @@ $G_html_header='<html lang="en">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	
-<link rel="shortcut icon" href="index.ico" type="image/x-ico; charset=binary" />
-<link rel="icon" href="index.ico" type="image/x-ico; charset=binary" />
+<link rel="shortcut icon" href="img/favicon.png" type="image/x-ico; charset=binary" />
+<link rel="icon" href="img/favicon.png" type="image/x-ico; charset=binary" />
 
 
 <link href="css/bootstrap.css" rel="stylesheet">
@@ -45,9 +45,12 @@ if($_SESSION['uid']>0) {
 	
 
 	// Print button "Suche"
-	$G_html_menu2.='<li><a href="search.php">Suche</a></li>';
+	$G_html_menu2.='<li><a href="index.php">Startseite</a></li>';
 
-
+	$G_html_menu2.='</div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+			<li><a href="impressum.php">Impressum</a></li>';
 
 	// Logged in / expiration of cookie
 	$cookievalue=json_decode($_COOKIE['drk-cookie']);

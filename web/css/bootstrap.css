@@ -6758,6 +6758,26 @@ button.close {
 
 
 
+.card {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius: .25rem;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+
 /* from bootstrap 4*/
 
 .custom-select {
@@ -6780,3 +6800,4 @@ button.close {
   -moz-appearance: none;
   appearance: none;
 }
+
