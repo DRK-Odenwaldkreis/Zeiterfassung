@@ -19,6 +19,7 @@ sys.path.append("..")
 
 from utils.pausen import calculate_net_shift_time
 from utils.month import monthInt_to_string
+Logo = '../utils/logo.jpeg'
 
 FreeSans='./pdfcreator/FreeSans.ttf'
 FreeSansBold = './pdfcreator/FreeSansBold.ttf'
@@ -37,6 +38,7 @@ class MyPDF(FPDF):
 		self.add_font('GNU', '', FreeSans, uni=True)
 		self.set_font('GNU', '', 11)
 		self.cell(40, 10, 'Impfzentrum Odenwaldkreis:', ln=0)
+		self.image(Logo, x=7, y=10, w=100, h=24, type='JPEG')
 		self.cell(0, 10, datetime.date.today().strftime("%d.%m.%Y"), align='R', ln=1)
 		self.ln(10)
 

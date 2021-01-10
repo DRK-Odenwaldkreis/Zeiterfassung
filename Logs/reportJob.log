@@ -67,3 +67,18 @@
 2021-01-09 19:34:39,970 - Daily Report - DEBUG - Getting all Events from Yesterday with the following query: Select Dienste.Personalnummer, Dienste.Dienstbegin, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art, Dienste.AutoClosed FROM Dienste JOIN Personal ON Personal.Personalnummer = Dienste.Personalnummer where Dienstende is not Null AND Dienstbegin > (NOW() - INTERVAL 24 HOUR);
 2021-01-09 19:34:39,976 - Daily Report - DEBUG - Received the following entries: ((6001, datetime.datetime(2021, 1, 9, 9, 2, 28), datetime.datetime(2021, 1, 9, 9, 2, 28), 'Murat', 'Bayram', 'Normal', 1),)
 2021-01-09 19:34:40,024 - Daily Report - DEBUG - Done
+2021-01-10 10:23:12,910 - Daily Report - DEBUG - Starting
+2021-01-10 10:23:12,910 - Database - DEBUG - Constructor was called
+2021-01-10 10:23:12,925 - Daily Report - DEBUG - Getting all Events from Yesterday with the following query: Select Dienste.Personalnummer, Dienste.Dienstbegin, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art, Dienste.AutoClosed FROM Dienste JOIN Personal ON Personal.Personalnummer = Dienste.Personalnummer where Dienstende is not Null AND Dienstbegin > (NOW() - INTERVAL 24 HOUR);
+2021-01-10 10:23:12,925 - Daily Report - DEBUG - Received the following entries: ()
+2021-01-10 10:23:12,941 - root - ERROR - The following error occured: name 'Logo' is not defined
+2021-01-10 10:23:24,841 - Daily Report - DEBUG - Starting
+2021-01-10 10:23:24,841 - Database - DEBUG - Constructor was called
+2021-01-10 10:23:24,857 - Daily Report - DEBUG - Getting all Events from Yesterday with the following query: Select Dienste.Personalnummer, Dienste.Dienstbegin, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art, Dienste.AutoClosed FROM Dienste JOIN Personal ON Personal.Personalnummer = Dienste.Personalnummer where Dienstende is not Null AND Dienstbegin > (NOW() - INTERVAL 24 HOUR);
+2021-01-10 10:23:24,872 - Daily Report - DEBUG - Received the following entries: ()
+2021-01-10 10:23:24,872 - root - ERROR - The following error occured: name 'Logo' is not defined
+2021-01-10 10:24:03,191 - Daily Report - DEBUG - Starting
+2021-01-10 10:24:03,191 - Database - DEBUG - Constructor was called
+2021-01-10 10:24:03,221 - Daily Report - DEBUG - Getting all Events from Yesterday with the following query: Select Dienste.Personalnummer, Dienste.Dienstbegin, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art, Dienste.AutoClosed FROM Dienste JOIN Personal ON Personal.Personalnummer = Dienste.Personalnummer where Dienstende is not Null AND Dienstbegin > (NOW() - INTERVAL 24 HOUR);
+2021-01-10 10:24:03,221 - Daily Report - DEBUG - Received the following entries: ()
+2021-01-10 10:24:03,300 - Daily Report - DEBUG - Done

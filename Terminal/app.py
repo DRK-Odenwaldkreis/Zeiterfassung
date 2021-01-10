@@ -20,7 +20,7 @@ class App:
         self.master.configure(background='white')
         logger.debug('Setting frame')
         self.frame = Frame(self.master)
-        self.image = PhotoImage(file="logo_small.png").subsample(3,3)
+        self.image = PhotoImage(file="./logo.png").subsample(3,3)
         logger.debug('Setting Logo')
         self.logoLabel = Label(self.frame, image=self.image, borderwidth=0)
         self.logoLabel.grid(column=1, row=0, padx=0, pady=10)
