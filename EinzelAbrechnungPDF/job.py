@@ -66,7 +66,7 @@ if __name__ == "__main__":
             vorname = i[0]
             nachname = i[1]
             personalnummer = i[2]
-            sql = "SELECT Dienstbegin, Dienstende, Art FROM Dienste WHERE Personalnummer = %s AND MONTH(Dienstbegin)=%s AND YEAR(Dienstbegin)=%s AND Dienstende IS NOT NULL;" % (
+            sql = "SELECT Dienstbeginn, Dienstende, Art FROM Dienste WHERE Personalnummer = %s AND MONTH(Dienstbeginn)=%s AND YEAR(Dienstbeginn)=%s AND Dienstende IS NOT NULL;" % (
                 personalnummer, requestedMonth, requestedYear)
             logger.debug('Getting all Events for employee of the month with the following query: %s' % (sql))
             shiftTimes = DatabaseConnect.read_all(sql)

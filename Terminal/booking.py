@@ -93,8 +93,8 @@ class ScanEvent(object):
             logger.debug(
                 'Received the following entries: %s' % (str(self.openEntries)))
             if len(self.openEntries) == 0:
-                logger.debug('No other entries found, seems to be Dienstbegin')
-                self.direction = "Dienstbegin"
+                logger.debug('No other entries found, seems to be Dienstbeginn')
+                self.direction = "Dienstbeginn"
             elif len(self.openEntries) == 1:
                 logger.debug('One entry found, seems to be Dienstende')
                 self.direction = "Dienstende"
@@ -123,7 +123,7 @@ class ScanEvent(object):
 
     def close_shift(self):
         try:
-            self.sql = "Update Dienste SET Dienstende = current_timestamp(), AutoClosed = '%s' WHERE Personalnummer = %s and Dienstende is NULL ORDER BY Dienstbegin DESC LIMIT 1" % (self.AutoClosed, self.personalnummer)
+            self.sql = "Update Dienste SET Dienstende = current_timestamp(), AutoClosed = '%s' WHERE Personalnummer = %s and Dienstende is NULL ORDER BY Dienstbeginn DESC LIMIT 1" % (self.AutoClosed, self.personalnummer)
             logger.debug(
                 'Closing shift, using the following query: %s' % (self.sql))
             self.DatabaseConnect.update(self.sql)

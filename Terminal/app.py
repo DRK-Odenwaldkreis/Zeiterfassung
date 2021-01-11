@@ -63,7 +63,7 @@ class App:
             self.event.get_personal_number()
             self.event.check_dead_time()
             self.event.check_open_entries()
-            if self.event.direction == "Dienstbegin":
+            if self.event.direction == "Dienstbeginn":
                 self.event.create_shift()
                 self.textMain = "KOMMEN"
                 self.textSub = "Hallo %s %s" %(self.event.vorname, self.event.nachname)
