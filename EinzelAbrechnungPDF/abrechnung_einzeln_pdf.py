@@ -11,12 +11,13 @@ import logging
 
 
 logFile = '../Logs/singleReportJob.log'
-logging.basicConfig(filename=logFile,level=logging.DEBUG,
+logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Single Report')
 logger.debug('Starting')
 
 type = ""
+latestFilename = ""
 ### TODO: 
 # - Welches encoding genutzt wird muss in eine Config Datei
 # - im pdfcreator: Wo die Schriftart liegt muss relativ angegeben werden - done
@@ -47,19 +48,17 @@ if __name__ == "__main__":
             'Was started for the following year: %s' % (sys.argv[2]))
         requestedMonth = sys.argv[1]
         requestedYear = sys.argv[2]
-        
         DatabaseConnect = Database()
-
         if type == "single":
             sql = "SELECT Vorname,Nachname,Personalnummer FROM Personal WHERE Personalnummer = %s;" % (requestedPersonalnummer)
         else:
             sql = "SELECT Vorname,Nachname,Personalnummer FROM Personal;"
+            zipFilename = '../Reports/Einzelnachweise_' + monthInt_to_string(int(requestedMonth)) + '_' + requestedYear + '.zip'
+            zipObj = ZipFile(zipFilename, 'w')
         logger.debug(
             'Getting employee infos with the following query: %s' % (sql))
         employee = DatabaseConnect.read_all(sql)
         logger.debug('Received the following employee: %s' % (str(employee)))
-        zipFilename = '../Reports/Einzelnachweise_' + '_' + monthInt_to_string(int(requestedMonth)) + '_' + requestedYear + '.zip'
-        zipObj = ZipFile(zipFilename, 'w')
         for i in employee:
             vorname = i[0]
             nachname = i[1]
@@ -71,11 +70,15 @@ if __name__ == "__main__":
             logger.debug('Received the following entries: %s' % (str(shiftTimes)))
             PDF = PDFgenerator(shiftTimes, nachname, vorname, personalnummer, requestedMonth, requestedYear)
             singleFilename = PDF.generate()
-            zipObj.write(singleFilename, singleFilename.replace(
-                '../Reports/Einzelnachweis_', 'Einzelnachweise_'))
-        zipObj.close()
+            if type == "all":
+                zipObj.write(singleFilename, singleFilename.replace('../Reports/Einzelnachweis_', 'Einzelnachweise_'))
+            latestFilename = singleFilename
         logger.debug('Done')
-        sys.exit(zipFilename)
+        if type == "single":
+            sys.exit(latestFilename)
+        else:
+            zipObj.close()
+            sys.exit(zipFilename)
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
         sys.exit(1)
