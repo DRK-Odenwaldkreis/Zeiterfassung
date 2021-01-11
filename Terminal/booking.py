@@ -49,7 +49,7 @@ class ScanEvent(object):
     #Currently hash is only 4 characters long, for dev
     def check_validity(self):
         logger.debug('Checking if QR is valid')
-        if len(self.hash) != 4:
+        if len(self.hash) != 8:
             logger.warning('The QR is not a valid QR Code')
             raise QRInvalid
         logger.debug('QR is valid')
