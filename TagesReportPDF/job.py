@@ -23,8 +23,9 @@ if __name__ == "__main__":
         logger.debug('Received the following entries: %s' % (str(content)))
         PDF = PDFgenerator(content)
         result = PDF.generate()
-        sys.exit(result)
         logger.debug('Done')
+        #send_mail_report()
+        sys.exit(result)
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
         sys.exit("Error")
