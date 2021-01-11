@@ -5,6 +5,7 @@ from utils.database import Database
 from pdfcreator.pdf import PDFgenerator
 from utils.month import monthInt_to_string
 from utils.sendmail import send_mail_download
+from utils.getRequesterMail import get_Mail_from_UserID
 import datetime
 import time
 import locale
@@ -80,7 +81,7 @@ if __name__ == "__main__":
             sys.exit(latestFilename)
         else:
             zipObj.close()
-            #send_mail_download(zipFilename,requester)
+            #send_mail_download(zipFilename,get_Mail_from_UserID(requester))
             sys.exit(zipFilename)
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
