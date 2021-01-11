@@ -47,20 +47,10 @@ def send_mail_report(filename, day):
 def send_mail_download(filename, requester):
     try:
         message = MIMEMultipart()
-        message.attach(MIMEText("Neuer Tagesreport wurde angelegt.", 'plain'))
-        message['Subject'] = "Neue Report zum Download verfügbar"
+        message.attach(MIMEText("Einzelnachweise wurden generiert und sind jetzt verfügbar. Diese können unter folgender URL heruntergeladen werden: asdas", 'plain'))
+        message['Subject'] = "Einzelnachweise sind zum Download verfügbar"
         message['From'] = FROM_EMAIL
         message['To'] = requester
-        files = []
-        files.append(filename)
-        for item in files:
-            attachment = open(item, 'rb')
-            part = MIMEBase('application', 'octet-stream')
-            part.set_payload((attachment).read())
-            encoders.encode_base64(part)
-            part.add_header('Content-Disposition',
-                            "attachment; filename= " + item)
-            message.attach(part)
         smtp = smtplib.SMTP(SMTP_SERVER)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)

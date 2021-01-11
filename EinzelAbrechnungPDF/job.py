@@ -80,7 +80,7 @@ if __name__ == "__main__":
             sys.exit(latestFilename)
         else:
             zipObj.close()
-            #send_mail_download()
+            #send_mail_download(zipFilename,requester)
             sys.exit(zipFilename)
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
