@@ -16,6 +16,7 @@ logging.basicConfig(filename=logFile,level=logging.DEBUG,
 logger = logging.getLogger('CSV Export')
 logger.debug('Starting')
 
+
 if __name__ == "__main__":
     try:
         if len(sys.argv) != 3:
@@ -26,7 +27,6 @@ if __name__ == "__main__":
             'Was started for the following month: %s' % (sys.argv[1]))
         requestedMonth = sys.argv[1]
         requestedYear = sys.argv[2]
-
         DatabaseConnect = Database()
         sql = "Select Dienste.Personalnummer, Dienste.Dienstbegin, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art FROM Dienste JOIN Personal ON Personal.Personalnummer = Dienste.Personalnummer WHERE MONTH(Dienstbegin)=%s AND YEAR(Dienstbegin)= %s AND Dienstende is not Null;" % (
             requestedMonth, requestedYear)
@@ -34,7 +34,8 @@ if __name__ == "__main__":
         exportEvents = DatabaseConnect.read_all(sql)
         logger.debug('Received the following entries: %s' %
                      (str(exportEvents)))
+        filename = create_CSV(exportEvents, requestedMonth, requestedYear)
         logger.debug('Done')
-        create_CSV(exportEvents, requestedMonth, requestedYear)
+        sys.exit(filename)
     except Exception as e:
         logging.error("The following error occured: %s" % (e))

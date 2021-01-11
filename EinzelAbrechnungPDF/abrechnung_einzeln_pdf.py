@@ -1,7 +1,9 @@
+from zipfile import ZipFile
 import sys
 sys.path.append("..")
 from utils.database import Database
 from pdfcreator.pdf import PDFgenerator
+from utils.month import monthInt_to_string
 import datetime
 import time
 import locale
@@ -14,6 +16,7 @@ logging.basicConfig(filename=logFile,level=logging.DEBUG,
 logger = logging.getLogger('Single Report')
 logger.debug('Starting')
 
+type = ""
 ### TODO: 
 # - Welches encoding genutzt wird muss in eine Config Datei
 # - im pdfcreator: Wo die Schriftart liegt muss relativ angegeben werden - done
@@ -23,35 +26,55 @@ locale.setlocale(locale.LC_ALL, 'de_DE.UTF-8')
 
 if __name__ == "__main__":
     try:
-        if len(sys.argv) != 4:
-            logger.debug('Input parameters are not correct, Personalnummer and Month and Year needed')
+        if len(sys.argv) == 3:
+            logger.debug(
+                'Type is for all employee')
+            type = "all"
+        elif len(sys.argv) == 4:
+            logger.debug(
+                'Type is for single employee')
+            requestedPersonalnummer = sys.argv[3]
+            type = "single"
+            logger.debug(
+                'Was started for the following personalnummer: %s' % (sys.argv[3]))
+        else:
+            logger.debug(
+                'Input parameters are not correct, Month and Year and/or Personalnummer are needed')
             raise Exception
         logger.debug(
-            'Was started for the following personalnummer: %s' % (sys.argv[1]))
+            'Was started for the following month: %s' % (sys.argv[1]))
         logger.debug(
-            'Was started for the following month: %s' % (sys.argv[2]))
-        logger.debug(
-            'Was started for the following year: %s' % (sys.argv[3]))
-        requestedPersonalnummer = sys.argv[1]
-        requestedMonth = sys.argv[2]
-        requestedYear = sys.argv[3]
+            'Was started for the following year: %s' % (sys.argv[2]))
+        requestedMonth = sys.argv[1]
+        requestedYear = sys.argv[2]
         
         DatabaseConnect = Database()
 
-        sql = "SELECT Dienstbegin, Dienstende, Art FROM Dienste WHERE Personalnummer = %s AND MONTH(Dienstbegin)=%s AND YEAR(Dienstbegin)=%s AND Dienstende IS NOT NULL;" % (requestedPersonalnummer,requestedMonth,requestedYear)
-        logger.debug('Getting all Events for employee of the month with the following query: %s' % (sql))
-        shiftTimes = DatabaseConnect.read_all(sql)
-        logger.debug('Received the following entries: %s' % (str(shiftTimes)))
-
-        sql = "SELECT Vorname,Nachname FROM Personal WHERE Personalnummer = %s;" % (requestedPersonalnummer)
+        if type == "single":
+            sql = "SELECT Vorname,Nachname,Personalnummer FROM Personal WHERE Personalnummer = %s;" % (requestedPersonalnummer)
+        else:
+            sql = "SELECT Vorname,Nachname,Personalnummer FROM Personal;"
         logger.debug(
             'Getting employee infos with the following query: %s' % (sql))
-        employee = DatabaseConnect.read_single(sql)
+        employee = DatabaseConnect.read_all(sql)
         logger.debug('Received the following employee: %s' % (str(employee)))
-        vorname = employee[0]
-        nachname = employee[1]
-        PDF = PDFgenerator(shiftTimes, nachname, vorname, requestedPersonalnummer, requestedMonth, requestedYear)
-        PDF.generate()
+        zipFilename = '../Reports/Einzelnachweise_' + '_' + monthInt_to_string(int(requestedMonth)) + '_' + requestedYear + '.zip'
+        zipObj = ZipFile(zipFilename, 'w')
+        for i in employee:
+            vorname = i[0]
+            nachname = i[1]
+            personalnummer = i[2]
+            sql = "SELECT Dienstbegin, Dienstende, Art FROM Dienste WHERE Personalnummer = %s AND MONTH(Dienstbegin)=%s AND YEAR(Dienstbegin)=%s AND Dienstende IS NOT NULL;" % (
+                personalnummer, requestedMonth, requestedYear)
+            logger.debug('Getting all Events for employee of the month with the following query: %s' % (sql))
+            shiftTimes = DatabaseConnect.read_all(sql)
+            logger.debug('Received the following entries: %s' % (str(shiftTimes)))
+            PDF = PDFgenerator(shiftTimes, nachname, vorname, personalnummer, requestedMonth, requestedYear)
+            singleFilename = PDF.generate()
+            zipObj.write(singleFilename, singleFilename.replace(
+                '../Reports/Einzelnachweis_', 'Einzelnachweise_'))
+        zipObj.close()
         logger.debug('Done')
+        sys.exit(zipFilename)
     except Exception as e:
         logging.error("The following error occured: %s" % (e))

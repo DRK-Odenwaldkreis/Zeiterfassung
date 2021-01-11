@@ -21,7 +21,8 @@ if __name__ == "__main__":
         content = DatabaseConnect.read_all(sql)
         logger.debug('Received the following entries: %s' % (str(content)))
         PDF = PDFgenerator(content)
-        PDF.generate()
+        result = PDF.generate()
+        sys.exit(result)
         logger.debug('Done')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))

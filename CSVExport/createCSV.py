@@ -11,7 +11,8 @@ netShiftTimeHours=0
 netShiftTimeMinutes=0
 
 def create_CSV(content, month, year):
-    with open('../Exports/export.csv', mode='w', newline='') as csvfile:
+    filename = "../Exports/export.csv"
+    with open(filename, mode='w', newline='') as csvfile:
         writeEntry = csv.writer(csvfile, delimiter=';')
         writeEntry.writerow(["Satzart", 
                              "Funktion",
@@ -58,3 +59,4 @@ def create_CSV(content, month, year):
                                  "IMPVAR1",
                                  i[1].replace(day=1).strftime("%d/%m/%Y")
                                  ])
+    return filename
