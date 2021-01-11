@@ -6,6 +6,7 @@ import sys
 sys.path.append("..")
 from utils.database import Database
 from pdfcreator.pdf import PDFgenerator
+from utils.sendmail import send_mail_report
 
 logFile = '../Logs/reportJob.log'
 logging.basicConfig(filename = logFile,level=logging.DEBUG,

@@ -17,7 +17,7 @@ SMTP_USERNAME = read_config("Mail", "SMTP_USERNAME")
 SMTP_PASSWORD = read_config("Mail", "SMTP_PASSWORD")
 
 
-def send_mail(day):
+def send_mail_report(filename, day):
     try:
         message = MIMEMultipart()
         message.attach(MIMEText("Neuer Tagesreport wurde angelegt.",'plain'))
@@ -25,7 +25,7 @@ def send_mail(day):
         message['From'] = FROM_EMAIL
         message['To'] = str(TO_EMAIL)
         files = []
-        files.append('../Reports/Tagesreport_%s.pdf' % (str(day)))
+        files.append(filename)
         for item in files:
             attachment = open(item, 'rb')
             part = MIMEBase('application', 'octet-stream')
@@ -37,6 +37,35 @@ def send_mail(day):
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         smtp.sendmail(message['From'], message['To'].split(",") , message.as_string())
+        smtp.quit()
+        return True
+    except:
+        print("Error in sendmail")
+        return False
+
+
+def send_mail_download(filename, requester):
+    try:
+        message = MIMEMultipart()
+        message.attach(MIMEText("Neuer Tagesreport wurde angelegt.", 'plain'))
+        message['Subject'] = "Neue Report zum Download verfügbar"
+        message['From'] = FROM_EMAIL
+        message['To'] = requester
+        files = []
+        files.append(filename)
+        for item in files:
+            attachment = open(item, 'rb')
+            part = MIMEBase('application', 'octet-stream')
+            part.set_payload((attachment).read())
+            encoders.encode_base64(part)
+            part.add_header('Content-Disposition',
+                            "attachment; filename= " + item)
+            message.attach(part)
+        smtp = smtplib.SMTP(SMTP_SERVER)
+        smtp.starttls()
+        smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
+        smtp.sendmail(message['From'], message['To'].split(
+            ","), message.as_string())
         smtp.quit()
         return True
     except:

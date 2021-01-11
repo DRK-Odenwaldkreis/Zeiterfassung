@@ -4,6 +4,7 @@ sys.path.append("..")
 from utils.database import Database
 from pdfcreator.pdf import PDFgenerator
 from utils.month import monthInt_to_string
+from utils.sendmail import send_mail_download
 import datetime
 import time
 import locale
@@ -27,20 +28,20 @@ locale.setlocale(locale.LC_ALL, 'de_DE.UTF-8')
 
 if __name__ == "__main__":
     try:
-        if len(sys.argv) == 3:
+        if len(sys.argv) == 4:
             logger.debug(
                 'Type is for all employee')
             type = "all"
-        elif len(sys.argv) == 4:
+        elif len(sys.argv) == 5:
             logger.debug(
                 'Type is for single employee')
-            requestedPersonalnummer = sys.argv[3]
+            requestedPersonalnummer = sys.argv[4]
             type = "single"
             logger.debug(
-                'Was started for the following personalnummer: %s' % (sys.argv[3]))
+                'Was started for the following personalnummer: %s' % (sys.argv[4]))
         else:
             logger.debug(
-                'Input parameters are not correct, Month and Year and/or Personalnummer are needed')
+                'Input parameters are not correct, Month and Year, requester and/or Personalnummer are needed')
             raise Exception
         logger.debug(
             'Was started for the following month: %s' % (sys.argv[1]))
@@ -48,6 +49,7 @@ if __name__ == "__main__":
             'Was started for the following year: %s' % (sys.argv[2]))
         requestedMonth = sys.argv[1]
         requestedYear = sys.argv[2]
+        requester = sys.argv[3]
         DatabaseConnect = Database()
         if type == "single":
             sql = "SELECT Vorname,Nachname,Personalnummer FROM Personal WHERE Personalnummer = %s;" % (requestedPersonalnummer)
@@ -78,6 +80,7 @@ if __name__ == "__main__":
             sys.exit(latestFilename)
         else:
             zipObj.close()
+            send_mail()
             sys.exit(zipFilename)
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
