@@ -26,3 +26,4 @@ if __name__ == "__main__":
         logger.debug('Done')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
+        sys.exit(1)
