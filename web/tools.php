@@ -52,12 +52,27 @@ function S_get_entry ($Db,$sQuery) {
 	// Return result of SQL query
 	return $r[0][0];
 }
+// Return query result from SQL database - all entries
+function S_get_multientry ($Db,$sQuery) {
+	$result = mysqli_query( $Db, $sQuery );
+	$r = mysqli_fetch_all($result);
 
+	// Return result of SQL query
+	return $r;
+}
+// Write data
 function S_set_data ($Db,$sQuery) {
     $r = mysqli_query( $Db, $sQuery );
 	
 	// Return result of SQL query
 	return $r;
+}
+
+// Returns for single staff in single date all shifts
+function S_get_shift_single_date ($Db,$pnr,$date) {
+	//get all shifts
+	$shifts=S_get_multientry($Db,'SELECT id, Dienstbeginn, Dienstende, Art FROM Dienste WHERE Personalnummer='.$pnr.' AND Date(Dienstbeginn)="'.$date.'";');
+	return $shifts;
 }
 
 

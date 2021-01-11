@@ -16,7 +16,7 @@ if( !isset($sec_level) ) { $sec_level=1; }
 if( $sec_level==0 && isset($_SESSION['uid']) && $_SESSION['uid']>=0 ) { $sec_level=1; }
 
 
-$FLAG_http='http';
+$FLAG_http='https';
 
 $hostname = $_SERVER['HTTP_HOST'];
 $path = dirname($_SERVER['PHP_SELF']);

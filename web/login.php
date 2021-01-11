@@ -216,7 +216,7 @@ if( isset($_POST['button-reset']) ) {
 			S_set_data($Db,'INSERT INTO li_token (id_user,timestamp,token) VALUES ('.$uid.',\''.$timestamp.'\',\''.$tokenhash.'\');');
 			$token_id=S_get_entry($Db,'SELECT id FROM li_token WHERE id_user='.$uid.' AND timestamp=\''.$timestamp.'\' AND token=\''.$tokenhash.'\';');
 			
-			$header = "From: impfzentrum@familie-bayram.de\r\n";
+			$header = "From: support@impfzentrum-odw.de\r\n";
 			$header .= "Content-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit";
 			$content="Lieber Nutzer, liebe Nutzerin,\n
 es wurde eine Anfrage zum Zurücksetzen Ihres Passwortes für die DRK Impfzentrum Zeiterfassung gestellt. Falls diese Anfrage von Ihnen nicht initiiert wurde, können Sie diese Nachricht ignorieren.\n
@@ -226,8 +226,7 @@ Bitte mit diesem Link das Passwort neu setzen:\n";
 	Mit freundlichen Grüßen\n
 	Das Team vom DRK";
 			$title='DRK Impfzentrum Zeiterfassung - Passwort zurücksetzen';
-			//echo "$email <br> $content";
-			$res=mail($email, $title, $content, $header, "-r impfzentrum@familie-bayram.de");	
+			$res=mail($email, $title, $content, $header, "-r support@impfzentrum-odw.de");
 			
 			
 		}

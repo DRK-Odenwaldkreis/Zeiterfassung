@@ -40,7 +40,7 @@ echo $GLOBALS['G_html_main_right_a'];
 if(isset( $_SESSION['uid']) && $_SESSION['uid']>=0 ) {
     echo '<h3>Support</h3>
     <p>Bei Fragen zum System bitte eine E-Mail schreiben an den Support.</p>
-    <p>email@example.com</p>';
+    <p><a href="mailto:support@impfzentrum-odw.de">support@impfzentrum-odw.de</a></p>';
 }
 
 
