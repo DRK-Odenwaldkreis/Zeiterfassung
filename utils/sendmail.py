@@ -46,18 +46,19 @@ def send_mail_report(filename, day):
 
 def send_mail_download(filename, requester):
     try:
+        print(filename)
         message = MIMEMultipart()
-        message.attach(MIMEText("Einzelnachweise wurden generiert und sind jetzt verfügbar. Diese können unter folgender URL heruntergeladen werden: asdas", 'plain'))
+        url = 'https://impfzentrum-odw.de/download.php?file=' +  str(filename)
+        message.attach(MIMEText("Einzelnachweise wurden generiert und sind jetzt verfügbar. Diese können unter folgender URL heruntergeladen werden: %s" % (url), 'plain'))
         message['Subject'] = "Einzelnachweise sind zum Download verfügbar"
-        message['From'] = FROM_EMAIL
-        message['To'] = requester
-        smtp = smtplib.SMTP(SMTP_SERVER)
+        message['From'] = 'report@impfzentrum-odw.de'
+        message['To'] = requester[0]
+        smtp = smtplib.SMTP(SMTP_SERVER,port=587)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
-        smtp.sendmail(message['From'], message['To'].split(
-            ","), message.as_string())
+        smtp.sendmail(message['From'], message['To'], message.as_string())
         smtp.quit()
         return True
-    except:
-        print("Error in sendmail")
+    except Exception as err:
+        print(err)
         return False

@@ -81,8 +81,8 @@ if __name__ == "__main__":
             print(latestFilename.replace('../../Reports/', ''))
         else:
             zipObj.close()
-            #send_mail_download(zipFilename,get_Mail_from_UserID(requester))
-            print(zipFilename.replace('../Reports/',''))
+            send_mail_download(zipFilename.replace(
+                '../../Reports/', ''), get_Mail_from_UserID(requester))
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
         print("Error")
