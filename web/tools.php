@@ -83,8 +83,8 @@ function S_get_shift_single_date ($Db,$pnr,$date) {
 
 // Generate random token
 function A_generate_token($length = 8) {
-		// without 0, O, o
-    $characters = '123456789abcdefghijklmnpqrstuvwxyzABCDEFGHIJKLMNPQRSTUVWXYZ';
+		// without 0, O, o, z, Z, y, Y
+    $characters = '123456789abcdefghijklmnpqrstuvwxABCDEFGHIJKLMNPQRSTUVWX';
     $randomString = '';
     for ($i = 0; $i < $length; $i++) {
         $randomString .= $characters[rand(0, strlen($characters) - 1)];

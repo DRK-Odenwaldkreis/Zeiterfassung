@@ -82,6 +82,7 @@ echo $GLOBALS['G_html_menu2'];
 // Print html content part A
 echo $GLOBALS['G_html_main_right_a'];
 
+echo '<h1>Personaldaten</h1>';
 //
 // Select staff
 //
@@ -114,15 +115,26 @@ if($bool_staff_display) {
     // Show QR code
     echo '<div class="col-sm-3">
     <h3>QR Code</h3>';
-
     echo '<img src="qrcode.php?id='.$u_hash.'" />';
     echo '</div>';
 
     // Show report
+    $today_month=date("n",time());
+    $today_year=date("Y",time());
     echo '<div class="col-sm-2">
     <h3>Report</h3>';
-
-    echo 'NOCH NICHT MÖGLICH';
+    echo '<form action="report.php" method="post">
+    <div class="input-group">
+      <input type="text" value="'.$pnr.'" name="pnr" style="display:none;">
+      <span class="input-group-addon" id="basic-addon4">Monat</span>
+      <input type="number" min="1" max="12" class="form-control" placeholder="Monat" aria-describedby="basic-addon4" value="'.$today_month.'" name="month" value=>
+      </div><div class="input-group">
+      <span class="input-group-addon" id="basic-addon5">Jahr</span>
+      <input type="number" min="2021" max="2999" class="form-control" placeholder="Jahr" aria-describedby="basic-addon5" value="'.$today_year.'" name="year">
+    </div>
+    <input type="submit" class="btn btn-danger" value="PDF-Report abrufen" name="get_report_single_staff" />
+    </form>';
+    
     echo '</div>';
 }
 
