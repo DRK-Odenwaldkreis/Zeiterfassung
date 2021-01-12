@@ -24,3 +24,23 @@
 2021-01-10 10:30:38,519 - Main - DEBUG - Starting
 2021-01-10 11:39:07,432 - Main - DEBUG - Starting
 2021-01-10 11:39:25,500 - Main - DEBUG - Starting
+2021-01-12 11:20:34,160 - Main - DEBUG - Starting
+2021-01-12 11:20:36,431 - Application - DEBUG - The following input was received, starting event process: 12345678
+2021-01-12 11:20:36,431 - ScanEvent - DEBUG - Constructor was called
+2021-01-12 11:20:36,431 - ScanEvent - DEBUG - The following Hash was scanned: 12345678
+2021-01-12 11:20:36,431 - ScanEvent - DEBUG - Starting Databaseconnect
+2021-01-12 11:20:36,431 - Database - DEBUG - Constructor was called
+2021-01-12 11:20:36,531 - Database - ERROR - The following error occured in constructor of database: (1045, "Access denied for user 'terminal'@'ip-88-152-34-6.hsi03.unitymediagroup.de' (using password: YES)")
+2021-01-12 11:20:36,531 - ScanEvent - ERROR - The following error occured in the constructor such that DatabaseDisconnect exception will be raised: 
+2021-01-12 11:20:36,531 - Application - WARNING - Displaying that no connectivity but values will be stored
+2021-01-12 11:20:36,531 - Application - DEBUG - Wiping all information from screen
+2021-01-12 11:21:59,007 - Main - DEBUG - Starting
+2021-01-12 11:22:01,218 - Application - DEBUG - The following input was received, starting event process: 12345678
+2021-01-12 11:22:01,218 - ScanEvent - DEBUG - Constructor was called
+2021-01-12 11:22:01,218 - ScanEvent - DEBUG - The following Hash was scanned: 12345678
+2021-01-12 11:22:01,218 - ScanEvent - DEBUG - Starting Databaseconnect
+2021-01-12 11:22:01,218 - Database - DEBUG - Constructor was called
+2021-01-12 11:22:01,316 - Database - ERROR - The following error occured in constructor of database: (1045, "Access denied for user 'terminal'@'ip-88-152-34-6.hsi03.unitymediagroup.de' (using password: YES)")
+2021-01-12 11:22:01,317 - ScanEvent - ERROR - The following error occured in the constructor such that DatabaseDisconnect exception will be raised: 
+2021-01-12 11:22:01,317 - Application - WARNING - Displaying that no connectivity but values will be stored
+2021-01-12 11:22:01,317 - Application - DEBUG - Wiping all information from screen
