@@ -17,13 +17,9 @@ logger.debug('Starting')
 if __name__ == "__main__":
     try:
         DatabaseConnect = Database()
-        requestedMonth = sys.argv[1]
-        requestedYear = sys.argv[2]
-        if len(sys.argv) == 3:
-            requestedMonth = sys.argv[1]
-            requestedYear = sys.argv[2]
-            sql = sql = "Select Dienste.Personalnummer, Dienste.Dienstbeginn, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art, Dienste.AutoClosed FROM Dienste JOIN Personal ON Personal.Personalnummer = Dienste.Personalnummer WHERE MONTH(Dienstbeginn)=%s AND YEAR(Dienstbeginn)=%s AND Dienstende IS NOT NULL ORDER BY Dienste.Dienstbeginn ASC;" % (
-                requestedMonth, requestedYear)
+        if len(sys.argv) == 2:
+            requestedDate = sys.argv[1]
+            sql = sql = "Select Dienste.Personalnummer, Dienste.Dienstbeginn, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art, Dienste.AutoClosed FROM Dienste JOIN Personal ON Personal.Personalnummer = Dienste.Personalnummer WHERE Date(Dienste.Dienstbeginn)=%s AND Dienstende IS NOT NULL ORDER BY Dienste.Dienstbeginn ASC;" % (requestedDate)
         else:
             sql = "Select Dienste.Personalnummer, Dienste.Dienstbeginn, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art, Dienste.AutoClosed FROM Dienste JOIN Personal ON Personal.Personalnummer = Dienste.Personalnummer where Dienstende is not Null AND Dienstbeginn > (NOW() - INTERVAL 24 HOUR) ORDER BY Dienstbeginn ASC;"
         logger.debug('Getting all Events from Yesterday with the following query: %s' % (sql))
