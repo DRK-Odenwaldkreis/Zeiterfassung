@@ -1,0 +1,8 @@
+2021-01-09 09:02:28,143 - Nightly Auto Clean - DEBUG - Starting
+2021-01-09 09:02:28,143 - Database - DEBUG - Constructor was called
+2021-01-09 09:02:28,165 - Nightly Auto Clean - DEBUG - Closing shift, using the following query: Update Dienste SET Dienstende = current_timestamp(), AutoClosed = '1' WHERE Dienstende is NULL
+2021-01-09 09:02:28,588 - Nightly Auto Clean - DEBUG - Done
+2021-01-11 14:21:48,426 - Nightly Auto Clean - DEBUG - Starting
+2021-01-11 14:21:48,434 - Database - DEBUG - Constructor was called
+2021-01-11 14:21:48,450 - Nightly Auto Clean - DEBUG - Closing shift, using the following query: Update Dienste SET Dienstende = current_timestamp(), AutoClosed = '1' WHERE Dienstende is NULL
+2021-01-11 14:21:48,540 - Nightly Auto Clean - DEBUG - Done

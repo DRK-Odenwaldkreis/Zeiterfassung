@@ -1,0 +1,4 @@
+jsonify == 0.5
+mysqlclient  == 2.0.3
+fpdf == 1.7.2
+pysqlite3 == 0.4.5
