@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 # coding=utf-8
-from readconfig import read_config
+import sys
+sys.path.append("..")
+from utils.readconfig import read_config
 import os
 import mysql.connector
-import sys
 import logging
 
 logger = logging.getLogger('Database')

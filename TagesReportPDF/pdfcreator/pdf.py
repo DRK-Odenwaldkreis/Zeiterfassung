@@ -37,9 +37,8 @@ class MyPDF(FPDF):
 	def header(self):
 		self.add_font('GNU', '', FreeSans, uni=True)
 		self.set_font('GNU', '', 11)
-		self.cell(40, 10, 'Impfzentrum Odenwaldkreis:', ln=0)
+		self.cell(40, 10, 'Impfzentrum Odenwaldkreis:', ln=1)
 		self.image(Logo, x=7, y=10, w=100, h=24, type='PNG')
-		self.cell(0, 10, datetime.date.today().strftime("%d.%m.%Y"), align='R', ln=1)
 		self.ln(10)
 
 
@@ -55,16 +54,16 @@ class MyPDF(FPDF):
 
 class PDFgenerator:
 
-	def __init__(self, content):
+	def __init__(self, content, date):
 		self.content=content
-		self.date=datetime.date.today()
+		self.date=date
 		self.totalSeconds=0
 
 
 	def generate(self):
 
 		pdf=MyPDF()
-		pdf.time=self.date
+		#pdf.time=self.date
 		# pdf.name=self.name
 		pdf.alias_nb_pages()
 		pdf.add_page()
@@ -149,8 +148,8 @@ class PDFgenerator:
 		pdf.cell(135,20,'',0,0)
 		pdf.cell(40,20,'Gesamtsumme',0,0)
 		pdf.cell(40, 20, '%s:%s' % (self.totalHours, self.totalMinutes), 0, 1)
-		self.filename = "../Reports/Tagesreport_" + str(self.date) + ".pdf"
+		self.filename = "../../Reports/Tagesreport_" + str(self.date) + ".pdf"
 		pdf.output(self.filename)
-		return self.filename
+		return self.filename.replace('../../Reports/','')
 
 aux=FPDF('P', 'mm', 'A4')

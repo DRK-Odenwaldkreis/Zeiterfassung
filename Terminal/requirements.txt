@@ -1,5 +1,5 @@
 jsonify == 0.5
-mysqlclient  == 2.0.3
 fpdf == 1.7.2
 pysqlite3 == 0.4.5
-mysql-connector-python == 1.15.0
+mysql-connector-python == 8.0.22
+holidays == 0.10.4
