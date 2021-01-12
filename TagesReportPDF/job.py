@@ -17,6 +17,7 @@ logger.debug('Starting')
 if __name__ == "__main__":
     try:
         DatabaseConnect = Database()
+        logger.debug(len(sys.argv))
         if len(sys.argv) == 2:
             requestedDate = sys.argv[1]
             sql = sql = "Select Dienste.Personalnummer, Dienste.Dienstbeginn, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art, Dienste.AutoClosed FROM Dienste JOIN Personal ON Personal.Personalnummer = Dienste.Personalnummer WHERE Date(Dienste.Dienstbeginn)=%s AND Dienstende IS NOT NULL ORDER BY Dienste.Dienstbeginn ASC;" % (requestedDate)
