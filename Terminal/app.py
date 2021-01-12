@@ -4,7 +4,6 @@ from tkinter import *
 import time
 from failoverdatabase import create_backup_event
 from booking import *
-from readconfig import read_config
 import logging
 import threading
 
@@ -67,15 +66,16 @@ class App:
                 self.event.create_shift()
                 self.textMain = "KOMMEN"
                 self.textSub = "Hallo %s %s" %(self.event.vorname, self.event.nachname)
+                self.mainLabel.configure(text=self.textMain, bg="Green")
             elif self.event.direction == "Dienstende":
                 self.event.close_shift()
                 self.textMain = "GEHEN"
                 self.textSub = "Danke %s %s - Dienstdauer: %s:%s" % (
                     self.event.vorname, self.event.nachname, self.event.shiftDurationHours, self.event.shiftDurationMinutes)
+                self.mainLabel.configure(text=self.textMain, bg="Yellow")
             else:
                 logging.error("This is an abnormal state within enter input") 
                 raise UnknownState
-            self.mainLabel.configure(text=self.textMain, bg="Green")
             self.subInfoLabel.configure(text=self.textSub)
             afterIDMainLabel = self.mainLabel.after(
                 1500, lambda: self.mainLabel.config(bg='white', text=""))

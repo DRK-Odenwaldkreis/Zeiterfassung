@@ -13,7 +13,7 @@ def create_backup_event(hash):
         logger.debug('Creating local copy of data from following hash: %s' % (hash))
         connection = sqlite3.connect("./Backup.db")
         cursor = connection.cursor()
-        sql = """INSERT INTO Dienste ("Hash") Values (%s)"""%(hash)
+        sql = """INSERT INTO Dienste ("Hash") Values ('%s')"""%(hash)
         logger.debug(
             'Wiriting to database using the following query: %s' % (sql))
         cursor.execute(sql)

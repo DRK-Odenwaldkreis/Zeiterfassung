@@ -28,10 +28,10 @@ class Database(object):
     def __init__(self):
         try:
             logger.debug('Constructor was called')
-            self.__host = read_config("MariaDB", "host")
-            self.__user = read_config("MariaDB", "user")
-            self.__passwd = read_config("MariaDB", "pw")
-            self.__dbName = read_config("MariaDB", "db")
+            self.__host= 'impfzentrum-odw.de'
+            self.__user= 'x'
+            self.__passwd = 'x'
+            self.__dbName = 'impfzentrum'
             self.connection = mysql.connector.connect(
                 host=self.__host, user=self.__user, passwd=self.__passwd, db=self.__dbName)
             self.cursor = self.connection.cursor()
