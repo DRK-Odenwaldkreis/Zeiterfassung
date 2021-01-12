@@ -25,7 +25,7 @@ latestFilename = ""
 # - im pdfcreator: Wo die Schriftart liegt muss relativ angegeben werden - done
 
 
-locale.setlocale(locale.LC_ALL, 'de_DE.UTF-8')
+#locale.setlocale(locale.LC_ALL, 'de_DE.UTF-8')
 
 if __name__ == "__main__":
     try:
@@ -66,7 +66,7 @@ if __name__ == "__main__":
             vorname = i[0]
             nachname = i[1]
             personalnummer = i[2]
-            sql = "SELECT Dienstbeginn, Dienstende, Art FROM Dienste WHERE Personalnummer = %s AND MONTH(Dienstbeginn)=%s AND YEAR(Dienstbeginn)=%s AND Dienstende IS NOT NULL;" % (
+            sql = "SELECT Dienstbeginn, Dienstende, Art FROM Dienste WHERE Personalnummer = %s AND MONTH(Dienstbeginn)=%s AND YEAR(Dienstbeginn)=%s AND Dienstende IS NOT NULL ORDER BY Dienstbeginn ASC;" % (
                 personalnummer, requestedMonth, requestedYear)
             logger.debug('Getting all Events for employee of the month with the following query: %s' % (sql))
             shiftTimes = DatabaseConnect.read_all(sql)

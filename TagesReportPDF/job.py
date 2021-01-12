@@ -17,7 +17,13 @@ logger.debug('Starting')
 if __name__ == "__main__":
     try:
         DatabaseConnect = Database()
-        sql = "Select Dienste.Personalnummer, Dienste.Dienstbeginn, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art, Dienste.AutoClosed FROM Dienste JOIN Personal ON Personal.Personalnummer = Dienste.Personalnummer where Dienstende is not Null AND Dienstbeginn > (NOW() - INTERVAL 24 HOUR);"
+        requestedMonth = sys.argv[1]
+        requestedYear = sys.argv[2]
+        if len(sys.argv) == 3:
+            sql = sql = "Select Dienste.Personalnummer, Dienste.Dienstbeginn, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art, Dienste.AutoClosed FROM Dienste JOIN Personal ON Personal.Personalnummer = Dienste.Personalnummer WHERE MONTH(Dienstbeginn)=%s AND YEAR(Dienstbeginn)=%s AND Dienstende IS NOT NULL ORDER BY Dienste.Dienstbeginn ASC;" % (
+                requestedMonth, requestedYear)
+        else:
+            sql = "Select Dienste.Personalnummer, Dienste.Dienstbeginn, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art, Dienste.AutoClosed FROM Dienste JOIN Personal ON Personal.Personalnummer = Dienste.Personalnummer where Dienstende is not Null AND Dienstbeginn > (NOW() - INTERVAL 24 HOUR) ORDER BY Dienstbeginn ASC;"
         logger.debug('Getting all Events from Yesterday with the following query: %s' % (sql))
         content = DatabaseConnect.read_all(sql)
         logger.debug('Received the following entries: %s' % (str(content)))
@@ -25,7 +31,7 @@ if __name__ == "__main__":
         result = PDF.generate()
         logger.debug('Done')
         #send_mail_report()
-        sys.exit(result)
+        print(result)
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
-        sys.exit("Error")
+        print("Error")

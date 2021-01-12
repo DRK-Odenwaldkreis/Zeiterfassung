@@ -27,7 +27,7 @@ if __name__ == "__main__":
         requestedMonth = sys.argv[1]
         requestedYear = sys.argv[2]
         DatabaseConnect = Database()
-        sql = "Select Dienste.Personalnummer, Dienste.Dienstbeginn, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art FROM Dienste JOIN Personal ON Personal.Personalnummer = Dienste.Personalnummer WHERE MONTH(Dienstbeginn)=%s AND YEAR(Dienstbeginn)= %s AND Dienstende is not Null;" % (
+        sql = "Select Dienste.Personalnummer, Dienste.Dienstbeginn, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art FROM Dienste JOIN Personal ON Personal.Personalnummer = Dienste.Personalnummer WHERE MONTH(Dienstbeginn)=%s AND YEAR(Dienstbeginn)= %s AND Dienstende is not Null ORDER BY Dienste.Dienstbeginn ASC;" % (
             requestedMonth, requestedYear)
         logger.debug('Getting all Events for employee of the month and year with the following query: %s' % (sql))
         exportEvents = DatabaseConnect.read_all(sql)
@@ -35,7 +35,7 @@ if __name__ == "__main__":
                      (str(exportEvents)))
         filename = create_CSV(exportEvents, requestedMonth, requestedYear)
         logger.debug('Done')
-        print(filename)
+        print(filename.replace('../../Reports', ''))
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
         print("Error")
