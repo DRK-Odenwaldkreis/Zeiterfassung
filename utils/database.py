@@ -1,26 +1,30 @@
 #!/usr/bin/python3
 # coding=utf-8
+from readconfig import read_config
 import os
-import MySQLdb
+import mysql.connector
 import sys
 import logging
 
 logger = logging.getLogger('Database')
 logger.debug('Logger for database was initialised')
 
-from utils.readconfig import read_config
 
 class Disconnect(Exception):
     pass
 
+
 class InsertError(Exception):
     pass
+
 
 class UpdateError(Exception):
     pass
 
+
 class QueryError(Exception):
     pass
+
 
 class Database(object):
 
@@ -32,11 +36,12 @@ class Database(object):
             self.__user = read_config("MariaDB", "user")
             self.__passwd = read_config("MariaDB", "pw")
             self.__dbName = read_config("MariaDB", "db")
-            self.connection = MySQLdb.connect(
+            self.connection = mysql.connector.connect(
                 host=self.__host, user=self.__user, passwd=self.__passwd, db=self.__dbName)
             self.cursor = self.connection.cursor()
         except Exception as e:
-            logger.error('The following error occured in constructor of database: %s' % (e))
+            logger.error(
+                'The following error occured in constructor of database: %s' % (e))
             raise Disconnect
 
 #Insert,Update, read_all and read_single
@@ -75,7 +80,7 @@ class Database(object):
                 'The following error occured in read all: %s' % (e))
             raise QueryError
 
-    def read_single(self,query):
+    def read_single(self, query):
         try:
             self.cursor.execute(query)
             self.result = self.cursor.fetchone()
@@ -86,7 +91,8 @@ class Database(object):
                 'The following error occured in read all: %s' % (e))
             raise QueryError
 
+
 if __name__ == "__main__":
     test = Database()
     sql = 'Select * from Personal'
-    test.read_single(query = sql)
+    print(test.read_single(query=sql))

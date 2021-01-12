@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # coding=utf-8
 import os
-import MySQLdb
+import mysql.connector
 import sys
 import logging
 
@@ -32,7 +32,7 @@ class Database(object):
             self.__user = read_config("MariaDB", "user")
             self.__passwd = read_config("MariaDB", "pw")
             self.__dbName = read_config("MariaDB", "db")
-            self.connection = MySQLdb.connect(
+            self.connection = mysql.connector.connect(
                 host=self.__host, user=self.__user, passwd=self.__passwd, db=self.__dbName)
             self.cursor = self.connection.cursor()
         except Exception as e:
@@ -89,4 +89,4 @@ class Database(object):
 if __name__ == "__main__":
     test = Database()
     sql = 'Select * from Personal'
-    test.read_single(query = sql)
+    print(test.read_single(query = sql))
