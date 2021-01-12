@@ -70,6 +70,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $errorhtml2 =  H_build_boxinfo( 0, 'Eingetragene Personalnummer ist keine gültige Nummer.', 'red' );
         }
     }
+
+    // report single staff
+	if(isset($_POST['get_report_single_staff'])) {
+        $pnr=($_POST['pnr']);
+        $month=($_POST['month']);
+        $year=($_POST['year']);
+
+        $dir="/home/webservice/Zeiterfassung/EinzelAbrechnungPDF/";
+        chdir($dir);
+        $job="python3 job.py $month $year 0 $pnr";
+        exec($job,$script_output);
+        $file=$script_output[0];
+        var_dump($script_output);
+        if( file_exists("/home/webservice/Reports/$file") ) {
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename="'.basename($file).'"');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($file));
+            readfile("/home/webservice/Reports/$file");
+            exit;
+        }
+
+        
+    }
 }
 
 // Print html header
@@ -123,7 +150,7 @@ if($bool_staff_display) {
     $today_year=date("Y",time());
     echo '<div class="col-sm-2">
     <h3>Report</h3>';
-    echo '<form action="report.php" method="post">
+    echo '<form action="'.$current_site.'.php" method="post">
     <div class="input-group">
       <input type="text" value="'.$pnr.'" name="pnr" style="display:none;">
       <span class="input-group-addon" id="basic-addon4">Monat</span>
