@@ -55,7 +55,7 @@ class ScanEvent(object):
         logger.debug('QR is valid')
 
     def get_personal_number(self):
-        self.sql = "Select Personalnummer, Vorname, Nachname from Personal where Hash=%s;" % (
+        self.sql = "Select Personalnummer, Vorname, Nachname from Personal where Hash='%s';" % (
             self.hash)
         logger.debug(
             'Getting the Personalnummer and names, using the following query: %s'%(self.sql))
