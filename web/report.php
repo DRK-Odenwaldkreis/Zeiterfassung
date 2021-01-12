@@ -19,27 +19,63 @@ include_once 'tools.php';
 include_once 'auth.php';
 include_once 'menu.php';
 
+$errorhtml0 ='';
+
 // Create report
 $val_report_display=0;
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    // report single staff
-	if(isset($_POST['get_report_single_staff'])) {
-        $pnr=($_POST['pnr']);
+    if(isset($_POST['get_report_all_staff_csv'])) {
         $month=($_POST['month']);
         $year=($_POST['year']);
-        
-    } elseif(isset($_POST['get_report_all_staff_csv'])) {
-        $month=($_POST['month']);
-        $year=($_POST['year']);
+
+        $dir="/home/webservice/Zeiterfassung/CSVExport/";
+        chdir($dir);
+        $job="python3 job.py $month $year";
+        exec($job,$script_output);
+        $file=$script_output[0];
+        if( file_exists("/home/webservice/Reports/$file") ) {
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename="'.basename($file).'"');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($file));
+            readfile("/home/webservice/Reports/$file");
+            exit;
+        }
         
     } elseif(isset($_POST['get_report_all_staff'])) {
         $month=($_POST['month']);
         $year=($_POST['year']);
+        $uid=$_SESSION['uid'];
+
+        $dir="/home/webservice/Zeiterfassung/TagesReportPDF/";
+        chdir($dir);
+        $job="python3 job.py $month $year $uid";
+        exec($job,$script_output);
+        $errorhtml0 = H_build_boxinfo( 0, "Report wird erstellt und Downloadlink an Ihre E-Mail verschickt. Dies kann einen Augenblick dauern.", 'green' );
         
     } elseif(isset($_POST['get_report_single_date'])) {
         $date=($_POST['date']);
         
+        $dir="/home/webservice/Zeiterfassung/TagesReportPDF/";
+        chdir($dir);
+        $job="python3 job.py '$date'";
+        exec($job,$script_output);
+        $file=$script_output[0];
+        if( file_exists("/home/webservice/Reports/$file") ) {
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename="'.basename($file).'"');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($file));
+            readfile("/home/webservice/Reports/$file");
+            exit;
+        }
     }
 }
 
@@ -79,6 +115,7 @@ echo '<form action="'.$current_site.'.php" method="post">
       </span>
     </div>
     </form>';
+    echo $errorhtml0;
 echo '</div></div>';
 
 echo '<div class="card">
