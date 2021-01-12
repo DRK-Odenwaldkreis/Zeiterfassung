@@ -20,6 +20,8 @@ if __name__ == "__main__":
         requestedMonth = sys.argv[1]
         requestedYear = sys.argv[2]
         if len(sys.argv) == 3:
+            requestedMonth = sys.argv[1]
+            requestedYear = sys.argv[2]
             sql = sql = "Select Dienste.Personalnummer, Dienste.Dienstbeginn, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art, Dienste.AutoClosed FROM Dienste JOIN Personal ON Personal.Personalnummer = Dienste.Personalnummer WHERE MONTH(Dienstbeginn)=%s AND YEAR(Dienstbeginn)=%s AND Dienstende IS NOT NULL ORDER BY Dienste.Dienstbeginn ASC;" % (
                 requestedMonth, requestedYear)
         else:
