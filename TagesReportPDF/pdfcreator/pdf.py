@@ -149,7 +149,7 @@ class PDFgenerator:
 		pdf.cell(135,20,'',0,0)
 		pdf.cell(40,20,'Gesamtsumme',0,0)
 		pdf.cell(40, 20, '%s:%s' % (self.totalHours, self.totalMinutes), 0, 1)
-		self.filename = "../Reports/Tagesreport_" + str(self.date) + ".pdf"
+		self.filename = "../../Reports/Tagesreport_" + str(self.date) + ".pdf"
 		pdf.output(self.filename)
 		return self.filename
 

@@ -8,7 +8,7 @@ from utils.database import Database
 from pdfcreator.pdf import PDFgenerator
 from utils.sendmail import send_mail_report
 
-logFile = '../Logs/reportJob.log'
+logFile = '../../Logs/reportJob.log'
 logging.basicConfig(filename = logFile,level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Daily Report')

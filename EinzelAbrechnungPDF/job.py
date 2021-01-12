@@ -12,7 +12,7 @@ import locale
 import logging
 
 
-logFile = '../Logs/singleReportJob.log'
+logFile = '../../Logs/singleReportJob.log'
 logging.basicConfig(filename=logFile,level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Single Report')
@@ -74,7 +74,7 @@ if __name__ == "__main__":
             PDF = PDFgenerator(shiftTimes, nachname, vorname, personalnummer, requestedMonth, requestedYear)
             singleFilename = PDF.generate()
             if type == "all":
-                zipObj.write(singleFilename, singleFilename.replace('../Reports/Einzelnachweis_', 'Einzelnachweise_'))
+                zipObj.write(singleFilename, singleFilename.replace('../../Reports/Einzelnachweis_', 'Einzelnachweise_'))
             latestFilename = singleFilename
         logger.debug('Done')
         if type == "single":
