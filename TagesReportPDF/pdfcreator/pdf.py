@@ -54,16 +54,16 @@ class MyPDF(FPDF):
 
 class PDFgenerator:
 
-	def __init__(self, content):
+	def __init__(self, content, date):
 		self.content=content
-		self.date=self.content[1].date()
+		self.date=date
 		self.totalSeconds=0
 
 
 	def generate(self):
 
 		pdf=MyPDF()
-		pdf.time=self.date
+		#pdf.time=self.date
 		# pdf.name=self.name
 		pdf.alias_nb_pages()
 		pdf.add_page()

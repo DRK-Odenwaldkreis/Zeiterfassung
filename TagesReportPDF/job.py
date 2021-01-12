@@ -3,6 +3,7 @@
 from os import path
 import logging
 import sys
+import datetime
 sys.path.append("..")
 from utils.database import Database
 from pdfcreator.pdf import PDFgenerator
@@ -22,11 +23,12 @@ if __name__ == "__main__":
             requestedDate = sys.argv[1]
             sql = sql = "Select Dienste.Personalnummer, Dienste.Dienstbeginn, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art, Dienste.AutoClosed FROM Dienste JOIN Personal ON Personal.Personalnummer = Dienste.Personalnummer WHERE Date(Dienste.Dienstbeginn)=%s AND Dienstende IS NOT NULL ORDER BY Dienste.Dienstbeginn ASC;" % (requestedDate)
         else:
+            requestedDate = datetime.datetime.now().strftime("%Y-%m-%d")
             sql = "Select Dienste.Personalnummer, Dienste.Dienstbeginn, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art, Dienste.AutoClosed FROM Dienste JOIN Personal ON Personal.Personalnummer = Dienste.Personalnummer where Dienstende is not Null AND Dienstbeginn > (NOW() - INTERVAL 24 HOUR) ORDER BY Dienstbeginn ASC;"
         logger.debug('Getting all Events from Yesterday with the following query: %s' % (sql))
         content = DatabaseConnect.read_all(sql)
         logger.debug('Received the following entries: %s' % (str(content)))
-        PDF = PDFgenerator(content)
+        PDF = PDFgenerator(content, requestedDate)
         result = PDF.generate()
         logger.debug('Done')
         #send_mail_report()
