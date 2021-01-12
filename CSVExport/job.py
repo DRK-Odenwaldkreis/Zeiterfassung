@@ -1,12 +1,11 @@
+#!/usr/bin/python3
+# coding=utf-8
 import logging
 import locale
 import time
 import datetime
-
-
 import sys
 sys.path.append("..")
-
 from utils.database import Database
 from createCSV import create_CSV
 
@@ -36,7 +35,7 @@ if __name__ == "__main__":
                      (str(exportEvents)))
         filename = create_CSV(exportEvents, requestedMonth, requestedYear)
         logger.debug('Done')
-        sys.exit(filename)
+        print(filename)
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
-        sys.exit("Error")
+        print("Error")

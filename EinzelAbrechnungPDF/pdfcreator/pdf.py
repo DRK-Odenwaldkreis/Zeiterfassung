@@ -144,9 +144,7 @@ class PDFgenerator:
 		pdf.cell(135,20,'',0,0)
 		pdf.cell(25,20,'Summe = ',0,0)
 		pdf.cell(40, 20, '%s:%s' % (self.totalHours, self.totalMinutes), 0, 1)
-		self.filename = "../../Reports/Einzelnachweis_" + self.monat + '_' + self.year + \
-                    '_' + self.nachname+"_" + self.vorname + \
-                    "_" + str(datetime.date.today()) + ".pdf"
+		self.filename = "../../Reports/Einzelnachweis_" + self.monat + '_' + self.year + '_' + self.personalnummer +"_" + self.nachname + "_" + self.vorname + ".pdf"
 		pdf.output(self.filename)
 		return self.filename
 

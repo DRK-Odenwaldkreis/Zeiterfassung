@@ -56,7 +56,7 @@ if __name__ == "__main__":
             sql = "SELECT Vorname,Nachname,Personalnummer FROM Personal WHERE Personalnummer = %s;" % (requestedPersonalnummer)
         else:
             sql = "SELECT Vorname,Nachname,Personalnummer FROM Personal;"
-            zipFilename = '../Reports/Einzelnachweise_' + monthInt_to_string(int(requestedMonth)) + '_' + requestedYear + '.zip'
+            zipFilename = '../../Reports/Einzelnachweise_' + monthInt_to_string(int(requestedMonth)) + '_' + requestedYear + '.zip'
             zipObj = ZipFile(zipFilename, 'w')
         logger.debug(
             'Getting employee infos with the following query: %s' % (sql))
@@ -78,11 +78,11 @@ if __name__ == "__main__":
             latestFilename = singleFilename
         logger.debug('Done')
         if type == "single":
-            sys.exit(latestFilename)
+            print(latestFilename.replace('../../Reports/', ''))
         else:
             zipObj.close()
             #send_mail_download(zipFilename,get_Mail_from_UserID(requester))
-            sys.exit(zipFilename)
+            print(zipFilename.replace('../Reports/',''))
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
-        sys.exit("Error")
+        print("Error")
