@@ -46,7 +46,6 @@ def send_mail_report(filename, day):
 
 def send_mail_download(filename, requester):
     try:
-        print(filename)
         message = MIMEMultipart()
         url = 'https://impfzentrum-odw.de/download.php?file=' +  str(filename)
         message.attach(MIMEText("Einzelnachweise wurden generiert und sind jetzt verfügbar. Diese können unter folgender URL heruntergeladen werden: %s" % (url), 'plain'))

@@ -85,14 +85,14 @@ class PDFgenerator:
 
 		pdf.cell(20, 10, 'Mitarbeiter: {}'.format(self.nachname)+", "+self.vorname, ln=1)
 		pdf.cell(20, 10, 'Personalnummer: {}'.format(self.personalnummer), ln=1)
-		pdf.cell(20, 10, 'Arbeitszeitnachweis: {}'.format(self.monat), ln=1)
+		pdf.cell(20, 10, 'Arbeitszeitnachweis: {}'.format(self.monat)+", "+ self.year, ln=1)
 
 		pdf.set_font('GNU', 'B' , 14)
 		pdf.ln(10)
 		pdf.cell(20, 10, 'Arbeitszeit:', 0, 1)
 
 		pdf.cell(40, 10, 'Tag', 0, 0)
-		pdf.cell(40, 10, 'Begin', 0, 0)
+		pdf.cell(40, 10, 'Beginn', 0, 0)
 		pdf.cell(40, 10, 'Ende', 0, 0)
 		pdf.cell(40, 10, 'Art', 0, 0)
 		pdf.cell(40, 10, 'Zeit', 0, 1)
@@ -110,7 +110,7 @@ class PDFgenerator:
 				pdf.set_font('GNU', 'B' , 14)
 
 				pdf.cell(40, 10, 'Tag', 0, 0)
-				pdf.cell(40, 10, 'Begin', 0, 0)
+				pdf.cell(40, 10, 'Beginn', 0, 0)
 				pdf.cell(40, 10, 'Ende', 0, 0)
 				pdf.cell(40, 10, 'Art', 0, 0)
 				pdf.cell(40, 10, 'Zeit', 0, 1)
@@ -124,7 +124,9 @@ class PDFgenerator:
 			else:
 				self.begin = i[0].strftime("%H:%M")
 				self.ende = i[1].strftime("%H:%M")
+				print("Test")
 				self.netShiftTime, self.netShiftTimeHours, self.netShiftTimeMinutes = calculate_net_shift_time(i[0], i[1])
+				print("Test")
 				self.totalSeconds = self.totalSeconds + int(self.netShiftTime.seconds)
 				if self.netShiftTimeMinutes < 10:
 					self.netShiftTimeMinutes = '0%s' % (self.netShiftTimeMinutes)
