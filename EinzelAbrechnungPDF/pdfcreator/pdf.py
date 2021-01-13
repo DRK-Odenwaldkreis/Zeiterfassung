@@ -124,9 +124,7 @@ class PDFgenerator:
 			else:
 				self.begin = i[0].strftime("%H:%M")
 				self.ende = i[1].strftime("%H:%M")
-				print("Test")
 				self.netShiftTime, self.netShiftTimeHours, self.netShiftTimeMinutes = calculate_net_shift_time(i[0], i[1])
-				print("Test")
 				self.totalSeconds = self.totalSeconds + int(self.netShiftTime.seconds)
 				if self.netShiftTimeMinutes < 10:
 					self.netShiftTimeMinutes = '0%s' % (self.netShiftTimeMinutes)

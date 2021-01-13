@@ -5,10 +5,18 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
+import logging
 import sys
 sys.path.append("..")
 
 from utils.readconfig import read_config
+
+
+logFile = '../../Logs/sendMail.log'
+logging.basicConfig(filename=logFile,level=logging.DEBUG,
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger('Send Mail')
+logger.debug('Starting')
 
 FROM_EMAIL = read_config("Mail", "FROM_EMAIL")
 TO_EMAIL = read_config("Mail", "TO_EMAIL")
@@ -46,8 +54,10 @@ def send_mail_report(filename, day):
 
 def send_mail_download(filename, requester):
     try:
+        logging.debug("Receviced the following filename %s to be sent from %s" % (filename, requester))
         message = MIMEMultipart()
         url = 'https://impfzentrum-odw.de/download.php?file=' +  str(filename)
+        logging.debug("The created url is %s" % (url))
         message.attach(MIMEText("Einzelnachweise wurden generiert und sind jetzt verfügbar. Diese können unter folgender URL heruntergeladen werden: %s" % (url), 'plain'))
         message['Subject'] = "Einzelnachweise sind zum Download verfügbar"
         message['From'] = 'report@impfzentrum-odw.de'
@@ -55,9 +65,12 @@ def send_mail_download(filename, requester):
         smtp = smtplib.SMTP(SMTP_SERVER,port=587)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
+        logging.debug(
+            "Sending Mail with following tupel: %s" % (message))
         smtp.sendmail(message['From'], message['To'], message.as_string())
+        logging.debug("Mail was send")
         smtp.quit()
         return True
     except Exception as err:
-        print(err)
+        logging.error("The following error occured in send mail download: %s" % (err))
         return False
