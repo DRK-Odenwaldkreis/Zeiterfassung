@@ -27,7 +27,7 @@ class Database(object):
         try:
             logger.debug('Constructor was called')
             self.__host= '10.0.1.8'
-            self.__user= 'root123'
+            self.__user= 'root'
             self.__passwd = 'Test1234'
             self.__dbName = 'Impfzentrum'
             self.connection = mysql.connector.connect(

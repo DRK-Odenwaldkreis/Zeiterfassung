@@ -68,10 +68,14 @@ Innerhalb der SQLite werden nur die gescannten Codes und der Zeitpunkt gespeiche
 
 ## Webpage
 
-## Tagesreports
+### Personaldaten
+
+### Zeitkorrektur
+
+### Tagesreports
 Der Tagesreport dient dazu, die Dienste des Vortages aufzulisten. Dies kann z.b. per Cron dem Schichtleiter zugesendet werden. Das Layout als Beispiel sieht wie folgt aus:
 
-<img src=Pics/tagesreport_example.png alt="Server Disconnect" width="480">
+<img src=Pics/tagesreport_example.png alt="Tagesreport Beispiel" width="480">
 
 Nachts werden via Konfiguration in phpmyadmin alle offenen Dienste automatisch geschlossen. Dies wird in der Spalte "AutoClose" auch markiert, so dass im Report die Zeiteinträge die vermutlich fehlerhaft sind farblich markiert werden.
 
@@ -81,8 +85,65 @@ Der nächtliche Autoclose wird konfiguriert mit:
 CREATE EVENT `Nightly AutoClose` ON SCHEDULE EVERY 23 DAY STARTS '2021-01-01 14:49:49' ENDS '2021-12-31 14:49:49' ON COMPLETION NOT PRESERVE ENABLE DO Update Dienste SET Dienstende = current_timestamp(), AutoClosed = '1' WHERE Dienstende is NULL
 ```
 
-Das setzten der pdf kann unter Tagesreport/pdf.py angepasst werden. Ausführen der job.pdf ohne Argmente erzeugt einen Tagesreport des vergangenen Tages. Beim Übergaben eines Datums in der Form "YYYY-MM-DD" wird der Tagesreport für den übergebenen Tag erzeugt.
+Das setzten der pdf kann unter TagesreportPDF/pdfcreator/pdf.py angepasst werden. Ausführen der job.pdf ohne Argumente erzeugt einen Tagesreport des vergangenen Tages. 
 
-## Einzelabrechnungen
+```python 
+python job.py
+```
 
-## CSVExports
+Beim Übergaben eines Datums mittels 'YYYY-MM-DD wird der Tagesreport für den übergebenen Tag erzeugt.
+
+```python 
+python job.py '2021-01-11'
+```
+
+Die Reports liegen im Ordner Reports im Überverzeichnis. D.h. der Ordner muss ggf. erste händisch angelegt werden. Gleiches gilt für den Ordner Logs.
+
+Aus der Webapplikation kann dieser Report ebenfalls erzeugt werden. Hierfür den Tag wählen und auf PDF-Report klicken. Der Report wird zum Download angeboten.
+
+<img src=Pics/tagesreport_web_example.png alt="Tagesreport Webansicht" width="480">
+
+### Einzelabrechnungen
+Einzelabrechnugnen werden verwendet um pro Mitarbeiter eine Ansicht der geleisteten Dienste zu erzeugen.
+
+Das setzten der pdf kann unter EinzelabrechnungpDF/pdfcreator/pdf.py angepasst werden. Ausführen der job.pdf kann in zwei Varianten erfolgen: 
+
+```python 
+python job.py MONAT JAHR ANFORDERER PERSONALNUMMER
+```
+Hierbei steht Monat und Jahr für den Monat/Jahr der Einzelnachweisanforderung. Der Anforderer als ID ist die ID des in der Webapplikation angelegten Users. Diese wird beim übergeben eines 4 Arguments, der Personalnummer, nicht verwendet.
+
+Beim weglassen einer Personalnummer werden die Einzelnachweise von allen vorhandenen Mitarbeitern erzeugt und als Zip gepackt. Die ID des Anforders dient dazu, die Mailadresse aus der Datenbank in li_user rauszulesen und den Download link per Mail zu verschicken.
+
+```python
+python job.py MONAT JAHR ANFORDERER
+```
+
+Die Reports/Zip´s liegen im Ordner Reports im Überverzeichnis. D.h. der Ordner muss ggf. erste händisch angelegt werden. Gleiches gilt für den Ordner Logs.
+Das versenden der Mail erfolgt über Zugangsdaten die in der config.ini angepasst werden müssen.
+
+
+<img src=Pics/einzelnachweis_example.png alt="Einzelnachweis Beispiel" width="480">
+
+Aus der Webapplikation kann dieser Report erzeugt werden. Hierfür den User im Modul Personaldaten raussuchen, Monat und Jahr wählen und PDF-Report klicken. Der Report wird zum Download angeboten.
+
+<img src=Pics/einzelnachweis_web_example.png alt="Tagesreport Webansicht" width="480">
+
+Im Falle zum Nachweisen aller Mitarbeiter ist dies unter dem Modul Reports zu finden. Hier kann ein Monatsreport für alle Mitarbeiter erstellt werden. Dabei werden die Einzelnachweise in ein Zip gepackt. Das Zip wird nicht direkt zum Download angeboten, je nach Anzahl der Mitarbeiter kann der Erstellungsvorgang mehrere Minuten dauern.
+Der Downloadlink wird per Mail an den Anforderer versendet.
+
+<img src=Pics/gesamtnachweis_web_example.png alt="Gesamtnachweis Webansicht" width="480">
+
+### CSVExports
+Der CSV Export dient zur Übersicht aller geleisteten Stunden der Mitarbeiter und der Ausgabe in dem für das Abrechnugssystem erwarteten Formats.
+Das Format der CSV kann unter CSVExport/createCSV.py angepasst werden und ist Abrechnungsspezifisch. Der Output liegt ebenfalls im Ordner Reports.
+
+Angestoßen wird die Erzeugung via der job.py mit der Übergabe von MONTA und Jahr als Argumente.
+
+```python
+python job.py MONAT JAHR
+```
+
+Aus der Webapplikation kann diese CSV ebenfalls erzeugt werden. Hierfür den Monat und das Jahr auswählen und auf CSV-Report klicken. Der Report wird zum Download angeboten.
+
+<img src=Pics/abrechnung_web_example.png alt="Abrechnung Webansicht" width="480">
