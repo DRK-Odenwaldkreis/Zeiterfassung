@@ -1,7 +1,6 @@
 # Zeiterfassung
 Eine Lösung zur Zeiterfassung der Helfer im Impfzentrum des Odenwaldkreises.
 
-
 # Komponenten
 
 Das Projekt besteht aus mehreren Teilanwendungen. Vor Ort gibt es ein Terminal an dem sich jeder Mitarbeiter an- und abmeldet.
@@ -240,14 +239,16 @@ Aus der Webapplikation kann diese CSV ebenfalls erzeugt werden. Hierfür den Mon
 
 <img src=Pics/abrechnung_web_example.png alt="Abrechnung Webansicht" width="480">
 
-## Kurzanleitung zum Betrieb der Webapp
+## Kurzanleitung zum Betrieb der Webapp + Datenbankserver
 
-Um die Webanwendung den Nutzern zugägnlich zu machen wird ein Server benötigt. Dieser kann sowohl im lokalen Netztwerk als auch in der Cloud betrieben werden. Wir empfehlen zum Betrieb des Webservers den klassichen LAMP Stack. Konfigurationen mit nginx sind auch problemlos möglich. Als Datenbank muss eine zu MySQL kompatible Datenbank gewählt werden. An dieser Stelle geben wir keine detailierte Anleitung zum einrichten eines LAMP Stacks, da sich breits zahlreiche Anleitungen im Internet finden lassen. Es folgt jedoch eine Auflistung von Schritten, die für einen sicheren, datenschutzkompatiblen Betrieb notwendig sind (OHNE GEWÄHR!):
+Um die Webanwendung den Nutzern zugänglich zu machen wird ein Server benötigt. Dieser kann sowohl im lokalen Netztwerk als auch in der Cloud betrieben werden. Wir empfehlen zum Betrieb des Webservers den klassichen LAMP Stack. Konfigurationen mit nginx sind auch problemlos möglich. Als Datenbank muss eine zu MySQL kompatible Datenbank gewählt werden. An dieser Stelle geben wir keine detailierte Anleitung zum einrichten eines LAMP Stacks, da sich breits zahlreiche Anleitungen im Internet finden lassen. Es folgt jedoch eine Auflistung von Schritten, die für einen sicheren, datenschutzkompatiblen Betrieb notwendig sind (nicht unbedingt hinreichend und OHNE GEWÄHR!):
 * Einrichtung einer Firewall mit Freigaben für die Ports: 22, 80, 443 und 3306
 * Installation eines SSL/TSL Zertifikats, z.B. von Let's Encrypt
 * Erzwingen von SSL/TSL Verschlüsselung für die Kommunikation mit der Website
 * Anlegen von MySQL/MariaDB Datenbanken
-* Anlegen von Datenbankuser für die webapp, z.B.: webservice@localhost Authentifizierung Passwort oder Socket
-* Anlegen von Datenbankuser für die terminal Anwendung, z.B. terminal@%, WICHTIG erzwigen von SSL/TSL Verschlüsselung, 
+* Anlegen von Datenbankuser für die webapp, z.B.: webservice@localhost, Authentifizierung Passwort oder Socket
+* Anlegen von Datenbankuser für die terminal Anwendung, z.B. terminal@%, WICHTIG: Erzwigen von SSL/TSL Verschlüsselung, 
 Authentifizierung Passwort
 * Aktivierung von Serverseitiger SSL/TSL Verschlüsselung für den Datenbankserver + Installation von SSL/TSL Zertifikat
+
+Beachte: Diese Schritte sind nur gültig falls sich Datenbank und Webapp auf dem selben Server befinden. Im Prinzip ist dies nicht notwenig, aber vereinfacht die sichere Kommunikation zwischen Webapp und Datenbank erheblich.
