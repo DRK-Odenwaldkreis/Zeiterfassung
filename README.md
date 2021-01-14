@@ -68,6 +68,11 @@ Innerhalb der SQLite werden nur die gescannten Codes und der Zeitpunkt gespeiche
 
 ## Webpage
 
+Die Webanwendung dient zu Administration der Mitarbeiter sowie zur Erzeugung von Reports und zum erstellen von Zeiten sowie deren Korrektur.
+
+<img src=Pics/website.png alt="Tagesreport Beispiel" width="480">
+
+
 ### Personaldaten
 
 ### Zeitkorrektur
