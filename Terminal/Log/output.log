@@ -445,3 +445,204 @@
 2021-01-12 20:20:28,664 - ScanEvent - DEBUG - Calculating sum of the shift
 2021-01-12 20:20:28,665 - ScanEvent - DEBUG - Shift sum is 00 hours and 00 minutes
 2021-01-12 20:20:28,666 - Application - DEBUG - Wiping all information from screen
+2021-01-14 08:50:32,986 - Main - DEBUG - Starting
+2021-01-14 08:50:51,400 - Main - DEBUG - Starting
+2021-01-14 08:50:53,615 - Application - DEBUG - The following input was received, starting event process: 12345678
+2021-01-14 08:50:53,615 - ScanEvent - DEBUG - Constructor was called
+2021-01-14 08:50:53,615 - ScanEvent - DEBUG - The following Hash was scanned: 12345678
+2021-01-14 08:50:53,615 - ScanEvent - DEBUG - Starting Databaseconnect
+2021-01-14 08:50:53,615 - Database - DEBUG - Constructor was called
+2021-01-14 08:50:53,683 - mysql.connector.connection - DEBUG - new_auth_plugin: mysql_native_password
+2021-01-14 08:50:53,780 - ScanEvent - DEBUG - Checking if QR is valid
+2021-01-14 08:50:53,781 - ScanEvent - DEBUG - QR is valid
+2021-01-14 08:50:53,782 - Failover in local DB - DEBUG - Creating local copy of data from following hash: 12345678
+2021-01-14 08:50:53,782 - ScanEvent - DEBUG - Getting the Personalnummer and names, using the following query: Select Personalnummer, Vorname, Nachname from Personal where Hash='12345678';
+2021-01-14 08:50:53,783 - Failover in local DB - DEBUG - Wiriting to database using the following query: INSERT INTO Dienste ("Hash") Values ('12345678')
+2021-01-14 08:50:53,961 - ScanEvent - WARNING - Person is unknown
+2021-01-14 08:50:53,961 - Application - DEBUG - Displaying Person is unknown
+2021-01-14 08:50:53,962 - Application - DEBUG - Wiping all information from screen
+2021-01-14 08:50:56,337 - Application - DEBUG - The following input was received, starting event process: 1234
+2021-01-14 08:50:56,337 - ScanEvent - DEBUG - Constructor was called
+2021-01-14 08:50:56,337 - ScanEvent - DEBUG - The following Hash was scanned: 1234
+2021-01-14 08:50:56,337 - ScanEvent - DEBUG - Starting Databaseconnect
+2021-01-14 08:50:56,337 - Database - DEBUG - Constructor was called
+2021-01-14 08:50:56,343 - mysql.connector.connection - DEBUG - new_auth_plugin: mysql_native_password
+2021-01-14 08:50:56,354 - ScanEvent - DEBUG - Checking if QR is valid
+2021-01-14 08:50:56,354 - ScanEvent - WARNING - The QR is not a valid QR Code
+2021-01-14 08:50:56,354 - Application - DEBUG - Displaying that QR is not valid
+2021-01-14 08:50:56,357 - Application - DEBUG - Wiping all information from screen
+2021-01-14 08:51:54,379 - Main - DEBUG - Starting
+2021-01-14 08:51:56,847 - Application - DEBUG - The following input was received, starting event process: 12345678
+2021-01-14 08:51:56,847 - ScanEvent - DEBUG - Constructor was called
+2021-01-14 08:51:56,847 - ScanEvent - DEBUG - The following Hash was scanned: 12345678
+2021-01-14 08:51:56,847 - ScanEvent - DEBUG - Starting Databaseconnect
+2021-01-14 08:51:56,847 - Database - DEBUG - Constructor was called
+2021-01-14 08:51:56,847 - mysql.connector.connection - DEBUG - new_auth_plugin: mysql_native_password
+2021-01-14 08:51:56,863 - ScanEvent - DEBUG - Checking if QR is valid
+2021-01-14 08:51:56,863 - ScanEvent - DEBUG - QR is valid
+2021-01-14 08:51:56,863 - Failover in local DB - DEBUG - Creating local copy of data from following hash: 12345678
+2021-01-14 08:51:56,863 - ScanEvent - DEBUG - Getting the Personalnummer and names, using the following query: Select Personalnummer, Vorname, Nachname from Personal where Hash='12345678';
+2021-01-14 08:51:56,863 - Failover in local DB - DEBUG - Wiriting to database using the following query: INSERT INTO Dienste ("Hash") Values ('12345678')
+2021-01-14 08:51:56,869 - ScanEvent - DEBUG - Person is known, received the following identity: (6701, 'asperiores', 'voluptatem')
+2021-01-14 08:51:56,869 - ScanEvent - DEBUG - Found the following Personalnummer, Vorname, Name in the identity: 6701, asperiores, voluptatem
+2021-01-14 08:51:56,869 - ScanEvent - DEBUG - Checking if same code was scanned the last 5 secondsusing the following query: Select * from Dienste where Personalnummer=6701 and Updated > (NOW() - INTERVAL 5 SECOND);
+2021-01-14 08:51:56,875 - ScanEvent - DEBUG - Code was not scanned within the last 5 seconds
+2021-01-14 08:51:56,875 - ScanEvent - DEBUG - Checking whether there are open entries, using the following query: Select * from Dienste where Personalnummer=6701 and Dienstende is NULL
+2021-01-14 08:51:56,877 - ScanEvent - DEBUG - Received the following entries: []
+2021-01-14 08:51:56,877 - ScanEvent - DEBUG - No other entries found, seems to be Dienstbeginn
+2021-01-14 08:51:56,877 - ScanEvent - DEBUG - Opening shift, using the following query and tupel: Insert into Dienste (Personalnummer) VALUES ('%s'), (6701,)
+2021-01-14 08:51:56,939 - Application - DEBUG - Wiping all information from screen
+2021-01-14 08:52:08,164 - Main - DEBUG - Starting
+2021-01-14 08:53:17,670 - Application - DEBUG - The following input was received, starting event process: 12345678
+2021-01-14 08:53:17,670 - ScanEvent - DEBUG - Constructor was called
+2021-01-14 08:53:17,670 - ScanEvent - DEBUG - The following Hash was scanned: 12345678
+2021-01-14 08:53:17,670 - ScanEvent - DEBUG - Starting Databaseconnect
+2021-01-14 08:53:17,670 - Database - DEBUG - Constructor was called
+2021-01-14 08:53:17,686 - mysql.connector.connection - DEBUG - new_auth_plugin: mysql_native_password
+2021-01-14 08:53:17,686 - ScanEvent - DEBUG - Checking if QR is valid
+2021-01-14 08:53:17,686 - ScanEvent - DEBUG - QR is valid
+2021-01-14 08:53:17,686 - Failover in local DB - DEBUG - Creating local copy of data from following hash: 12345678
+2021-01-14 08:53:17,686 - ScanEvent - DEBUG - Getting the Personalnummer and names, using the following query: Select Personalnummer, Vorname, Nachname from Personal where Hash='12345678';
+2021-01-14 08:53:17,701 - Failover in local DB - DEBUG - Wiriting to database using the following query: INSERT INTO Dienste ("Hash") Values ('12345678')
+2021-01-14 08:53:17,704 - ScanEvent - DEBUG - Person is known, received the following identity: (6701, 'asperiores', 'voluptatem')
+2021-01-14 08:53:17,704 - ScanEvent - DEBUG - Found the following Personalnummer, Vorname, Name in the identity: 6701, asperiores, voluptatem
+2021-01-14 08:53:17,704 - ScanEvent - DEBUG - Checking if same code was scanned the last 5 secondsusing the following query: Select * from Dienste where Personalnummer=6701 and Updated > (NOW() - INTERVAL 5 SECOND);
+2021-01-14 08:53:17,710 - ScanEvent - DEBUG - Code was not scanned within the last 5 seconds
+2021-01-14 08:53:17,710 - ScanEvent - DEBUG - Checking whether there are open entries, using the following query: Select * from Dienste where Personalnummer=6701 and Dienstende is NULL
+2021-01-14 08:53:17,711 - ScanEvent - DEBUG - Received the following entries: [(5003, 6701, datetime.datetime(2021, 1, 14, 8, 51, 56), None, 'Normal', datetime.datetime(2021, 1, 14, 8, 51, 56), 0)]
+2021-01-14 08:53:17,711 - ScanEvent - DEBUG - One entry found, seems to be Dienstende
+2021-01-14 08:53:17,711 - ScanEvent - DEBUG - Found shift start at: 2021-01-14 08:51:56
+2021-01-14 08:53:17,711 - ScanEvent - DEBUG - Closing shift, using the following query: Update Dienste SET Dienstende = current_timestamp(), AutoClosed = '0' WHERE Personalnummer = 6701 and Dienstende is NULL ORDER BY Dienstbeginn DESC LIMIT 1
+2021-01-14 08:53:17,786 - ScanEvent - DEBUG - Calculating sum of the shift
+2021-01-14 08:53:17,786 - ScanEvent - DEBUG - Shift sum is 00 hours and 01 minutes
+2021-01-14 08:53:17,786 - Application - DEBUG - Wiping all information from screen
+2021-01-14 08:54:13,153 - Application - DEBUG - The following input was received, starting event process: 12345678
+2021-01-14 08:54:13,154 - ScanEvent - DEBUG - Constructor was called
+2021-01-14 08:54:13,154 - ScanEvent - DEBUG - The following Hash was scanned: 12345678
+2021-01-14 08:54:13,154 - ScanEvent - DEBUG - Starting Databaseconnect
+2021-01-14 08:54:13,154 - Database - DEBUG - Constructor was called
+2021-01-14 08:54:13,159 - mysql.connector.connection - DEBUG - new_auth_plugin: mysql_native_password
+2021-01-14 08:54:13,167 - ScanEvent - DEBUG - Checking if QR is valid
+2021-01-14 08:54:13,167 - ScanEvent - DEBUG - QR is valid
+2021-01-14 08:54:13,168 - Failover in local DB - DEBUG - Creating local copy of data from following hash: 12345678
+2021-01-14 08:54:13,168 - ScanEvent - DEBUG - Getting the Personalnummer and names, using the following query: Select Personalnummer, Vorname, Nachname from Personal where Hash='12345678';
+2021-01-14 08:54:13,169 - ScanEvent - DEBUG - Person is known, received the following identity: (6701, 'asperiores', 'voluptatem')
+2021-01-14 08:54:13,169 - ScanEvent - DEBUG - Found the following Personalnummer, Vorname, Name in the identity: 6701, asperiores, voluptatem
+2021-01-14 08:54:13,169 - ScanEvent - DEBUG - Checking if same code was scanned the last 5 secondsusing the following query: Select * from Dienste where Personalnummer=6701 and Updated > (NOW() - INTERVAL 5 SECOND);
+2021-01-14 08:54:13,174 - Failover in local DB - DEBUG - Wiriting to database using the following query: INSERT INTO Dienste ("Hash") Values ('12345678')
+2021-01-14 08:54:13,175 - ScanEvent - DEBUG - Code was not scanned within the last 5 seconds
+2021-01-14 08:54:13,175 - ScanEvent - DEBUG - Checking whether there are open entries, using the following query: Select * from Dienste where Personalnummer=6701 and Dienstende is NULL
+2021-01-14 08:54:13,179 - ScanEvent - DEBUG - Received the following entries: []
+2021-01-14 08:54:13,180 - ScanEvent - DEBUG - No other entries found, seems to be Dienstbeginn
+2021-01-14 08:54:13,180 - ScanEvent - DEBUG - Opening shift, using the following query and tupel: Insert into Dienste (Personalnummer) VALUES ('%s'), (6701,)
+2021-01-14 08:54:13,279 - Application - DEBUG - Wiping all information from screen
+2021-01-14 08:54:41,545 - Application - DEBUG - The following input was received, starting event process: 12345678
+2021-01-14 08:54:41,545 - ScanEvent - DEBUG - Constructor was called
+2021-01-14 08:54:41,545 - ScanEvent - DEBUG - The following Hash was scanned: 12345678
+2021-01-14 08:54:41,545 - ScanEvent - DEBUG - Starting Databaseconnect
+2021-01-14 08:54:41,545 - Database - DEBUG - Constructor was called
+2021-01-14 08:54:41,550 - mysql.connector.connection - DEBUG - new_auth_plugin: mysql_native_password
+2021-01-14 08:54:41,557 - ScanEvent - DEBUG - Checking if QR is valid
+2021-01-14 08:54:41,557 - ScanEvent - DEBUG - QR is valid
+2021-01-14 08:54:41,558 - Failover in local DB - DEBUG - Creating local copy of data from following hash: 12345678
+2021-01-14 08:54:41,558 - ScanEvent - DEBUG - Getting the Personalnummer and names, using the following query: Select Personalnummer, Vorname, Nachname from Personal where Hash='12345678';
+2021-01-14 08:54:41,560 - ScanEvent - DEBUG - Person is known, received the following identity: (6701, 'asperiores', 'voluptatem')
+2021-01-14 08:54:41,560 - ScanEvent - DEBUG - Found the following Personalnummer, Vorname, Name in the identity: 6701, asperiores, voluptatem
+2021-01-14 08:54:41,560 - ScanEvent - DEBUG - Checking if same code was scanned the last 5 secondsusing the following query: Select * from Dienste where Personalnummer=6701 and Updated > (NOW() - INTERVAL 5 SECOND);
+2021-01-14 08:54:41,565 - Failover in local DB - DEBUG - Wiriting to database using the following query: INSERT INTO Dienste ("Hash") Values ('12345678')
+2021-01-14 08:54:41,566 - ScanEvent - DEBUG - Code was not scanned within the last 5 seconds
+2021-01-14 08:54:41,566 - ScanEvent - DEBUG - Checking whether there are open entries, using the following query: Select * from Dienste where Personalnummer=6701 and Dienstende is NULL
+2021-01-14 08:54:41,571 - ScanEvent - DEBUG - Received the following entries: [(5004, 6701, datetime.datetime(2021, 1, 14, 8, 54, 12), None, 'Normal', datetime.datetime(2021, 1, 14, 8, 54, 12), 0)]
+2021-01-14 08:54:41,571 - ScanEvent - DEBUG - One entry found, seems to be Dienstende
+2021-01-14 08:54:41,571 - ScanEvent - DEBUG - Found shift start at: 2021-01-14 08:54:12
+2021-01-14 08:54:41,571 - ScanEvent - DEBUG - Closing shift, using the following query: Update Dienste SET Dienstende = current_timestamp(), AutoClosed = '0' WHERE Personalnummer = 6701 and Dienstende is NULL ORDER BY Dienstbeginn DESC LIMIT 1
+2021-01-14 08:54:41,593 - ScanEvent - DEBUG - Calculating sum of the shift
+2021-01-14 08:54:41,593 - ScanEvent - DEBUG - Shift sum is 00 hours and 00 minutes
+2021-01-14 08:54:41,593 - Application - DEBUG - Wiping all information from screen
+2021-01-14 08:55:09,304 - Main - DEBUG - Starting
+2021-01-14 08:55:11,880 - Application - DEBUG - The following input was received, starting event process: 12345678
+2021-01-14 08:55:11,880 - ScanEvent - DEBUG - Constructor was called
+2021-01-14 08:55:11,880 - ScanEvent - DEBUG - The following Hash was scanned: 12345678
+2021-01-14 08:55:11,880 - ScanEvent - DEBUG - Starting Databaseconnect
+2021-01-14 08:55:11,880 - Database - DEBUG - Constructor was called
+2021-01-14 08:55:11,888 - mysql.connector.connection - DEBUG - new_auth_plugin: mysql_native_password
+2021-01-14 08:55:11,896 - ScanEvent - DEBUG - Checking if QR is valid
+2021-01-14 08:55:11,896 - ScanEvent - DEBUG - QR is valid
+2021-01-14 08:55:11,896 - Failover in local DB - DEBUG - Creating local copy of data from following hash: 12345678
+2021-01-14 08:55:11,896 - ScanEvent - DEBUG - Getting the Personalnummer and names, using the following query: Select Personalnummer, Vorname, Nachname from Personal where Hash='12345678';
+2021-01-14 08:55:11,896 - Failover in local DB - DEBUG - Wiriting to database using the following query: INSERT INTO Dienste ("Hash") Values ('12345678')
+2021-01-14 08:55:11,898 - ScanEvent - DEBUG - Person is known, received the following identity: (6701, 'asperiores', 'voluptatem')
+2021-01-14 08:55:11,898 - ScanEvent - DEBUG - Found the following Personalnummer, Vorname, Name in the identity: 6701, asperiores, voluptatem
+2021-01-14 08:55:11,898 - ScanEvent - DEBUG - Checking if same code was scanned the last 5 secondsusing the following query: Select * from Dienste where Personalnummer=6701 and Updated > (NOW() - INTERVAL 5000 SECOND);
+2021-01-14 08:55:11,904 - ScanEvent - WARNING - Code was scanned in the last 5 seconds, dropping scan event.
+2021-01-14 08:55:11,904 - Application - DEBUG - Displaying that code was already scanned
+2021-01-14 08:55:11,904 - Application - DEBUG - Wiping all information from screen
+2021-01-14 08:55:32,217 - Application - DEBUG - The following input was received, starting event process: 12345678
+2021-01-14 08:55:32,218 - ScanEvent - DEBUG - Constructor was called
+2021-01-14 08:55:32,218 - ScanEvent - DEBUG - The following Hash was scanned: 12345678
+2021-01-14 08:55:32,218 - ScanEvent - DEBUG - Starting Databaseconnect
+2021-01-14 08:55:32,218 - Database - DEBUG - Constructor was called
+2021-01-14 08:55:32,224 - mysql.connector.connection - DEBUG - new_auth_plugin: mysql_native_password
+2021-01-14 08:55:32,231 - ScanEvent - DEBUG - Checking if QR is valid
+2021-01-14 08:55:32,231 - ScanEvent - DEBUG - QR is valid
+2021-01-14 08:55:32,232 - Failover in local DB - DEBUG - Creating local copy of data from following hash: 12345678
+2021-01-14 08:55:32,232 - ScanEvent - DEBUG - Getting the Personalnummer and names, using the following query: Select Personalnummer, Vorname, Nachname from Personal where Hash='12345678';
+2021-01-14 08:55:32,234 - ScanEvent - DEBUG - Person is known, received the following identity: (6701, 'asperiores', 'voluptatem')
+2021-01-14 08:55:32,234 - ScanEvent - DEBUG - Found the following Personalnummer, Vorname, Name in the identity: 6701, asperiores, voluptatem
+2021-01-14 08:55:32,234 - ScanEvent - DEBUG - Checking if same code was scanned the last 5 secondsusing the following query: Select * from Dienste where Personalnummer=6701 and Updated > (NOW() - INTERVAL 5000 SECOND);
+2021-01-14 08:55:32,239 - Failover in local DB - DEBUG - Wiriting to database using the following query: INSERT INTO Dienste ("Hash") Values ('12345678')
+2021-01-14 08:55:32,244 - ScanEvent - WARNING - Code was scanned in the last 5 seconds, dropping scan event.
+2021-01-14 08:55:32,244 - Application - DEBUG - Displaying that code was already scanned
+2021-01-14 08:55:32,244 - Application - DEBUG - Wiping all information from screen
+2021-01-14 08:56:08,176 - Application - DEBUG - The following input was received, starting event process: 12345678
+2021-01-14 08:56:08,176 - ScanEvent - DEBUG - Constructor was called
+2021-01-14 08:56:08,176 - ScanEvent - DEBUG - The following Hash was scanned: 12345678
+2021-01-14 08:56:08,176 - ScanEvent - DEBUG - Starting Databaseconnect
+2021-01-14 08:56:08,176 - Database - DEBUG - Constructor was called
+2021-01-14 08:56:08,192 - mysql.connector.connection - DEBUG - new_auth_plugin: mysql_native_password
+2021-01-14 08:56:08,198 - ScanEvent - DEBUG - Checking if QR is valid
+2021-01-14 08:56:08,198 - ScanEvent - DEBUG - QR is valid
+2021-01-14 08:56:08,198 - Failover in local DB - DEBUG - Creating local copy of data from following hash: 12345678
+2021-01-14 08:56:08,198 - ScanEvent - DEBUG - Getting the Personalnummer and names, using the following query: Select Personalnummer, Vorname, Nachname from Personal where Hash='12345678';
+2021-01-14 08:56:08,198 - ScanEvent - DEBUG - Person is known, received the following identity: (6701, 'asperiores', 'voluptatem')
+2021-01-14 08:56:08,198 - ScanEvent - DEBUG - Found the following Personalnummer, Vorname, Name in the identity: 6701, asperiores, voluptatem
+2021-01-14 08:56:08,198 - ScanEvent - DEBUG - Checking if same code was scanned the last 5 secondsusing the following query: Select * from Dienste where Personalnummer=6701 and Updated > (NOW() - INTERVAL 5000 SECOND);
+2021-01-14 08:56:08,198 - Failover in local DB - DEBUG - Wiriting to database using the following query: INSERT INTO Dienste ("Hash") Values ('12345678')
+2021-01-14 08:56:08,216 - ScanEvent - WARNING - Code was scanned in the last 5 seconds, dropping scan event.
+2021-01-14 08:56:08,216 - Application - DEBUG - Displaying that code was already scanned
+2021-01-14 08:56:08,216 - Application - DEBUG - Wiping all information from screen
+2021-01-14 08:57:11,521 - Application - DEBUG - The following input was received, starting event process: 12345677
+2021-01-14 08:57:11,522 - ScanEvent - DEBUG - Constructor was called
+2021-01-14 08:57:11,522 - ScanEvent - DEBUG - The following Hash was scanned: 12345677
+2021-01-14 08:57:11,522 - ScanEvent - DEBUG - Starting Databaseconnect
+2021-01-14 08:57:11,522 - Database - DEBUG - Constructor was called
+2021-01-14 08:57:11,528 - mysql.connector.connection - DEBUG - new_auth_plugin: mysql_native_password
+2021-01-14 08:57:11,536 - ScanEvent - DEBUG - Checking if QR is valid
+2021-01-14 08:57:11,536 - ScanEvent - DEBUG - QR is valid
+2021-01-14 08:57:11,536 - Failover in local DB - DEBUG - Creating local copy of data from following hash: 12345677
+2021-01-14 08:57:11,536 - ScanEvent - DEBUG - Getting the Personalnummer and names, using the following query: Select Personalnummer, Vorname, Nachname from Personal where Hash='12345677';
+2021-01-14 08:57:11,539 - ScanEvent - WARNING - Person is unknown
+2021-01-14 08:57:11,539 - Application - DEBUG - Displaying Person is unknown
+2021-01-14 08:57:11,539 - Application - DEBUG - Wiping all information from screen
+2021-01-14 08:57:11,543 - Failover in local DB - DEBUG - Wiriting to database using the following query: INSERT INTO Dienste ("Hash") Values ('12345677')
+2021-01-14 09:19:21,322 - Application - DEBUG - The following input was received, starting event process: 124
+2021-01-14 09:19:21,322 - ScanEvent - DEBUG - Constructor was called
+2021-01-14 09:19:21,322 - ScanEvent - DEBUG - The following Hash was scanned: 124
+2021-01-14 09:19:21,322 - ScanEvent - DEBUG - Starting Databaseconnect
+2021-01-14 09:19:21,322 - Database - DEBUG - Constructor was called
+2021-01-14 09:19:21,338 - mysql.connector.connection - DEBUG - new_auth_plugin: mysql_native_password
+2021-01-14 09:19:21,338 - ScanEvent - DEBUG - Checking if QR is valid
+2021-01-14 09:19:21,338 - ScanEvent - WARNING - The QR is not a valid QR Code
+2021-01-14 09:19:21,338 - Application - DEBUG - Displaying that QR is not valid
+2021-01-14 09:19:21,338 - Application - DEBUG - Wiping all information from screen
+2021-01-14 09:22:55,467 - Main - DEBUG - Starting
+2021-01-14 09:23:08,315 - Application - DEBUG - The following input was received, starting event process: 12345678
+2021-01-14 09:23:08,315 - ScanEvent - DEBUG - Constructor was called
+2021-01-14 09:23:08,315 - ScanEvent - DEBUG - The following Hash was scanned: 12345678
+2021-01-14 09:23:08,315 - ScanEvent - DEBUG - Starting Databaseconnect
+2021-01-14 09:23:08,315 - Database - DEBUG - Constructor was called
+2021-01-14 09:23:08,331 - mysql.connector.connection - DEBUG - new_auth_plugin: mysql_native_password
+2021-01-14 09:23:08,409 - Database - ERROR - The following error occured in constructor of database: 1045 (28000): Access denied for user 'root123'@'172.17.0.1' (using password: YES)
+2021-01-14 09:23:08,409 - ScanEvent - ERROR - The following error occured in the constructor such that DatabaseDisconnect exception will be raised: 
+2021-01-14 09:23:08,409 - Application - WARNING - Displaying that no connectivity but values will be stored
+2021-01-14 09:23:08,409 - Application - DEBUG - Wiping all information from screen
