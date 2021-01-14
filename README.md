@@ -132,10 +132,37 @@ Die Webanwendung dient zu Administration der Mitarbeiter sowie zur Erzeugung von
 
 <img src=Pics/website.png alt="Tagesreport Beispiel" width="480">
 
+Für das login sind zwei Tabellen in der Datenbank notwendig. Diese lauten li_user und li_token.
+In der li_user werden die Benutzer angelegt. Später kann ggf. eine admin Ansicht dazu kommen.
+Mittels Passwort zurücksetzen Funktion kann ein Passwort gesetzt werden.
+
+Nach erfolgreichen Login kann aus den drei Modulen ausgweählt werden. Es gibt einen Autologout, die Zeit wird oben rechts angezeigt.
+
+<img src=Pics/website_module.png alt="Tagesreport Beispiel" width="480">
+
+Zurück zur Hauptseite aus den Modulen gelangt man über den Header "DRK".
 
 ### Personaldaten
 
+Die Personaldaten dienen zum Anlegen und Einsehen von Mitarbeitern.
+Prinzipielle gibt es hier zwei Funktionen. Einmal das Anlegen von Mitarbeitern und einmal das Auswählen.
+
+<img src=Pics/personaldaten_web.png alt="Tagesreport Beispiel" width="480">
+
+Das Anlegen geschieht über das Eintragen von Personalnummer, Vorname und Nachname. Bei der Anlage wird ein Datenbankeintrag erzeugt. Dies beinhaltet den zufällig erzeugten QR Code.
+
+Auswahl der Person geschieht über Suchen mittels Personalnummer oder Namen. Hier werden der QR Code angezeigt und es gibt die Möglichkeit des erstellens von Reports.
+
+<img src=Pics/einzelnachweis_web_example.png alt="Tagesreport Webansicht" width="480">
+
 ### Zeitkorrektur
+
+Beim Buchen der Zeiten kann es zu Fehlern kommen. Daher gibt es im Modul der Zeitkorrektur die Möglichkeit Zeiten zu bearbeiten. Ebenfalls existiert hier die Möglichkeit Zeiten wie z.B. Urlaub oder Krank hier einzutragen.
+
+Für die Verwendung wird der Mitarbeiter und der Tag ausgewählt. Die geleisteten Dienste werden aufgeführt und können korrigiert werden. Neue Dienste können hier ebenfalls hinzugefügt werden.
+
+<img src=Pics/zeitkorrektur_web.png alt="Tagesreport Beispiel" width="480">
+
 
 ### Tagesreports
 Der Tagesreport dient dazu, die Dienste des Vortages aufzulisten. Dies kann z.b. per Cron dem Schichtleiter zugesendet werden. Das Layout als Beispiel sieht wie folgt aus:
