@@ -75,6 +75,57 @@ Innerhalb der SQLite werden nur die gescannten Codes und der Zeitpunkt gespeiche
 
 <img src=https://recordit.co/tXYJC0PjDR.gif alt="Server Disconnect" width="480">
 
+
+## MySQL Datenbank
+
+Für die persistierung wird eine MySQL Datenbank verwendet. Diese kann sowohl von einem Dienstleister in einem Rechenzentrum betrieben werden, als auch lokal auf dem Rechner des Terminals laufen. Je nachdem aus welchen Netzwerken Zugang zur Webapplikation benötigt würde, ist dies dementsprechend zu planen.
+
+Für die Verwendung des Terminals werden zwei Tabellen benötigt. 
+Einmal "Personal", welche den zufällig generierten code enthält welcher auch auf der Zugangskarte gedruckt ist, zusammen mit der Personalnummer und dem Namen.
+Darüberhinaus einmal "Dienste", in welcher die Dienste mit Beginn und Ende stehen.
+
+Erzeugt werden können die Tabellen mit folgenden SQL statements:
+
+Dienste:
+```mysql
+CREATE TABLE `Dienste` (
+  `id` int(11) NOT NULL,
+  `Personalnummer` int(11) NOT NULL,
+  `Dienstbegin` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `Dienstende` timestamp NULL DEFAULT NULL,
+  `Art` varchar(50) NOT NULL DEFAULT 'Normal',
+  `Updated` timestamp NOT NULL DEFAULT current_timestamp(),
+  `AutoClosed` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE `Dienste`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `Dienste`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
+COMMIT;  
+```
+
+Personal:
+```mysql
+CREATE TABLE `Personal` (
+  `id` int(11) NOT NULL,
+  `Vorname` varchar(50) NOT NULL,
+  `Nachname` varchar(50) NOT NULL,
+  `Personalnummer` int(11) NOT NULL,
+  `Hash` char(8) NOT NULL,
+  `Updated` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE `Personal`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `Personalnummer` (`Personalnummer`),
+  ADD UNIQUE KEY `Hash` (`Hash`);
+ALTER TABLE `Personal`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+COMMIT;
+```
+
 ## Webpage
 
 Die Webanwendung dient zu Administration der Mitarbeiter sowie zur Erzeugung von Reports und zum erstellen von Zeiten sowie deren Korrektur.
