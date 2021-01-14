@@ -51,7 +51,6 @@ Dem Mitarbeiter wird die Dienstdauer mitgeteilt. Pausen werden hier nicht abgezo
 Da der Scanvorgang sehr schnell sein kann, können Doppelbuchungen entstehen. Daher wird jede Buchung überprüft ob es in den letzten 5s bereits eine Buchung gab. D.h. es existiert eine Totzeit von 5s auf der spalte updated. Dies wird dem Mitarbeiter auch angezeigt und die Buchung nicht weiter verarbeitet.
 
 <img src=https://recordit.co/Ot6s0QmM3r.gif alt="Gehen" width="480">
-![Doppelbuchung](https://recordit.co/9DDWciYAdu.gif)
 
 Sofern ein QR Code von jmd. gescannt wird der nicht im System angelegt ist, wird die Buchung ebenfalls verworfen. Das der Mitarbeiter unbekannt ist wird ebenfalls angezeigt.
 Da die QR Codes beim Anegen in der Webanwendung zufällig erzeugt werden, können QR Codes nur schwer "gefälscht" werden.
@@ -70,6 +69,19 @@ Innerhalb der SQLite werden nur die gescannten Codes und der Zeitpunkt gespeiche
 ## Webpage
 
 ## Tagesreports
+Der Tagesreport dient dazu, die Dienste des Vortages aufzulisten. Dies kann z.b. per Cron dem Schichtleiter zugesendet werden. Das Layout als Beispiel sieht wie folgt aus:
+
+<img src=Pics/tagesreport_example.png alt="Server Disconnect" width="480">
+
+Nachts werden via Konfiguration in phpmyadmin alle offenen Dienste automatisch geschlossen. Dies wird in der Spalte "AutoClose" auch markiert, so dass im Report die Zeiteinträge die vermutlich fehlerhaft sind farblich markiert werden.
+
+Der nächtliche Autoclose wird konfiguriert mit:
+
+```mysql
+CREATE EVENT `Nightly AutoClose` ON SCHEDULE EVERY 23 DAY STARTS '2021-01-01 14:49:49' ENDS '2021-12-31 14:49:49' ON COMPLETION NOT PRESERVE ENABLE DO Update Dienste SET Dienstende = current_timestamp(), AutoClosed = '1' WHERE Dienstende is NULL
+```
+
+Das setzten der pdf kann unter Tagesreport/pdf.py angepasst werden. Ausführen der job.pdf ohne Argmente erzeugt einen Tagesreport des vergangenen Tages. Beim Übergaben eines Datums in der Form "YYYY-MM-DD" wird der Tagesreport für den übergebenen Tag erzeugt.
 
 ## Einzelabrechnungen
 
