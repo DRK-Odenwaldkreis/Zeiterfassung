@@ -55,7 +55,7 @@ Dem Mitarbeiter wird die Dienstdauer mitgeteilt. Pausen werden hier nicht abgezo
 #### Doppelt gescannt
 Da der Scanvorgang sehr schnell sein kann, können Doppelbuchungen entstehen. Daher wird jede Buchung überprüft ob es in den letzten 5s bereits eine Buchung gab. D.h. es existiert eine Totzeit von 5s auf der spalte updated. Dies wird dem Mitarbeiter auch angezeigt und die Buchung nicht weiter verarbeitet.
 
-<img src=https://recordit.co/Ot6s0QmM3r.gif alt="Gehen" width="480">
+<img src=https://recordit.co/9DDWciYAdu.gif alt="Gehen" width="480">
 
 #### Unbekannter Mitarbeiter
 Sofern ein QR Code von jmd. gescannt wird der nicht im System angelegt ist, wird die Buchung ebenfalls verworfen. Das der Mitarbeiter unbekannt ist wird ebenfalls angezeigt.
