@@ -163,9 +163,9 @@ Für die Verwendung wird der Mitarbeiter und der Tag ausgewählt. Die geleistete
 
 <img src=Pics/zeitkorrektur_web.png alt="Tagesreport Beispiel" width="480">
 
-
 ### Tagesreports
-Der Tagesreport dient dazu, die Dienste des Vortages aufzulisten. Dies kann z.b. per Cron dem Schichtleiter zugesendet werden. Das Layout als Beispiel sieht wie folgt aus:
+
+Der Tagesreport m Modul Reports dient dazu, die Dienste des Vortages aufzulisten. Dies kann z.b. per Cron dem Schichtleiter zugesendet werden. Das Layout als Beispiel sieht wie folgt aus:
 
 <img src=Pics/tagesreport_example.png alt="Tagesreport Beispiel" width="480">
 
