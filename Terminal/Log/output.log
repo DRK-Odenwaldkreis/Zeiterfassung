@@ -646,3 +646,79 @@
 2021-01-14 09:23:08,409 - ScanEvent - ERROR - The following error occured in the constructor such that DatabaseDisconnect exception will be raised: 
 2021-01-14 09:23:08,409 - Application - WARNING - Displaying that no connectivity but values will be stored
 2021-01-14 09:23:08,409 - Application - DEBUG - Wiping all information from screen
+2021-01-15 10:11:28,310 - Main - DEBUG - Starting
+2021-01-15 10:11:30,861 - Application - DEBUG - The following input was received, starting event process: 12345678
+2021-01-15 10:11:30,861 - ScanEvent - DEBUG - Constructor was called
+2021-01-15 10:11:30,861 - ScanEvent - DEBUG - The following Hash was scanned: 12345678
+2021-01-15 10:11:30,861 - ScanEvent - DEBUG - Starting Databaseconnect
+2021-01-15 10:11:30,861 - Database - DEBUG - Constructor was called
+2021-01-15 10:11:52,140 - Database - ERROR - The following error occured in constructor of database: 2003: Can't connect to MySQL server on '10.0.1.8:3306' (10060 A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond)
+2021-01-15 10:11:52,140 - ScanEvent - ERROR - The following error occured in the constructor such that DatabaseDisconnect exception will be raised: 
+2021-01-15 10:11:52,140 - Application - WARNING - Displaying that no connectivity but values will be stored
+2021-01-15 10:11:52,140 - Application - DEBUG - Wiping all information from screen
+2021-01-15 10:11:52,200 - Application - DEBUG - The following input was received, starting event process: 1234
+2021-01-15 10:11:52,200 - ScanEvent - DEBUG - Constructor was called
+2021-01-15 10:11:52,200 - ScanEvent - DEBUG - The following Hash was scanned: 1234
+2021-01-15 10:11:52,200 - ScanEvent - DEBUG - Starting Databaseconnect
+2021-01-15 10:11:52,200 - Database - DEBUG - Constructor was called
+2021-01-15 10:12:13,547 - Database - ERROR - The following error occured in constructor of database: 2003: Can't connect to MySQL server on '10.0.1.8:3306' (10060 A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond)
+2021-01-15 10:12:13,547 - ScanEvent - ERROR - The following error occured in the constructor such that DatabaseDisconnect exception will be raised: 
+2021-01-15 10:12:13,547 - Application - WARNING - Displaying that no connectivity but values will be stored
+2021-01-15 10:12:13,562 - Application - DEBUG - Wiping all information from screen
+2021-01-15 10:13:21,408 - Main - DEBUG - Starting
+2021-01-15 10:13:23,600 - Application - DEBUG - The following input was received, starting event process: 12345678
+2021-01-15 10:13:23,600 - ScanEvent - DEBUG - Constructor was called
+2021-01-15 10:13:23,600 - ScanEvent - DEBUG - The following Hash was scanned: 12345678
+2021-01-15 10:13:23,600 - ScanEvent - DEBUG - Starting Databaseconnect
+2021-01-15 10:13:23,600 - Database - DEBUG - Constructor was called
+2021-01-15 10:13:24,169 - mysql.connector.connection - DEBUG - new_auth_plugin: mysql_native_password
+2021-01-15 10:13:24,401 - ScanEvent - DEBUG - Checking if QR is valid
+2021-01-15 10:13:24,401 - ScanEvent - DEBUG - QR is valid
+2021-01-15 10:13:24,401 - Failover in local DB - DEBUG - Creating local copy of data from following hash: 12345678
+2021-01-15 10:13:24,401 - ScanEvent - DEBUG - Getting the Personalnummer and names, using the following query: Select Personalnummer, Vorname, Nachname from Personal where Hash='12345678';
+2021-01-15 10:13:24,458 - Failover in local DB - DEBUG - Wiriting to database using the following query: INSERT INTO Dienste ("Hash") Values ('12345678')
+2021-01-15 10:13:24,505 - ScanEvent - WARNING - Person is unknown
+2021-01-15 10:13:24,505 - Application - DEBUG - Displaying Person is unknown
+2021-01-15 10:13:24,505 - Application - DEBUG - Wiping all information from screen
+2021-01-15 10:13:27,556 - Application - DEBUG - The following input was received, starting event process: 12345678
+2021-01-15 10:13:27,556 - ScanEvent - DEBUG - Constructor was called
+2021-01-15 10:13:27,556 - ScanEvent - DEBUG - The following Hash was scanned: 12345678
+2021-01-15 10:13:27,556 - ScanEvent - DEBUG - Starting Databaseconnect
+2021-01-15 10:13:27,556 - Database - DEBUG - Constructor was called
+2021-01-15 10:13:27,833 - mysql.connector.connection - DEBUG - new_auth_plugin: mysql_native_password
+2021-01-15 10:13:28,065 - ScanEvent - DEBUG - Checking if QR is valid
+2021-01-15 10:13:28,065 - ScanEvent - DEBUG - QR is valid
+2021-01-15 10:13:28,065 - Failover in local DB - DEBUG - Creating local copy of data from following hash: 12345678
+2021-01-15 10:13:28,065 - ScanEvent - DEBUG - Getting the Personalnummer and names, using the following query: Select Personalnummer, Vorname, Nachname from Personal where Hash='12345678';
+2021-01-15 10:13:28,065 - Failover in local DB - DEBUG - Wiriting to database using the following query: INSERT INTO Dienste ("Hash") Values ('12345678')
+2021-01-15 10:13:28,112 - ScanEvent - WARNING - Person is unknown
+2021-01-15 10:13:28,112 - Application - DEBUG - Displaying Person is unknown
+2021-01-15 10:13:28,112 - Application - DEBUG - Wiping all information from screen
+2021-01-15 10:16:07,924 - Main - DEBUG - Starting
+2021-01-15 10:16:12,586 - Application - DEBUG - The following input was received, starting event process: 12345678
+2021-01-15 10:16:12,586 - ScanEvent - DEBUG - Constructor was called
+2021-01-15 10:16:12,586 - ScanEvent - DEBUG - The following Hash was scanned: 12345678
+2021-01-15 10:16:12,586 - ScanEvent - DEBUG - Starting Databaseconnect
+2021-01-15 10:16:12,586 - Database - DEBUG - Constructor was called
+2021-01-15 10:16:12,837 - mysql.connector.connection - DEBUG - new_auth_plugin: mysql_native_password
+2021-01-15 10:16:13,025 - ScanEvent - DEBUG - Checking if QR is valid
+2021-01-15 10:16:13,025 - ScanEvent - DEBUG - QR is valid
+2021-01-15 10:16:13,025 - Failover in local DB - DEBUG - Creating local copy of data from following hash: 12345678
+2021-01-15 10:16:13,025 - ScanEvent - DEBUG - Getting the Personalnummer and names, using the following query: Select Personalnummer, Vorname, Nachname from Personal where Hash='12345678';
+2021-01-15 10:16:13,025 - Failover in local DB - DEBUG - Wiriting to database using the following query: INSERT INTO Dienste ("Hash") Values ('12345678')
+2021-01-15 10:16:13,056 - ScanEvent - WARNING - Person is unknown
+2021-01-15 10:16:13,056 - Application - DEBUG - Displaying Person is unknown
+2021-01-15 10:16:13,056 - Application - DEBUG - Wiping all information from screen
+2021-01-15 14:06:52,042 - Database - ERROR - The following error occured in constructor of database: 2003: Can't connect to MySQL server on 'impfzentrum-odw.de:3306' (11001 getaddrinfo failed)
+2021-01-15 14:06:52,042 - ScanEvent - ERROR - The following error occured in the constructor such that DatabaseDisconnect exception will be raised: 
+2021-01-15 14:09:23,122 - Database - ERROR - The following error occured in constructor of database: 2003: Can't connect to MySQL server on 'impfzentrum-odw.de:3306' (10060 A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond)
+2021-01-15 14:09:23,122 - ScanEvent - ERROR - The following error occured in the constructor such that DatabaseDisconnect exception will be raised: 
+2021-01-15 14:10:58,293 - Database - ERROR - The following error occured in constructor of database: 2003: Can't connect to MySQL server on 'impfzentrum-odw.de:3306' (10060 A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond)
+2021-01-15 14:10:58,293 - ScanEvent - ERROR - The following error occured in the constructor such that DatabaseDisconnect exception will be raised: 
+2021-01-15 14:10:58,314 - Database - ERROR - The following error occured in constructor of database: 2003: Can't connect to MySQL server on 'impfzentrum-odw.de:3306' (11001 getaddrinfo failed)
+2021-01-15 14:10:58,314 - ScanEvent - ERROR - The following error occured in the constructor such that DatabaseDisconnect exception will be raised: 
+2021-01-15 14:10:58,314 - Database - ERROR - The following error occured in constructor of database: 2003: Can't connect to MySQL server on 'impfzentrum-odw.de:3306' (11001 getaddrinfo failed)
+2021-01-15 14:10:58,314 - ScanEvent - ERROR - The following error occured in the constructor such that DatabaseDisconnect exception will be raised: 
+2021-01-15 15:18:52,300 - Database - ERROR - The following error occured in constructor of database: 2003: Can't connect to MySQL server on 'impfzentrum-odw.de:3306' (11001 getaddrinfo failed)
+2021-01-15 15:18:52,300 - ScanEvent - ERROR - The following error occured in the constructor such that DatabaseDisconnect exception will be raised: 
+2021-01-15 15:18:52,300 - Application - WARNING - Displaying that no connectivity but values will be stored

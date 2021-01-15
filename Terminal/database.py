@@ -26,10 +26,10 @@ class Database(object):
     def __init__(self):
         try:
             logger.debug('Constructor was called')
-            self.__host= '10.0.1.8'
-            self.__user= 'root'
-            self.__passwd = 'Test1234'
-            self.__dbName = 'Impfzentrum'
+            self.__host= 'xxx'
+            self.__user= 'xxx'
+            self.__passwd = 'xx'
+            self.__dbName = 'impfzentrum'
             self.connection = mysql.connector.connect(
                 host=self.__host, user=self.__user, passwd=self.__passwd, db=self.__dbName)
             self.cursor = self.connection.cursor()

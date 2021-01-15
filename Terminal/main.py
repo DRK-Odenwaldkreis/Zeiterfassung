@@ -7,6 +7,7 @@ import sqlite3
 from os import path
 import logging
 from logging.handlers import RotatingFileHandler
+from readconfig import read_config
 
 def init_local_failover_database():
     connection = sqlite3.connect("./Backup.db")
@@ -19,12 +20,24 @@ window.title("Zeitenbuchungssystem DRK Odenwaldkreis")
 width = window.winfo_screenwidth()
 height = window.winfo_screenheight()
 window.geometry(str(width) + "x" + str(height))
-#window.config(cursor="none")
+window.config(cursor="none")
 app = App(window)
 
 
 logFile = './Log/output.log'
-logging.basicConfig(filename=logFile,level=logging.DEBUG,format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+try:
+    logLevel = read_config("Terminal", "logLevel")
+    if logLevel == "Error":
+        logging.basicConfig(filename=logFile,level=logging.ERROR,format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    elif logLevel == "Debug":
+        logging.basicConfig(filename=logFile, level=logging.DEBUG,format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    else:
+        logging.basicConfig(filename=logFile, level=logging.INFO,
+                            format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+except:
+    logging.basicConfig(filename=logFile, level=logging.ERROR,
+                        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Main')
 logger.debug('Starting')
 

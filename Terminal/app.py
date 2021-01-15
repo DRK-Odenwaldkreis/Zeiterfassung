@@ -11,6 +11,8 @@ logger = logging.getLogger('Application')
 logger.debug('Logger for UI Application was initialised')
 
 afterIDMainLabel = None
+subInfoIDLabel = None
+waitingTime = 2500
 
 class App:
     def __init__(self, master):
@@ -47,13 +49,17 @@ class App:
     
     def enter_input(self, hash):
         global afterIDMainLabel
+        global subInfoIDLabel
         self.hash = hash
         logger.debug('The following input was received, starting event process: %s' % (self.hash))
         try:
             if afterIDMainLabel is not None:
                 self.mainLabel.after_cancel(afterIDMainLabel)
+                if subInfoIDLabel is not None:
+                    self.subInfoLabel.after_cancel(subInfoIDLabel)
                 self.subInfoLabel.config(bg='white', text="")
                 afterIDMainLabel = None
+                subInfoIDLabel = None
             self.event = ScanEvent(self.hash)
             self.event.check_validity()
             #After check validity he backup inside local database can already be writen due to the fact that only hash is required.
@@ -78,45 +84,47 @@ class App:
                 raise UnknownState
             self.subInfoLabel.configure(text=self.textSub)
             afterIDMainLabel = self.mainLabel.after(
-                1500, lambda: self.mainLabel.config(bg='white', text=""))
+                waitingTime, lambda: self.mainLabel.config(bg='white', text=""))
         except DatabaseDisconnect:
             logger.warning('Displaying that no connectivity but values will be stored')
             self.mainLabel.configure(
                 text="Server offline, Scan gespeichert", bg="Red")
             afterIDMainLabel = self.mainLabel.after(
-                2000, lambda: self.mainLabel.config(bg='white', text=""))
+                waitingTime, lambda: self.mainLabel.config(bg='white', text=""))
         except QRInvalid:
             logger.debug('Displaying that QR is not valid')
             self.mainLabel.configure(text="Ungültiger QR Code", bg="Red")
-            afterIDMainLabel = self.mainLabel.after(2000, lambda: self.mainLabel.config(bg='white', text=""))
+            afterIDMainLabel = self.mainLabel.after(
+                waitingTime, lambda: self.mainLabel.config(bg='white', text=""))
         except PersonUnknown:
             logger.debug('Displaying Person is unknown')
             self.mainLabel.configure(text="Mitarbeiter unbekannt", bg="Red")
             afterIDMainLabel = self.mainLabel.after(
-                2000, lambda: self.mainLabel.config(bg='white', text=""))
+                waitingTime, lambda: self.mainLabel.config(bg='white', text=""))
         except DeadTime:
             logger.debug('Displaying that code was already scanned')
             self.mainLabel.configure(text="Zeit bereits gebucht", bg="Blue")
             afterIDMainLabel = self.mainLabel.after(
-                2000, lambda: self.mainLabel.config(bg='white', text=""))
+                waitingTime, lambda: self.mainLabel.config(bg='white', text=""))
         except UnknownState:
             logger.debug('Displaying that state is unknown')
             self.mainLabel.configure(text="Unbekannter Fehler", bg="Red")
             afterIDMainLabel = self.mainLabel.after(
-                2000, lambda: self.mainLabel.config(bg='white', text=""))
+                waitingTime, lambda: self.mainLabel.config(bg='white', text=""))
         except UnableToWrite:
             logger.debug('Displaying that time could not be stored')
             self.mainLabel.configure(text="Zeiten konnten nicht gebucht werden", bg="Red")
             afterIDMainLabel = self.mainLabel.after(
-                2000, lambda: self.mainLabel.config(bg='white', text=""))
+                waitingTime, lambda: self.mainLabel.config(bg='white', text=""))
         except UnknownError:
             logger.debug('Displaying that unknown error occured')
             self.mainLabel.configure(text="Unbekannter Fehler", bg="Red")
             afterIDMainLabel = self.mainLabel.after(
-                2000, lambda: self.mainLabel.config(bg='white', text=""))
+                waitingTime, lambda: self.mainLabel.config(bg='white', text=""))
         except Exception as e:
             logger.error('The following error occured in enter input: %s' % (e))
         finally:
-            self.subInfoLabel.after(1500, lambda: self.subInfoLabel.config(bg='white', text=""))
+            self.subInfoLabel.after(
+                waitingTime, lambda: self.subInfoLabel.config(bg='white', text=""))
             logger.debug('Wiping all information from screen')
             self.inputTextField.delete(0, END)
