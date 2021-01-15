@@ -1,7 +1,6 @@
 # Zeiterfassung
 Eine Lösung zur Zeiterfassung der Helfer im Impfzentrum des Odenwaldkreises.
 
-
 # Komponenten
 
 Das Projekt besteht aus mehreren Teilanwendungen. Vor Ort gibt es ein Terminal an dem sich jeder Mitarbeiter an- und abmeldet.
@@ -33,7 +32,7 @@ Die Anwendung kann auch aus der Konsole direkt gestartet werden ohne sie zuvor a
 pip install -r requirements.txt
 ```
 
-Gestaterted wird die Anwendung über die main.py.
+Gestartet wird die Anwendung über die main.py.
 Loglevel kann dort angepasst werden. Die Logs landen im Ordner Log.
 
 ### Ablauf
@@ -78,7 +77,7 @@ Innerhalb der SQLite werden nur die gescannten Codes und der Zeitpunkt gespeiche
 
 ## MySQL Datenbank
 
-Für die persistierung wird eine MySQL Datenbank verwendet. Diese kann sowohl von einem Dienstleister in einem Rechenzentrum betrieben werden, als auch lokal auf dem Rechner des Terminals laufen. Je nachdem aus welchen Netzwerken Zugang zur Webapplikation benötigt würde, ist dies dementsprechend zu planen.
+Für die Persistierung wird eine MySQL Datenbank verwendet. Diese kann sowohl von einem Dienstleister in einem Rechenzentrum betrieben werden, als auch lokal auf dem Rechner des Terminals laufen. Je nachdem aus welchen Netzwerken Zugang zur Webapplikation benötigt würde, ist dies dementsprechend zu planen.
 
 Für die Verwendung des Terminals werden zwei Tabellen benötigt. 
 Einmal "Personal", welche den zufällig generierten code enthält welcher auch auf der Zugangskarte gedruckt ist, zusammen mit der Personalnummer und dem Namen.
@@ -157,7 +156,7 @@ Auswahl der Person geschieht über Suchen mittels Personalnummer oder Namen. Hie
 
 ### Zeitkorrektur
 
-Beim Buchen der Zeiten kann es zu Fehlern kommen. Daher gibt es im Modul der Zeitkorrektur die Möglichkeit Zeiten zu bearbeiten. Ebenfalls existiert hier die Möglichkeit Zeiten wie z.B. Urlaub oder Krank hier einzutragen.
+Beim Buchen der Zeiten kann es zu Fehlern kommen. Daher gibt es im Modul der Zeitkorrektur die Möglichkeit Zeiten zu bearbeiten. Ebenfalls existiert hier die Möglichkeit Zeiten wie z.B. Urlaub oder Krankheitstage hier einzutragen.
 
 Für die Verwendung wird der Mitarbeiter und der Tag ausgewählt. Die geleisteten Dienste werden aufgeführt und können korrigiert werden. Neue Dienste können hier ebenfalls hinzugefügt werden.
 
@@ -239,3 +238,17 @@ python job.py MONAT JAHR
 Aus der Webapplikation kann diese CSV ebenfalls erzeugt werden. Hierfür den Monat und das Jahr auswählen und auf CSV-Report klicken. Der Report wird zum Download angeboten.
 
 <img src=Pics/abrechnung_web_example.png alt="Abrechnung Webansicht" width="480">
+
+## Kurzanleitung zum Betrieb der Webapp + Datenbankserver
+
+Um die Webanwendung den Nutzern zugänglich zu machen wird ein Server benötigt. Dieser kann sowohl im lokalen Netztwerk als auch in der Cloud betrieben werden. Wir empfehlen zum Betrieb des Webservers den klassichen LAMP Stack. Konfigurationen mit nginx sind auch problemlos möglich. Als Datenbank muss eine zu MySQL kompatible Datenbank gewählt werden. An dieser Stelle geben wir keine detailierte Anleitung zum einrichten eines LAMP Stacks, da sich breits zahlreiche Anleitungen im Internet finden lassen. Es folgt jedoch eine Auflistung von Schritten, die für einen sicheren, datenschutzkompatiblen Betrieb notwendig sind (nicht unbedingt hinreichend und OHNE GEWÄHR!):
+* Einrichtung einer Firewall mit Freigaben für die Ports: 22, 80, 443 und 3306
+* Installation eines SSL/TSL Zertifikats, z.B. von Let's Encrypt
+* Erzwingen von SSL/TSL Verschlüsselung für die Kommunikation mit der Website
+* Anlegen von MySQL/MariaDB Datenbanken
+* Anlegen von Datenbankuser für die webapp, z.B.: webservice@localhost, Authentifizierung Passwort oder Socket
+* Anlegen von Datenbankuser für die terminal Anwendung, z.B. terminal@%, WICHTIG: Erzwigen von SSL/TSL Verschlüsselung, 
+Authentifizierung Passwort
+* Aktivierung von Serverseitiger SSL/TSL Verschlüsselung für den Datenbankserver + Installation von SSL/TSL Zertifikat
+
+Beachte: Diese Schritte sind nur gültig falls sich Datenbank und Webapp auf dem selben Server befinden. Im Prinzip ist dies nicht notwenig, aber vereinfacht die sichere Kommunikation zwischen Webapp und Datenbank erheblich.

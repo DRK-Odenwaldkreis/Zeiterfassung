@@ -19,7 +19,7 @@ sys.path.append("..")
 
 from utils.pausen import calculate_net_shift_time
 from utils.month import monthInt_to_string
-Logo = '../utils/logo_2021-01-10_Impfzentrum-1.png'
+Logo = '../utils/genericLogo.png'
 
 FreeSans='./pdfcreator/FreeSans.ttf'
 FreeSansBold = './pdfcreator/FreeSansBold.ttf'
