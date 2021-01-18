@@ -27,22 +27,41 @@ $Db=S_open_db();
 $errorhtml1 ='';
 $errorhtml2 ='';
 
+// Get staff number and name for select box
+$array_staff=S_get_multientry($Db,'SELECT Id, Personalnummer, Vorname, Nachname, Hash FROM Personal;');
+
 // Show staff
 $bool_staff_display=false;
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Search on number
-	if(isset($_POST['search_staff'])) {
-        $pnr=($_POST['pnr']);
-        $u_hash=S_get_entry($Db,'SELECT Hash FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
-        // check if pnr exists
-        if( ctype_alnum($u_hash) ) {
-            $bool_staff_display=true;
-            $u_vname=S_get_entry($Db,'SELECT Vorname FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
-            $u_nname=S_get_entry($Db,'SELECT Nachname FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
+	if(isset($_POST['search_staff']) || isset($_POST['search_qr'])) {
+        if(isset($_POST['search_staff'])) {
+            $pnr=($_POST['pnr']);
+            $u_hash=S_get_entry($Db,'SELECT Hash FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
+            // check if pnr exists
+            if( ctype_alnum($u_hash) ) {
+                $bool_staff_display=true;
+                $u_vname=S_get_entry($Db,'SELECT Vorname FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
+                $u_nname=S_get_entry($Db,'SELECT Nachname FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
+            } else {
+                // Message pnr not found
+                $errorhtml1 =  H_build_boxinfo( 0, 'Personalnummer nicht gefunden.', 'red' );
+            }
         } else {
-            // Message pnr not found
-            $errorhtml1 =  H_build_boxinfo( 0, 'Personalnummer nicht gefunden.', 'red' );
+            $u_hash=($_POST['qrcode']);
+            $pnr=S_get_entry($Db,'SELECT Personalnummer FROM Personal WHERE Hash="'.$u_hash.'";');
+            // check if qr code exists
+            if( $pnr>0 ) {
+                $bool_staff_display=true;
+                $u_vname=S_get_entry($Db,'SELECT Vorname FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
+                $u_nname=S_get_entry($Db,'SELECT Nachname FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
+            } else {
+                // Message qr code not found
+                $errorhtml1 =  H_build_boxinfo( 0, 'Kein Personal zum QR Code gefunden.', 'red' );
+            }
         }
+        
+        
     }
     // Add staff to database
 	if(isset($_POST['create_staff'])) {
@@ -113,6 +132,20 @@ echo '<h1>Personaldaten</h1>';
 //
 // Select staff
 //
+echo '
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />';
+
+echo "<script>
+$(document).ready(function () {
+    $('select').selectize({
+        sortField: 'text'
+    });
+});
+</script>";
+
+
 echo '<div class="card"><div class="row">
 <div class="col-sm-3">
 <h3>Personal wählen</h3>';
@@ -120,10 +153,26 @@ echo '<div class="card"><div class="row">
 echo'<form action="'.$current_site.'.php" method="post">
 <div class="input-group">
   <span class="input-group-addon" id="basic-addon1">Nr.</span>
-  <input type="text" class="form-control" placeholder="Personalnummer" aria-describedby="basic-addon1" name="pnr">
+  <select id="select-state" placeholder="Wähle eine Person..." name="pnr">
+  <option value="" selected>Wähle...</option>
+    ';
+    foreach($array_staff as $i) {
+        echo '<option value="'.$i[1].'">'.$i[1].' ('.$i[3].', '.$i[2].')</option>';
+    }
+    echo '
+  </select>
 </div>
 <div class="FAIR-si-button">
-<input type="submit" class="btn btn-danger" value="Suchen" name="search_staff" />
+<input type="submit" class="btn btn-danger" value="Anzeigen" name="search_staff" />
+</div></form>';
+echo'<h3>Alternative mit Scannen</h3>
+<form action="'.$current_site.'.php" method="post">
+<div class="input-group">
+  <span class="input-group-addon" id="basic-addon11">QR Code</span>
+  <input type="text" class="form-control" placeholder="scannen..." aria-describedby="basic-addon11" value="" name="qrcode" autocomplete="off">
+</div>
+<div class="FAIR-si-button">
+<input type="submit" class="btn btn-danger" value="Anzeigen" name="search_qr" />
 </div></form>';
 echo $errorhtml1;
 echo '</div>';
@@ -154,7 +203,7 @@ if($bool_staff_display) {
     <div class="input-group">
       <input type="text" value="'.$pnr.'" name="pnr" style="display:none;">
       <span class="input-group-addon" id="basic-addon4">Monat</span>
-      <input type="number" min="1" max="12" class="form-control" placeholder="Monat" aria-describedby="basic-addon4" value="'.$today_month.'" name="month" value=>
+      <input type="number" min="1" max="12" class="form-control" placeholder="Monat" aria-describedby="basic-addon4" value="'.$today_month.'" name="month">
       </div><div class="input-group">
       <span class="input-group-addon" id="basic-addon5">Jahr</span>
       <input type="number" min="2021" max="2999" class="form-control" placeholder="Jahr" aria-describedby="basic-addon5" value="'.$today_year.'" name="year">
@@ -177,11 +226,11 @@ echo '<div class="card"><div class="row">
 echo'<form action="'.$current_site.'.php" method="post">
 <div class="input-group">
   <span class="input-group-addon" id="basic-addon1">Nr.</span>
-  <input type="text" class="form-control" placeholder="Personalnummer" aria-describedby="basic-addon1" name="pnr">
+  <input type="text" class="form-control" placeholder="Personalnummer" aria-describedby="basic-addon1" name="pnr" autocomplete="off">
   <span class="input-group-addon" id="basic-addon1">Vorname</span>
-  <input type="text" class="form-control" placeholder="Vorname" aria-describedby="basic-addon1" name="vname">
+  <input type="text" class="form-control" placeholder="Vorname" aria-describedby="basic-addon1" name="vname" autocomplete="off">
   <span class="input-group-addon" id="basic-addon1">Nachname</span>
-  <input type="text" class="form-control" placeholder="Nachname" aria-describedby="basic-addon1" name="nname">
+  <input type="text" class="form-control" placeholder="Nachname" aria-describedby="basic-addon1" name="nname" autocomplete="off">
 </div>
 <div class="FAIR-si-button">
 <input type="submit" class="btn btn-danger" value="Eintragen und anschließend anzeigen" name="create_staff" />

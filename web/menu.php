@@ -59,7 +59,7 @@ if($_SESSION['uid']>0) {
 	if($expiry_diff<20) {$expiry_diff=20;}
 	if( floor($expiry_diff / 60) < 2 ) { $expiry_text=ceil($expiry_diff).' Min.'; } // ceil = round up
 	else { $expiry_text=ceil($expiry_diff / 60).' Std.'; } // ceil = round up
-	$G_html_menu2.='<li title="Eingeloggt für '.$expiry_text.'" data-toggle="tooltip" data-placement="bottom" class="shorten"><a style="color:#fff; font-size:85%;"><span class="icon-clock2"></span>&nbsp;'.$expiry_text.'</a></li>';
+	$G_html_menu2.='<li title="Eingeloggt für '.$expiry_text.'" data-toggle="tooltip" data-placement="bottom" class="shorten"><a style="color:#fff; font-size:85%;">Eingeloggt für '.$expiry_text.'</a></li>';
 	
 	$G_html_menu2.='<li><a href="logout.php" style="color: #fff; background-color: #9f0000;">Logout</a></li>';
 } else {

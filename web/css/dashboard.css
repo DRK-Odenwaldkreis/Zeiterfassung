@@ -203,7 +203,7 @@ a.badge-white-text:hover {
 	color: #57bf18;
 }
 .FAIR-text-red {
-	color: #ff7969;
+	color: red;
 }
 .FAIR-text-sm {
 	font-size: 70%;
@@ -216,8 +216,8 @@ a.badge-white-text:hover {
 	background-color: #444;
 }
 .FAIR-change-red {
-	color: #b71313;;
-	background-color: #ddd;
+	color: #111;;
+	background-color: red;
 }
 
 

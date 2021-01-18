@@ -71,7 +71,7 @@ function S_set_data ($Db,$sQuery) {
 // Returns for single staff in single date all shifts
 function S_get_shift_single_date ($Db,$pnr,$date) {
 	//get all shifts
-	$shifts=S_get_multientry($Db,'SELECT id, Dienstbeginn, Dienstende, Art FROM Dienste WHERE Personalnummer='.$pnr.' AND Date(Dienstbeginn)="'.$date.'";');
+	$shifts=S_get_multientry($Db,'SELECT id, Dienstbeginn, Dienstende, Art, AutoClosed FROM Dienste WHERE Personalnummer='.$pnr.' AND Date(Dienstbeginn)="'.$date.'";');
 	return $shifts;
 }
 
