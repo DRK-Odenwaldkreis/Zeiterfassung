@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $year=($_POST['year']);
         $uid=$_SESSION['uid'];
 
-        $dir="/home/webservice/Zeiterfassung/TagesReportPDF/";
+        $dir="/home/webservice/Zeiterfassung/EinzelAbrechnungPDF/";
         chdir($dir);
         $job="python3 job.py $month $year $uid";
         exec($job,$script_output);
