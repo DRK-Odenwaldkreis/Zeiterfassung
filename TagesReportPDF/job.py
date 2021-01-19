@@ -35,6 +35,7 @@ if __name__ == "__main__":
         logger.debug('Done')
         if dailyReport:
             send_mail_report(result, datetime.datetime.now(),get_Mail_from_UserID(2))
+        print(result)
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
         print("Error")
