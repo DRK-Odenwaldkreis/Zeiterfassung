@@ -11,7 +11,7 @@ from utils.sendmail import send_mail_report
 from utils.getRequesterMail import get_Mail_from_UserID
 
 logFile = '../../Logs/reportJob.log'
-logging.basicConfig(ilename=logFile,level=logging.DEBUG,format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename=logFile,level=logging.DEBUG,format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Daily Report')
 logger.debug('Starting')
 dailyReport = False
