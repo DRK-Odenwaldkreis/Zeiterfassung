@@ -11,10 +11,6 @@ sys.path.append("..")
 
 from utils.readconfig import read_config
 
-
-logFile = '../../Logs/sendMail.log'
-logging.basicConfig(filename=logFile,level=logging.DEBUG,
-                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Send Mail')
 logger.debug('Starting')
 
@@ -25,13 +21,16 @@ SMTP_USERNAME = read_config("Mail", "SMTP_USERNAME")
 SMTP_PASSWORD = read_config("Mail", "SMTP_PASSWORD")
 
 
-def send_mail_report(filename, day):
+def send_mail_report(filename, day, requester):
     try:
+        logging.debug("Receviced the following filename %s to be sent to %s" % (filename, requester))
         message = MIMEMultipart()
         message.attach(MIMEText("Neuer Tagesreport wurde angelegt.",'plain'))
         message['Subject'] = "Neue Tagesreport für: %s" % (str(day))
-        message['From'] = FROM_EMAIL
-        message['To'] = str(TO_EMAIL)
+        message['From'] = 'report@impfzentrum-odw.de'
+        message['To'] = requester[0]
+        filenameRaw = filename
+        filename = '../../Reports/' + str(filenameRaw)
         files = []
         files.append(filename)
         for item in files:
@@ -39,22 +38,25 @@ def send_mail_report(filename, day):
             part = MIMEBase('application', 'octet-stream')
             part.set_payload((attachment).read())
             encoders.encode_base64(part)
-            part.add_header('Content-Disposition', "attachment; filename= "+ item)
+            part.add_header(
+                'Content-Disposition', "attachment; filename= " + item.replace('../../Reports/', ''))
             message.attach(part)
-        smtp = smtplib.SMTP(SMTP_SERVER)
+        smtp = smtplib.SMTP(SMTP_SERVER,port=587)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
-        smtp.sendmail(message['From'], message['To'].split(",") , message.as_string())
+        smtp.sendmail(message['From'], message['To'], message.as_string())
+        logging.debug("Mail was send")
         smtp.quit()
         return True
-    except:
-        print("Error in sendmail")
+    except Exception as err:
+        logging.error(
+            "The following error occured in send mail download: %s" % (err))
         return False
 
 
 def send_mail_download(filename, requester):
     try:
-        logging.debug("Receviced the following filename %s to be sent from %s" % (filename, requester))
+        logging.debug("Receviced the following filename %s to be sent to %s" % (filename, requester))
         message = MIMEMultipart()
         url = 'https://impfzentrum-odw.de/download.php?file=' +  str(filename)
         logging.debug("The created url is %s" % (url))

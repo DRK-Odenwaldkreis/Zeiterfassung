@@ -5,11 +5,8 @@ import logging
 import datetime
 
 
-logFile = '../../Logs/pausen.log'
-logging.basicConfig(filename=logFile, level=logging.DEBUG,format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Pausenberechnung')
 logger.debug('Logger for pausen berechnung was initialised')
-
 
 
 def calculate_net_shift_time(start,end):
