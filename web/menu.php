@@ -50,7 +50,7 @@ if($_SESSION['uid']>0) {
 	$G_html_menu2.='</div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-			<li><a href="impressum.php">Impressum</a></li>';
+			<li><a href="impressum.php">Impressum/Support</a></li>';
 
 	// Logged in / expiration of cookie
 	$cookievalue=json_decode($_COOKIE['drk-cookie']);

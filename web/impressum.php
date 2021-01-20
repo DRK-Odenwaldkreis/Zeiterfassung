@@ -39,6 +39,9 @@ echo $GLOBALS['G_html_main_right_a'];
 
 if(isset( $_SESSION['uid']) && $_SESSION['uid']>=0 ) {
     echo '<h3>Support</h3>
+    <p><a target="_blank" href="https://github.com/DRK-Odenwaldkreis/Zeiterfassung#ablauf">Für die Dokumentation Terminal-Anwendung hier klicken</a></p>
+    <p><a target="_blank" href="https://github.com/DRK-Odenwaldkreis/Zeiterfassung#webpage">Für die Dokumentation der Web-Anwendung hier klicken</a></p>
+    <p>&nbsp;</p>
     <p>Bei Fragen zum System bitte eine E-Mail schreiben an den Support.</p>
     <p><a href="mailto:support@impfzentrum-odw.de">support@impfzentrum-odw.de</a></p>';
 }
