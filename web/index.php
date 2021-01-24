@@ -37,7 +37,7 @@ $_module_array=array(
     2=>array("text"=>'<h4 class="list-group-item-heading">Report</h4><p class="list-group-item-text">Monats- und Tagesreport</p>',"link"=>"report.php","role"=>array(0,2,0,4)),
     20=>array("text"=>'<h4 class="list-group-item-heading">Verfügbarkeit melden</h4><p class="list-group-item-text">Meine Schichtverfügbarkeiten melden</p>',"link"=>"shift_staff.php","role"=>array(1,0,0,4)),
     22=>array("text"=>'<h4 class="list-group-item-heading">Dienstplan hochladen</h4><p class="list-group-item-text">Neuen Dienstplan hochladen</p>',"link"=>"dienstplan_upload.php","role"=>array(0,0,3,4)),
-    30=>array("text"=>'<h4 class="list-group-item-heading">Admin: Web user</h4><p class="list-group-item-text">User-Manangement</p>',"link"=>"user_admin.php","role"=>array(0,0,0,4)),
+    30=>array("text"=>'<h4 class="list-group-item-heading">Admin: Web user</h4><p class="list-group-item-text">User-Management</p>',"link"=>"user_admin.php","role"=>array(0,0,0,4)),
     31=>array("text"=>'<h4 class="list-group-item-heading">Admin: Files</h4><p class="list-group-item-text">Dateien von Reports</p>',"link"=>"downloadlist.php","role"=>array(0,0,0,4)),
     32=>array("text"=>'<h4 class="list-group-item-heading">Admin: Logs</h4><p class="list-group-item-text">Server-Logs</p>',"link"=>"log.php","role"=>array(0,0,0,4))
 );
