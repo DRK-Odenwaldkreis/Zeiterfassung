@@ -12,7 +12,7 @@ include_once 'preload.php';
 if( isset($GLOBALS['G_sessionname']) ) { session_name ($GLOBALS['G_sessionname']); }
 session_start();
 $sec_level=1;
-$current_site="staff";
+$current_site="user_admin";
 
 // Include functions
 include_once 'tools.php';
@@ -20,7 +20,8 @@ include_once 'auth.php';
 include_once 'menu.php';
 
 // role check
-if( A_checkpermission(array(0,2,0,4)) ) {
+if( A_checkpermission(array(0,0,0,4)) ) {
+
 
     // Open database connection
     $Db=S_open_db();
@@ -350,7 +351,6 @@ if( A_checkpermission(array(0,2,0,4)) ) {
         echo $errorhtml2;
         echo '</div></div></div>';
     }
-
 } else {
     // Print html header
     echo $GLOBALS['G_html_header'];
@@ -363,6 +363,7 @@ if( A_checkpermission(array(0,2,0,4)) ) {
     echo $GLOBALS['G_html_main_right_a'];
     echo '<h1>KEINE BERECHTIGUNG</h1>';
 }
+
 
 // Print html content part C
 echo $GLOBALS['G_html_main_right_c'];

@@ -52,6 +52,18 @@ function S_get_entry ($Db,$sQuery) {
 	// Return result of SQL query
 	return $r[0][0];
 }
+// Only for login
+function S_get_entry_login_username ($Db,$username) {
+	$stmt=mysqli_prepare($Db,"SELECT id FROM li_user WHERE lower(username)=?;");
+	mysqli_stmt_bind_param($stmt, "s", $username);
+	mysqli_stmt_execute($stmt);
+	mysqli_stmt_bind_result($stmt, $id);
+	mysqli_stmt_fetch($stmt);
+	mysqli_stmt_close($stmt);
+
+	// Return result of SQL query
+	return $id;
+}
 // Return query result from SQL database - all entries
 function S_get_multientry ($Db,$sQuery) {
 	$result = mysqli_query( $Db, $sQuery );
@@ -101,6 +113,15 @@ function A_login($Db,$uid,$mode) {
 	
 	$_SESSION['signedin'] = true;
 	$_SESSION['username'] = S_get_entry($Db,'SELECT username FROM li_user WHERE id='.$uid.';');
+
+	/* Rollen
+		1 - Mitarbeiter
+		2 - Schichtleiter
+		3 - Dienstplaner
+		4 - Admin */
+	$t = S_get_multientry($Db,'SELECT 0, role_1, role_2, role_3, role_4 FROM li_user WHERE id='.$uid.';');
+	$_SESSION['roles']=$t[0];
+
 	if($mode!='check' && $mode!='chguserid') {
 		// Cookie will expire after 2 days after log-in
 		// PHP session will expire earlier if no site request
@@ -139,6 +160,19 @@ function A_checkloggedin($Db,$username,$hash) {
 
     return false;
 }
+
+// Check if user role fits to requirements
+function A_checkpermission($requirement) {
+	$bool_permission=false;
+	foreach($requirement as $b) {
+		if($b>0 && $_SESSION['roles'][$b]==1) { 
+			$bool_permission=true;
+		}
+	}
+return $bool_permission;
+}
+
+
 
 
 /****************************************/

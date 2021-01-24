@@ -82,7 +82,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$pwd_lock) {
 
 		// Benutzername und Passwort werden überprüft
 		if($username!='') {
-			$uid=S_get_entry($Db,'SELECT id FROM li_user WHERE lower(username)=\''.$username.'\';');
+			//$uid=S_get_entry($Db,'SELECT id FROM li_user WHERE lower(username)=\''.$username.'\';');
+			$uid=S_get_entry_login_username($Db,$username);
 			if($uid>0) {
 				$db_hash=S_get_entry($Db,'SELECT password_hash FROM li_user WHERE id='.$uid.';');
 			} else {
@@ -199,8 +200,7 @@ if( isset($_POST['button-reset']) ) {
 	
 	if ( filter_var( $email, FILTER_VALIDATE_EMAIL ) ) {
       	
-      	$uid=S_get_entry($Db,'SELECT id FROM li_user WHERE lower(username)=\''.$email.'\';');
-		
+		$uid=S_get_entry_login_username($Db,$email);
       	if($uid>0) {
 			
 			// Check for failed login attempts and if value is lower than threshold

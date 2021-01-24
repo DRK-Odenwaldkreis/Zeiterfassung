@@ -19,46 +19,62 @@ include_once 'tools.php';
 include_once 'auth.php';
 include_once 'menu.php';
 
-
-// Print html header
-echo $GLOBALS['G_html_header'];
-
-// Print html menu
-echo $GLOBALS['G_html_menu'];
-echo $GLOBALS['G_html_menu2'];
-
-// Print html content part A
-echo $GLOBALS['G_html_main_right_a'];
-
-echo '<h1>Logs</h1>';
-
-echo '<pre>UID: '.$_SESSION['uid'].'</pre>';
+// role check
+if( A_checkpermission(array(0,0,0,4)) ) {
 
 
-// tail of $file with last $int lines
-function file_tail($file,$int) {
-    $file_content=file($file);
-    $r="";
-    for ($i = max(0, count($file_content)-$int-1); $i < count($file_content); $i++) {
-         $r .= $file_content[$i] . "";
+    // Print html header
+    echo $GLOBALS['G_html_header'];
+
+    // Print html menu
+    echo $GLOBALS['G_html_menu'];
+    echo $GLOBALS['G_html_menu2'];
+
+    // Print html content part A
+    echo $GLOBALS['G_html_main_right_a'];
+
+    echo '<h1>Logs</h1>';
+
+    echo '<pre>UID: '.$_SESSION['uid'].'</pre>';
+
+
+    // tail of $file with last $int lines
+    function file_tail($file,$int) {
+        $file_content=file($file);
+        $r="";
+        for ($i = max(0, count($file_content)-$int-1); $i < count($file_content); $i++) {
+            $r .= $file_content[$i] . "";
+        }
+        return $r;
     }
-    return $r;
-}
 
-//Get log file
-$log_path="/home/webservice/Logs/";
-echo '<h3>reportJob.log</h3>';
-echo '<pre>';
-echo file_tail($log_path."reportJob.log",40);
-echo '</pre>';
-echo '<h3>CSVExportJob.log</h3>';
-echo '<pre>';
-echo file_tail($log_path."CSVExportJob.log",40);
-echo '</pre>';
-echo '<h3>singleReportJob.log</h3>';
-echo '<pre>';
-echo file_tail($log_path."singleReportJob.log",40);
-echo '</pre>';
+    //Get log file
+    $log_path="/home/webservice/Logs/";
+    echo '<h3>reportJob.log</h3>';
+    echo '<pre>';
+    echo file_tail($log_path."reportJob.log",40);
+    echo '</pre>';
+    echo '<h3>CSVExportJob.log</h3>';
+    echo '<pre>';
+    echo file_tail($log_path."CSVExportJob.log",40);
+    echo '</pre>';
+    echo '<h3>singleReportJob.log</h3>';
+    echo '<pre>';
+    echo file_tail($log_path."singleReportJob.log",40);
+    echo '</pre>';
+
+} else {
+    // Print html header
+    echo $GLOBALS['G_html_header'];
+
+    // Print html menu
+    echo $GLOBALS['G_html_menu'];
+    echo $GLOBALS['G_html_menu2'];
+
+    // Print html content part A
+    echo $GLOBALS['G_html_main_right_a'];
+    echo '<h1>KEINE BERECHTIGUNG</h1>';
+}
 
 
 // Print html content part C
