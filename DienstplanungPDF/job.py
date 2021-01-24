@@ -1,0 +1,49 @@
+from zipfile import ZipFile
+import sys
+sys.path.append("..")
+from utils.database import Database
+from pdfcreator.pdf import PDFgenerator
+from utils.month import monthInt_to_string
+from utils.sendmail import send_mail_download
+from utils.getRequesterMail import get_Mail_from_UserID
+import datetime
+import time
+import logging
+
+
+logFile = '../../Logs/planning.log'
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger('Dienstplanung Report')
+logger.debug('Starting')
+
+latestFilename = ""
+
+if __name__ == "__main__":
+    try:
+        if len(sys.argv) == 3:
+            logger.debug(
+                'Type is for all employee')
+        else:
+            logger.debug(
+                'Input parameters are not correct, Month and Year, requester and/or Personalnummer are needed')
+            raise Exception
+        logger.debug(
+            'Was started for the following week: %s' % (sys.argv[1]))
+        logger.debug(
+            'Was started for the following year: %s' % (sys.argv[2]))
+        requestedWeek = sys.argv[1]
+        requestedYear = sys.argv[2]
+        DatabaseConnect = Database()
+        sql = "Select  Personal.Vorname, Personal.Nachname, Planung.Schicht, Planung.Datum FROM Planung JOIN Personal ON Personal.Personalnummer = Planung.Personalnummer where WEEK(Datum) = '%s' and YEAR(Datum) = '%s';" % (
+            requestedWeek, requestedYear)
+        logger.debug(
+            'Getting employee infos with the following query: %s' % (sql))
+        content = DatabaseConnect.read_all(sql)
+        logger.debug('Received the following content: %s' % (str(content)))
+        PDF = PDFgenerator(content, requestedWeek, requestedYear)
+        PDF.generate()
+        #send_mail_download(zipFilename.replace('../../Planung/', ''), get_Mail_from_UserID(2))
+    except Exception as e:
+        logging.error("The following error occured: %s" % (e))
+        print("Error")
