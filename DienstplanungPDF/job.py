@@ -35,7 +35,7 @@ if __name__ == "__main__":
         requestedWeek = sys.argv[1]
         requestedYear = sys.argv[2]
         DatabaseConnect = Database()
-        sql = "Select  Personal.Vorname, Personal.Nachname, Planung.Schicht, Planung.Datum FROM Planung JOIN Personal ON Personal.Personalnummer = Planung.Personalnummer where WEEK(Datum) = '%s' and YEAR(Datum) = '%s';" % (
+        sql = "Select  Personal.Vorname, Personal.Nachname, Planung.Schicht, Planung.Datum FROM Planung JOIN Personal ON Personal.Personalnummer = Planung.Personalnummer where WEEK(Datum,5) = '%s' and YEAR(Datum) = '%s' order by Datum;" % (
             requestedWeek, requestedYear)
         logger.debug(
             'Getting employee infos with the following query: %s' % (sql))
