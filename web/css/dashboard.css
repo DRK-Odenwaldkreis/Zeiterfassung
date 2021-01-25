@@ -433,12 +433,13 @@ td.FAIR-data-bottom {
 	border-bottom: 1px solid #d4d4d4;
 }
 td.FAIR-data-height0 {
-	height: 60px;
+	height: 80px;
 	vertical-align: middle;
 }
 td.FAIR-data-height1 {
-	height: 35px;
+	height: 60px;
 	vertical-align: middle;
+	font-size: 18px;
 }
 td.FAIR-data-height2 {
 	height: 25px;

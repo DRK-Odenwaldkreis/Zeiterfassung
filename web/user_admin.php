@@ -45,6 +45,7 @@ if( A_checkpermission(array(0,0,0,4)) ) {
             // check unique email or same email
             if( $email==$old_email || !(S_get_entry($Db,'SELECT id FROM li_user WHERE username=\''.$email.'\';')>0) ) {
 
+                $attempts=$_POST['e_attempts'];
                 if(isset($_POST['e_r1'])) { $u_role_1=1;} else {$u_role_1=0;}
                 if(isset($_POST['e_r2'])) { $u_role_2=1;} else {$u_role_2=0;}
                 if(isset($_POST['e_r3'])) { $u_role_3=1;} else {$u_role_3=0;}
@@ -60,7 +61,7 @@ if( A_checkpermission(array(0,0,0,4)) ) {
                 }
 
                 //  edit staff data
-                S_set_data($Db,'UPDATE li_user SET role_1='.$u_role_1.', role_2='.$u_role_2.', role_3='.$u_role_3.', role_4='.$u_role_4.'  WHERE id='.$user_id.';');
+                S_set_data($Db,'UPDATE li_user SET login_attempts=CAST('.$attempts.' AS int), role_1='.$u_role_1.', role_2='.$u_role_2.', role_3='.$u_role_3.', role_4='.$u_role_4.'  WHERE id='.$user_id.';');
                 $errorhtml3 =  H_build_boxinfo( 0, 'Änderungen wurden gespeichert.', 'green' );
                 
             } else {
@@ -77,17 +78,23 @@ if( A_checkpermission(array(0,0,0,4)) ) {
             }
             $bool_staff_display=true;
             $u_email=S_get_entry($Db,'SELECT username FROM li_user WHERE id=CAST('.$user_id.' AS int);');
+            $u_nname=S_get_entry($Db,'SELECT Personal.Nachname FROM Personal JOIN li_user ON Personal.id_li_user=li_user.id WHERE li_user.id=CAST('.$user_id.' AS int);');
+            $u_vname=S_get_entry($Db,'SELECT Personal.Vorname FROM Personal JOIN li_user ON Personal.id_li_user=li_user.id WHERE li_user.id=CAST('.$user_id.' AS int);');
             $u_attempts=S_get_entry($Db,'SELECT login_attempts FROM li_user WHERE id=CAST('.$user_id.' AS int);');
             $u_role_1=S_get_entry($Db,'SELECT role_1 FROM li_user WHERE id=CAST('.$user_id.' AS int);');
             $u_role_2=S_get_entry($Db,'SELECT role_2 FROM li_user WHERE id=CAST('.$user_id.' AS int);');
             $u_role_3=S_get_entry($Db,'SELECT role_3 FROM li_user WHERE id=CAST('.$user_id.' AS int);');
             $u_role_4=S_get_entry($Db,'SELECT role_4 FROM li_user WHERE id=CAST('.$user_id.' AS int);');
+            if($u_nname!='') {
+                $u_display=$u_nname.', '.$u_vname;
+            } else {
+                $u_display='(nicht mit Mitarbeiter*in verknüpft)';
+            }
         }
     }
 
     // Get user details
-    $array_staff=S_get_multientry($Db,'SELECT Id, username FROM li_user;');
-
+    $array_staff=S_get_multientry($Db,'SELECT li_user.Id, li_user.username, Personal.Nachname, Personal.Vorname FROM li_user LEFT OUTER JOIN Personal ON Personal.id_li_user=li_user.id;');
 
     // Print html header
     echo $GLOBALS['G_html_header'];
@@ -128,7 +135,12 @@ if( A_checkpermission(array(0,0,0,4)) ) {
     <option value="" selected>Wähle...</option>
         ';
         foreach($array_staff as $i) {
-            echo '<option value="'.$i[0].'">'.$i[1].'</option>';
+            if($i[2]!='') {
+                $display=$i[2].', '.$i[3].' ('.$i[1].')';
+            } else {
+                $display=$i[1];
+            }
+            echo '<option value="'.$i[0].'">'.$display.'</option>';
         }
         echo '
     </select>
@@ -146,7 +158,8 @@ if( A_checkpermission(array(0,0,0,4)) ) {
     if($bool_staff_display) {
         // Show data of staff member
         echo '<div class="col-sm-8">
-        <h3>User '.$user_id.'</h3>';
+        <h3>User '.$user_id.'</h3>
+        <p>'.$u_display.'</p>';
         if($u_role_1==1) {$u_role_1_selected="checked";} else {$u_role_1_selected="";}
         if($u_role_2==1) {$u_role_2_selected="checked";} else {$u_role_2_selected="";}
         if($u_role_3==1) {$u_role_3_selected="checked";} else {$u_role_3_selected="";}
@@ -155,9 +168,11 @@ if( A_checkpermission(array(0,0,0,4)) ) {
         echo'<form action="'.$current_site.'.php" method="post">
         <div class="input-group">
         <input type="text" value="'.$user_id.'" name="user_id" style="display:none;">
-        <input type="text" value="'.$u_email.'" name="old_email" style="display:none;">
+        <input type="text" value="'.$u_display.'" name="old_email" style="display:none;">
         <span class="input-group-addon" id="basic-addon1">E-Mail</span>
         <input type="text" class="form-control" placeholder="E-Mail-Adresse" aria-describedby="basic-addon1" name="e_email" autocomplete="off" value="'.$u_email.'">
+        <span class="input-group-addon" id="basic-addon1">Login-Versuche</span>
+        <input type="text" class="form-control" placeholder="Login-Versuche" aria-describedby="basic-addon2" name="e_attempts" autocomplete="off" value="'.$u_attempts.'">
         </div><div class="input-group">
         <span class="input-group-addon">
         <input type="checkbox" aria-label="r1" name="e_r1" '.$u_role_1_selected.'>
