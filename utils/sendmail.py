@@ -59,7 +59,10 @@ def send_mail_reminder(listRecipients, week, year):
         logging.debug("Receviced the following list of recipients: %s to be sent to." % (
             listRecipients))
         message = MIMEMultipart()
-        message.attach(MIMEText("Hallo,\ndu hast für die KW %s in %s keine Planung abgegeben. \nDie Planung wird bald geschlossen. Bitte trage falls möglich noch deine Verfügbarkeiten ein. \n \nFalls du generelle nicht mehr unterstützen kannst, kannst du dich auch inaktiv schalten lassen." % (str(week), str(year)), 'plain'))
+        with open('./MailLayout/Reminder.html', encoding='utf-8') as f:
+            fileContent = f.read()
+        messageContent = fileContent.replace('[[KW]]',str(week)).replace('[[YEAR]]',str(year))
+        message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Erinnerung für Planung KW %s in %s" % (str(week), str(year))
         message['From'] = 'planung@impfzentrum-odw.de'
         message['Bcc'] = ", ".join(listRecipients)
@@ -81,7 +84,10 @@ def send_mail_new_dienstplan(listRecipients, week, year):
         logging.debug("Receviced the following list of recipients: %s to be sent to." % (
             listRecipients))
         message = MIMEMultipart()
-        message.attach(MIMEText("Hallo,\nes gibt für die KW %s in %s einen neuen Plan. \nDer Plan ist um Portal zu finden. \nFalls du generelle nicht mehr unterstützen kannst, kannst du dich auch inaktiv schalten lassen." % (str(week), str(year)), 'plain'))
+        with open('./MailLayout/NewDienstplan.html', encoding='utf-8') as f:
+            fileContent = f.read()
+        messageContent = fileContent.replace('[[KW]]',str(week)).replace('[[YEAR]]',str(year))
+        message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Neue Planung für KW %s in %s" % (
             str(week), str(year))
         message['From'] = 'dienstplan@impfzentrum-odw.de'
@@ -103,9 +109,12 @@ def send_mail_download(filename, requester):
     try:
         logging.debug("Receviced the following filename %s to be sent to %s" % (filename, requester))
         message = MIMEMultipart()
-        url = 'https://impfzentrum-odw.de/download.php?file=' +  str(filename)
+        url = 'https://impfzentrum-odw.de/download.php?file=' + str(filename)
         logging.debug("The created url is %s" % (url))
-        message.attach(MIMEText("Hallo,\nEinzelnachweise wurden generiert und sind jetzt verfügbar.\nDiese können unter folgender URL heruntergeladen werden: %s" % (url), 'plain'))
+        with open('./MailLayout/NewDownload.html', encoding='utf-8') as f:
+            fileContent = f.read()
+        messageContent = fileContent.replace('[[LINK]]', str(url))
+        message.attach(MIMEText(messageContent, 'html'))        
         message['Subject'] = "Einzelnachweise sind zum Download verfügbar"
         message['From'] = 'report@impfzentrum-odw.de'
         message['To'] = requester
@@ -121,3 +130,6 @@ def send_mail_download(filename, requester):
     except Exception as err:
         logging.error("The following error occured in send mail download: %s" % (err))
         return False
+
+
+send_mail_reminder(['murat@familie-bayram.eu'],4,2021)
