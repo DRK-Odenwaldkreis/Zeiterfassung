@@ -10,6 +10,6 @@ def get_Mail_from_UserID(id):
         DatabaseConnect = Database()
         sql = 'Select username from li_user where id = %s' % (id)
         userMail = DatabaseConnect.read_single(sql)
-        return userMail
+        return userMail[0]
     except:
         return "service@impfzentrum-odw.de"

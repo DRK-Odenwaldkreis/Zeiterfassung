@@ -22,11 +22,10 @@ latestFilename = ""
 if __name__ == "__main__":
     try:
         if len(sys.argv) == 3:
-            logger.debug(
-                'Type is for all employee')
+            logger.debug('Starting Planning creation')
         else:
             logger.debug(
-                'Input parameters are not correct, Month and Year, requester and/or Personalnummer are needed')
+                'Input parameters are not correct, Month and Year are needed')
             raise Exception
         logger.debug(
             'Was started for the following week: %s' % (sys.argv[1]))
@@ -38,7 +37,7 @@ if __name__ == "__main__":
         sql = "Select  Personal.Vorname, Personal.Nachname, Planung.Schicht, Planung.Datum FROM Planung JOIN Personal ON Personal.Personalnummer = Planung.Personalnummer where WEEK(Datum,5) = '%s' and YEAR(Datum) = '%s' order by Datum;" % (
             requestedWeek, requestedYear)
         logger.debug(
-            'Getting employee infos with the following query: %s' % (sql))
+            'Getting all planning data with the following query: %s' % (sql))
         content = DatabaseConnect.read_all(sql)
         logger.debug('Received the following content: %s' % (str(content)))
         PDF = PDFgenerator(content, requestedWeek, requestedYear)

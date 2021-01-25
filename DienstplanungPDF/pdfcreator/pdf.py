@@ -74,18 +74,28 @@ class PDFgenerator:
 		pdf.set_font('GNU', 'B', 14)
 
 		pdf.cell(10, 10, '', ln=1)
-
-		pdf.cell(20, 10, 'Planung', ln=1)
-
+		pdf.cell(10)
+		pdf.cell(20, 10, 'Montag - 25.01.2021', ln=0)
+		pdf.cell(80)
+		pdf.cell(20, 10, 'Dienstag - 26.01.2021', ln=1)
 		pdf.set_font('GNU', '', 14)
 
 
 		current_x =pdf.get_x()
 		current_y =pdf.get_y()
 
-		pdf.line(current_x, current_y, current_x+190, current_y)
+		pdf.line(current_x, current_y, current_x+80, current_y)
+		pdf.line(current_x+100, current_y, current_x+180, current_y)
 
 		pdf.set_font('GNU', '', 14)
+		pdf.cell(40, 10, 'Tag', 0, 0)
+		pdf.cell(40, 10, 'Tag2', 0, 0)
+		pdf.cell(40)
+		pdf.cell(40, 10, 'Tag', 0, 0)
+		pdf.cell(40, 10, 'Tag2', 0, 1)
+
+
+
 		self.filename = "../../Planung/Planung_"  + self.year + '_' + self.week + ".pdf"
 		pdf.output(self.filename)
 		return self.filename
