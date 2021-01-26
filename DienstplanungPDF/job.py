@@ -11,7 +11,7 @@ import logging
 
 
 logFile = '../../Logs/planning.log'
-logging.basicConfig(level=logging.DEBUG,
+logging.basicConfig(filename=logFile,level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Dienstplanung Report')
 logger.debug('Starting')
