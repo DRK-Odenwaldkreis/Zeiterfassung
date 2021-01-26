@@ -7,6 +7,7 @@ from email.mime.base import MIMEBase
 from email import encoders
 import logging
 import sys
+import os
 sys.path.append("..")
 
 from utils.readconfig import read_config
@@ -25,10 +26,13 @@ def send_mail_report(filename, day, requester):
     try:
         logging.debug("Receviced the following filename %s to be sent to %s" % (filename, requester))
         message = MIMEMultipart()
-        message.attach(MIMEText("Neuer Tagesreport wurde angelegt.",'plain'))
+        with open('../utils/MailLayout/NewReport.html', encoding='utf-8') as f:
+            fileContent = f.read()
+        messageContent = fileContent.replace('[[DAY]]', str(day))
+        message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Neue Tagesreport für: %s" % (str(day))
         message['From'] = 'report@impfzentrum-odw.de'
-        message['To'] = requester[0]
+        message['To'] = requester
         filenameRaw = filename
         filename = '../../Reports/' + str(filenameRaw)
         files = []
@@ -54,25 +58,83 @@ def send_mail_report(filename, day, requester):
         return False
 
 
+def send_mail_reminder(listRecipients, week, year):
+    try:
+        logging.debug("Receviced the following list of recipients: %s to be sent to." % (
+            listRecipients))
+        message = MIMEMultipart()
+        with open('../utils/MailLayout/Reminder.html', encoding='utf-8') as f:
+            fileContent = f.read()
+        messageContent = fileContent.replace('[[KW]]',str(week)).replace('[[YEAR]]',str(year))
+        message.attach(MIMEText(messageContent, 'html'))
+        message['Subject'] = "Erinnerung für Planung KW %s in %s" % (str(week), str(year))
+        message['From'] = 'planung@impfzentrum-odw.de'
+        message['Bcc'] = ", ".join(listRecipients)
+        smtp = smtplib.SMTP(SMTP_SERVER, port=587)
+        smtp.starttls()
+        smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
+        smtp.sendmail(message['From'], message['Bcc'], message.as_string())
+        logging.debug("Mail was send")
+        smtp.quit()
+        return True
+    except Exception as err:
+        logging.error(
+            "The following error occured in send mail download: %s" % (err))
+        return False
+
+
+def send_mail_new_dienstplan(listRecipients, week, year):
+    try:
+        logging.debug("Receviced the following list of recipients: %s to be sent to." % (
+            listRecipients))
+        message = MIMEMultipart()
+        with open('../utils/MailLayout/NewDienstplan.html', encoding='utf-8') as f:
+            fileContent = f.read()
+        messageContent = fileContent.replace('[[KW]]',str(week)).replace('[[YEAR]]',str(year))
+        message.attach(MIMEText(messageContent, 'html'))
+        message['Subject'] = "Neue Planung für KW %s in %s" % (
+            str(week), str(year))
+        message['From'] = 'dienstplan@impfzentrum-odw.de'
+        message['Bcc'] = ", ".join(listRecipients)
+        smtp = smtplib.SMTP(SMTP_SERVER, port=587)
+        smtp.starttls()
+        smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
+        smtp.sendmail(message['From'], message['Bcc'], message.as_string())
+        logging.debug("Mail was send")
+        smtp.quit()
+        return True
+    except Exception as err:
+        logging.error(
+            "The following error occured in send mail download: %s" % (err))
+        return False
+
+
 def send_mail_download(filename, requester):
     try:
+        print(os.path.abspath('./MailLayout/NewDownload.html'))
         logging.debug("Receviced the following filename %s to be sent to %s" % (filename, requester))
         message = MIMEMultipart()
-        url = 'https://impfzentrum-odw.de/download.php?file=' +  str(filename)
+        url = 'https://impfzentrum-odw.de/download.php?file=' + str(filename)
         logging.debug("The created url is %s" % (url))
-        message.attach(MIMEText("Einzelnachweise wurden generiert und sind jetzt verfügbar. Diese können unter folgender URL heruntergeladen werden: %s" % (url), 'plain'))
+        with open('../utils/MailLayout/NewDownload.html', encoding='utf-8') as f:
+            fileContent = f.read()
+        messageContent = fileContent.replace('[[LINK]]', str(url))
+        message.attach(MIMEText(messageContent, 'html'))        
         message['Subject'] = "Einzelnachweise sind zum Download verfügbar"
         message['From'] = 'report@impfzentrum-odw.de'
-        message['To'] = requester[0]
+        message['To'] = requester
         smtp = smtplib.SMTP(SMTP_SERVER,port=587)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         logging.debug(
             "Sending Mail with following tupel: %s" % (message))
-        smtp.sendmail(message['From'], message['To'], message.as_string())
+        #smtp.sendmail(message['From'], message['To'], message.as_string())
         logging.debug("Mail was send")
         smtp.quit()
         return True
     except Exception as err:
         logging.error("The following error occured in send mail download: %s" % (err))
         return False
+
+
+send_mail_download("test.pdf",'murat@familie-bayram.eu')

@@ -55,7 +55,7 @@ if __name__ == "__main__":
         if type == "single":
             sql = "SELECT Vorname,Nachname,Personalnummer FROM Personal WHERE Personalnummer = %s;" % (requestedPersonalnummer)
         else:
-            sql = "SELECT Vorname,Nachname,Personalnummer FROM Personal;"
+            sql = "SELECT Vorname,Nachname,Personalnummer FROM Personal where Aktiv=1;"
             zipFilename = '../../Reports/Einzelnachweise_' + monthInt_to_string(int(requestedMonth)) + '_' + requestedYear + '.zip'
             zipObj = ZipFile(zipFilename, 'w')
         logger.debug(
