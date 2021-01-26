@@ -71,8 +71,26 @@ class PDFgenerator:
 		self.week = week
 		self.listOfDates = get_week(int(self.year), int(self.week))
 	
-	def createDay(self, day):
-		self.day = day
+	def input_line(self,line,type):
+		self.type = type
+		self.line = line
+		if self.type == "L":
+			self.pdf.set_y(self.leftCellRow)
+			self.pdf.set_x(self.leftCellColumn)
+			self.pdf.cell(60, 10, self.line, ln=1)
+			self.leftCellRow = self.pdf.get_y()
+		elif self.type == "C":
+			self.pdf.set_y(self.centerCellRow)
+			self.pdf.set_x(self.centerCellColumn)
+			self.pdf.cell(60, 10, self.line, ln=1)
+			self.centerCellRow = self.pdf.get_y()
+		elif self.type == "R":
+			self.pdf.set_y(self.rightCellRow)
+			self.pdf.set_x(self.rightCellColumn)
+			self.pdf.cell(60, 10, self.line, ln=1)
+			self.rightCellRow = self.pdf.get_y()
+	
+	def new_page(self):
 		self.pdf.add_font('GNU', '', FreeSans, uni=True)
 		self.pdf.add_font('GNU', 'B', FreeSansBold, uni=True)
 		self.pdf.set_font('GNU', 'B', 14)
@@ -80,21 +98,57 @@ class PDFgenerator:
 		self.pdf.cell(20, 10, '%s - %s' %
                     (dayInt_to_string(self.day.weekday()), self.day), ln=1)
 		self.pdf.set_font('GNU', '', 14)
-		self.current_x = self.pdf.get_x()
-		self.current_y = self.pdf.get_y()
-		self.pdf.line(self.current_x, self.current_y, self.current_x+60, self.current_y)
+		self.pdf.cell(60, 10, 'Früh', ln=0)
+		self.pdf.dashed_line(self.pdf.get_x()-5, self.pdf.get_y(),
+                       self.pdf.get_x()-5, self.pdf.get_y()+210)
+		self.pdf.cell(60, 10, 'Spät', ln=0)
+		self.pdf.dashed_line(self.pdf.get_x()-5, self.pdf.get_y(),
+                       self.pdf.get_x()-5, self.pdf.get_y()+210)
+		self.pdf.cell(60, 10, 'Variabel', ln=1)
+		self.pdf.line(self.pdf.get_x(), self.pdf.get_y(),
+                    self.pdf.get_x()+180, self.pdf.get_y())
+		self.pdf.cell(0, 1, '', ln=1)
+		self.pdf.line(self.pdf.get_x(), self.pdf.get_y(),
+                    self.pdf.get_x()+180, self.pdf.get_y())
+
+	
+	def create_day(self, day):
+		self.day = day
+		self.new_page()
+		self.leftCellRow = self.pdf.get_y()
+		self.rightCellRow = self.pdf.get_y()
+		self.centerCellRow = self.pdf.get_y()
+		self.leftCellColumn = self.pdf.get_x()
+		self.rightCellColumn = self.pdf.get_x() + 120
+		self.centerCellColumn = self.pdf.get_x() + 60
 		for i in self.content:
-			self.currentVorname = i[0]
-			self.currentNachname = i[1]
-			self.shift = i[2]
-			self.currentDate = i[3]
-			if self.currentDate == self.day:
-				self.pdf.set_font('GNU', '', 14)
-				self.pdf.cell(40, 10, '%s,%s'%(self.currentNachname,self.currentVorname), 0, 1)
+			if self.pdf.get_y() + 10 > self.pdf.page_break_trigger:
+				self.new_page()
+				self.leftCellRow = self.pdf.get_y()
+				self.rightCellRow = self.pdf.get_y()
+				self.centerCellRow = self.pdf.get_y()
+				self.leftCellColumn = self.pdf.get_x()
+				self.rightCellColumn = self.pdf.get_x() + 120
+				self.centerCellColumn = self.pdf.get_x() + 60
 			else:
-				pass
-				#print(False)
-		self.pdf.add_page()
+				self.currentVorname = i[0]
+				self.currentNachname = i[1]
+				self.shift = i[2]
+				self.currentDate = i[3]
+				if self.currentDate == self.day:
+					self.pdf.set_font('GNU', '', 14)
+					if self.shift == 1:
+						self.input_line('%s, %s' % (self.currentNachname, self.currentVorname), "L")
+					elif self.shift == 2:
+						self.input_line('%s, %s' % (self.currentNachname, self.currentVorname), "C")
+					elif self.shift == 3:
+						self.pdf.set_font('GNU', '', 10)
+						self.input_line('%s, %s - (%s)' % (self.currentNachname, self.currentVorname,i[4]), "R")
+						self.pdf.set_font('GNU', '', 14)
+					else:
+						print("Should not happen")
+				else:
+					pass
 
 
 	def generate(self):
@@ -105,7 +159,9 @@ class PDFgenerator:
 		self.pdf.add_page()
 		self.pdf.set_auto_page_break(True, 25)
 		for i in self.listOfDates:
-			self.createDay(i)
+			self.create_day(i)
+			if i != self.listOfDates[-1]:
+				self.pdf.add_page()
 		self.filename = "../../Planung/Planung_" + self.year + '_' + self.week + ".pdf"
 		self.pdf.output(self.filename)
 		return self.filename
