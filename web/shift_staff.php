@@ -22,7 +22,7 @@ include_once 'menu.php';
 
 
 // role check
-if( A_checkpermission(array(1,0,0,4)) ) {
+if( A_checkpermission(array(1,0,3,4)) ) {
 
 
     // Open database connection
@@ -32,48 +32,78 @@ if( A_checkpermission(array(1,0,0,4)) ) {
     $errorhtml2 ='';
     $errorhtml3 ='';
     $errorhtml4 ='';
+    $selected_staff_id=0;
 
-    // get staff data
-    $staff_id=S_get_entry($Db,'SELECT id FROM Personal WHERE id_li_user='.$_SESSION['uid'].';');
+    // role check to get data from all staff members
+    if( A_checkpermission(array(0,0,3,4)) ) {
+        $array_staff=S_get_multientry($Db,'SELECT Id, Personalnummer, Vorname, Nachname FROM Personal;');
+        if( isset($_POST['search_staff']) ) {
+            $selected_staff_id=$_POST['selected_staff'];
+        } elseif( isset($_POST['save_shifts']) ) {
+            $selected_staff_id=$_POST['selected_staff'];
+        } else {
+            $selected_staff_id=$_GET['selected_staff'];
+        }
+        if($selected_staff_id==0) {
+            // get own staff data
+            $staff_id=S_get_entry($Db,'SELECT id FROM Personal WHERE id_li_user='.$_SESSION['uid'].';');
+        } else {
+            // get staff data from selected person
+            $staff_id=$selected_staff_id;
+        }
+    } else {
+        // get own staff data
+        $staff_id=S_get_entry($Db,'SELECT id FROM Personal WHERE id_li_user='.$_SESSION['uid'].';');
+    }
     $pnr=S_get_entry($Db,'SELECT Personalnummer FROM Personal WHERE id='.$staff_id.';');
     $u_vname=S_get_entry($Db,'SELECT Vorname FROM Personal WHERE id='.$staff_id.';');
     $u_nname=S_get_entry($Db,'SELECT Nachname FROM Personal WHERE id='.$staff_id.';');
 
 
-    // Get data from form
+    // Get data from form and write to database
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if( isset($_POST['save_shifts']) ) {
             $selected_year=$_POST['year'];
             $selected_kw=$_POST['kw'];
             
+            // 7 days
             for($i=1; $i <= 7; $i++) {
                 $date=$_POST['day'.$i];
-                $shift_value=$_POST['e_'.$i];
-
+                // 2 shifts
+                for($j=1; $j<=2; $j++) {
+                    if(isset($_POST['e_'.$i.$j])) {$shift_value=$j;} else {$shift_value=0;}
+                    // entry in DB existing?
+                    $shift_in_db=S_get_entry($Db,'SELECT Schicht FROM Planung WHERE Personalnummer=\''.$pnr.'\' AND Datum=\''.$date.'\' AND Schicht='.$j.';');
+                    if($shift_value>0) {
+                        if( !($shift_in_db>0) ) {
+                            // add shift
+                            S_set_data($Db,'INSERT INTO Planung (Personalnummer, Datum, Schicht, Comment) VALUES (\''.$pnr.'\', \''.$date.'\', '.$j.', "");');
+                            $errorhtml3 =  H_build_boxinfo( 0, 'Änderungen wurden gespeichert.', 'green' );
+                        }
+                    } elseif($shift_in_db>0) {
+                        // remove shift if existing
+                        S_set_data($Db,'DELETE FROM Planung WHERE Personalnummer=\''.$pnr.'\' AND Datum=\''.$date.'\' AND Schicht='.$j.';');
+                        $errorhtml3 =  H_build_boxinfo( 0, 'Änderungen wurden gespeichert.', 'green' );
+                    }
+                }
+                // comment (3rd shift)
+                $shift_value=$_POST['e_'.$i.'3'];
                 // entry in DB existing?
-                $shift_in_db=S_get_entry($Db,'SELECT Schicht FROM Planung WHERE Personalnummer=\''.$pnr.'\' AND Datum=\''.$date.'\';');
-                if($shift_value>0) {
-                    if( $shift_in_db>0 && $shift_in_db!=$shift_value ) {
-                        // change shift
-                        S_set_data($Db,'UPDATE Planung SET Schicht=\''.$shift_value.'\' WHERE Personalnummer=\''.$pnr.'\' AND Datum=\''.$date.'\';');
-                    } else {
+                $shift_in_db=S_get_entry($Db,'SELECT Schicht FROM Planung WHERE Personalnummer=\''.$pnr.'\' AND Datum=\''.$date.'\' AND Schicht=3;');
+                if($shift_value!='') {
+                    if( !($shift_in_db>0) ) {
                         // add shift
-                        S_set_data($Db,'INSERT INTO Planung (Personalnummer, Datum, Schicht) VALUES (\''.$pnr.'\',\''.$date.'\',\''.$shift_value.'\');');
+                        S_set_data($Db,'INSERT INTO Planung (Personalnummer, Datum, Schicht, Comment) VALUES (\''.$pnr.'\', \''.$date.'\', 3, \''.$shift_value.'\');');
+                        $errorhtml3 =  H_build_boxinfo( 0, 'Änderungen wurden gespeichert.', 'green' );
                     }
                 } elseif($shift_in_db>0) {
                     // remove shift if existing
-                    S_set_data($Db,'DELETE FROM Planung WHERE Personalnummer=\''.$pnr.'\' AND Datum=\''.$date.'\';');
+                    S_set_data($Db,'DELETE FROM Planung WHERE Personalnummer=\''.$pnr.'\' AND Datum=\''.$date.'\' AND Schicht=3;');
+                    $errorhtml3 =  H_build_boxinfo( 0, 'Änderungen wurden gespeichert.', 'green' );
                 }
-                unset($shift_value);
             }
         }
     }
-
-
-
-
-    
-
 
     
     // Available weeks
@@ -103,14 +133,15 @@ if( A_checkpermission(array(1,0,0,4)) ) {
         $selected_year=$kw_array[0][0];
     }
 
-    // get shifts from DB
+    // get shifts from database
     $start_date_sql=date('Y-m-d',strtotime($selected_year."W".$selected_kw."1"));
     for($i=1; $i <= 7; $i++) {
         $s[$i][1]=S_get_entry($Db,'SELECT id FROM Planung WHERE Personalnummer='.$pnr.' AND Datum=\''.date('Y-m-d', strtotime($start_date_sql. ' + '.($i-1).' days')).'\' AND Schicht=1;');
         $s[$i][2]=S_get_entry($Db,'SELECT id FROM Planung WHERE Personalnummer='.$pnr.' AND Datum=\''.date('Y-m-d', strtotime($start_date_sql. ' + '.($i-1).' days')).'\' AND Schicht=2;');
+        $s[$i][3]=S_get_entry($Db,'SELECT Comment FROM Planung WHERE Personalnummer='.$pnr.' AND Datum=\''.date('Y-m-d', strtotime($start_date_sql. ' + '.($i-1).' days')).'\' AND Schicht=3;');
         if($s[$i][1]>0) {$s_selected[$i][1]="checked";} else {$s_selected[$i][1]="";}
         if($s[$i][2]>0) {$s_selected[$i][2]="checked";} else {$s_selected[$i][2]="";}
-        if($s[$i][1]>0 || $s[$i][2]>0) {$s_selected[$i][0]="";} else {$s_selected[$i][0]="checked";}
+        $s_selected[$i][3]=$s[$i][3];
     }
 
 
@@ -125,19 +156,57 @@ if( A_checkpermission(array(1,0,0,4)) ) {
     echo $GLOBALS['G_html_main_right_a'];
 
     echo '<h1>Schicht-Verfügbarkeiten melden</h1>';
+
+    echo '
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />';
+
+    echo "<script>
+    $(document).ready(function () {
+        $('select').selectize({
+            sortField: 'text'
+        });
+    });
+    </script>";
  
 
     echo '<div class="card"><div class="row">
-    <div class="col-sm-2">
-    <p>'.$u_vname.' '.$u_nname.'</p>
-    <p>Nr. '.$pnr.'</p>
+    <div class="col-sm-2">';
 
-    <h3>Woche wählen</h3>';
+    // role check to show all staff members
+    if( A_checkpermission(array(0,0,3,4)) ) {
+        echo'<form action="'.$current_site.'.php" method="post">
+        <div class="input-group">
+        <span class="input-group-addon" id="basic-addon1">Nr.</span>
+        <select id="select-state" placeholder="Wähle eine Person..." name="selected_staff">
+        <option value="" selected>Wähle...</option>
+            ';
+            foreach($array_staff as $i) {
+                echo '<option value="'.$i[0].'">'.$i[1].' ('.$i[3].', '.$i[2].')</option>';
+            }
+            echo '
+        </select>
+        </div>
+        <div class="FAIR-si-button">
+        <input type="submit" class="btn btn-danger" value="Person anzeigen" name="search_staff" />
+        </div></form>';
+        echo '<h4>Ausgewählt:</h4><p><b>'.$u_vname.' '.$u_nname.'</b></p>
+    <p>Nr. '.$pnr.'</p>';
+    } else {
+        echo '<p><b>'.$u_vname.' '.$u_nname.'</b></p>
+        <p>Nr. '.$pnr.'</p>';
+    }
+
+    
+    
+
+    echo '<h3>Woche wählen</h3>';
 
     
     // print kw selection
     foreach($kw_array as $kw) {
-        echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" id="module-'.$kw[1].'" href="'.$current_site.'.php?kw='.$kw[1].'&year='.$kw[0].'">KW '.$kw[1].'</a>';
+        echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" id="module-'.$kw[1].'" href="'.$current_site.'.php?kw='.$kw[1].'&year='.$kw[0].'&selected_staff='.$selected_staff_id.'">KW '.$kw[1].'</a>';
     }
     echo '</div>';
 
@@ -150,6 +219,7 @@ if( A_checkpermission(array(1,0,0,4)) ) {
     echo'<form action="'.$current_site.'.php" method="post">
     <input type="text" value="'.$selected_year.'" name="year" style="display:none;">
     <input type="text" value="'.$selected_kw.'" name="kw" style="display:none;">
+    <input type="text" value="'.$selected_staff_id.'" name="selected_staff" style="display:none;">
     <table class="FAIR-data">
     ';
     $de_array=array('Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag','Sonntag');
@@ -162,12 +232,15 @@ if( A_checkpermission(array(1,0,0,4)) ) {
         <td class="FAIR-data-height1 FAIR-data-bottom">
         '.$de_array[$i-1].', '.date('d.m.y',strtotime($selected_year."W".$selected_kw.$i)).'
         </td><td class="FAIR-data-height1 FAIR-data-bottom">
-        <input type="radio" id="e_'.$i.'1" name="e_'.$i.'" value="1" '.$s_selected[$i][1].'/>
+        <input type="checkbox" id="e_'.$i.'1" name="e_'.$i.'1" value="1" '.$s_selected[$i][1].'/>
         <label for="e_'.$i.'1">Früh</label><span style="padding-left:20px;"></span>
-        <input type="radio" id="e_'.$i.'2" name="e_'.$i.'" value="2" '.$s_selected[$i][2].'/>
+        <input type="checkbox" id="e_'.$i.'2" name="e_'.$i.'2" value="2" '.$s_selected[$i][2].'/>
         <label for="e_'.$i.'2">Spät</label><span style="padding-left:20px;"></span>
-        <input type="radio" id="e_'.$i.'0" name="e_'.$i.'" value="0" '.$s_selected[$i][0].'/>
-        <label for="e_'.$i.'0">Keine</label><span style="padding-left:20px;"></span>
+        </td><td class="FAIR-data-height1 FAIR-data-bottom">
+        <div class="input-group">
+        <span class="input-group-addon" id="e_'.$i.'3_label">Variable Angabe</span>
+        <input type="text" id="e_'.$i.'3" name="e_'.$i.'3" class="form-control" placeholder="xx:xx - xx:xx" autocomplete="off" value="'.$s_selected[$i][3].'"   />
+        </div>
         </td>
         </tr>';
     }
@@ -179,6 +252,8 @@ if( A_checkpermission(array(1,0,0,4)) ) {
     <div class="FAIR-si-button">
     <input type="submit" class="btn btn-danger" value="Speichern" name="save_shifts" />
     </div></form>';
+
+    echo $errorhtml3;
 
     echo '</div>';
     

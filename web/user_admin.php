@@ -168,7 +168,7 @@ if( A_checkpermission(array(0,0,0,4)) ) {
         echo'<form action="'.$current_site.'.php" method="post">
         <div class="input-group">
         <input type="text" value="'.$user_id.'" name="user_id" style="display:none;">
-        <input type="text" value="'.$u_display.'" name="old_email" style="display:none;">
+        <input type="text" value="'.$u_email.'" name="old_email" style="display:none;">
         <span class="input-group-addon" id="basic-addon1">E-Mail</span>
         <input type="text" class="form-control" placeholder="E-Mail-Adresse" aria-describedby="basic-addon1" name="e_email" autocomplete="off" value="'.$u_email.'">
         <span class="input-group-addon" id="basic-addon1">Login-Versuche</span>
