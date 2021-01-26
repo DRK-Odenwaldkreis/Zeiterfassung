@@ -4,7 +4,6 @@ sys.path.append("..")
 from utils.database import Database
 from pdfcreator.pdf import PDFgenerator
 from utils.month import monthInt_to_string
-from utils.sendmail import send_mail_download
 from utils.getRequesterMail import get_Mail_from_UserID
 import datetime
 import time
@@ -42,7 +41,6 @@ if __name__ == "__main__":
         logger.debug('Received the following content: %s' % (str(content)))
         PDF = PDFgenerator(content, requestedWeek, requestedYear)
         PDF.generate()
-        #send_mail_download(zipFilename.replace('../../Planung/', ''), get_Mail_from_UserID(2))
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
         print("Error")

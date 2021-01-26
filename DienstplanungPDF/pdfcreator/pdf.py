@@ -18,11 +18,22 @@ import datetime
 sys.path.append("..")
 
 from utils.pausen import calculate_net_shift_time
-from utils.month import monthInt_to_string
+from utils.day import dayInt_to_string
+
+
 
 FreeSans = './pdfcreator/FreeSans.ttf'
 FreeSansBold = './pdfcreator/FreeSansBold.ttf'
 Logo = '../utils/genericLogo.png'
+
+
+def get_week(y, w):
+    first = next(
+        (datetime.date(y, 1, 1) + datetime.timedelta(days=i)
+         for i in range(367)
+         if (datetime.date(y, 1, 1) + datetime.timedelta(days=i)).isocalendar()[1] == w))
+    return [first + datetime.timedelta(days=i) for i in range(7)]
+
 class MyPDF(FPDF):
 
     #it sucks that these members do not belong to specific object instances, but I can use __init__
@@ -36,9 +47,8 @@ class MyPDF(FPDF):
 	def header(self):
 		self.add_font('GNU', '', FreeSans, uni=True)
 		self.set_font('GNU', '', 11)
-		# self.cell(40, 10, 'Impfzentrum Odenwaldkreis:', ln=0)
 		self.image(Logo, x=7, y=10, w=100, h=24, type='PNG')
-		self.cell(0, 10, datetime.date.today().strftime("%d.%m.%Y"), align='R', ln=1)
+		self.cell(0, 10, 'Erzeugt am: %s'% datetime.date.today().strftime("%d.%m.%Y"), align='R', ln=1)
 		self.ln(10)
 
 
@@ -59,45 +69,45 @@ class PDFgenerator:
 		self.date = datetime.date.today()
 		self.year = year
 		self.week = week
+		self.listOfDates = get_week(int(self.year), int(self.week))
+	
+	def createDay(self, day):
+		self.day = day
+		self.pdf.add_font('GNU', '', FreeSans, uni=True)
+		self.pdf.add_font('GNU', 'B', FreeSansBold, uni=True)
+		self.pdf.set_font('GNU', 'B', 14)
+		self.pdf.cell(20, 10, '', ln=1)
+		self.pdf.cell(20, 10, '%s - %s' %
+                    (dayInt_to_string(self.day.weekday()), self.day), ln=1)
+		self.pdf.set_font('GNU', '', 14)
+		self.current_x = self.pdf.get_x()
+		self.current_y = self.pdf.get_y()
+		self.pdf.line(self.current_x, self.current_y, self.current_x+60, self.current_y)
+		for i in self.content:
+			self.currentVorname = i[0]
+			self.currentNachname = i[1]
+			self.shift = i[2]
+			self.currentDate = i[3]
+			if self.currentDate == self.day:
+				self.pdf.set_font('GNU', '', 14)
+				self.pdf.cell(40, 10, '%s,%s'%(self.currentNachname,self.currentVorname), 0, 1)
+			else:
+				pass
+				#print(False)
+		self.pdf.add_page()
+
 
 	def generate(self):
 
-		pdf=MyPDF()
-		pdf.time = self.date
-		# pdf.name=self.name
-		pdf.alias_nb_pages()
-		pdf.add_page()
-		pdf.set_auto_page_break(True, 25)
-		pdf.add_font('GNU', '', FreeSans, uni=True)
-		pdf.add_font('GNU', 'B', FreeSansBold, uni=True)
-
-		pdf.set_font('GNU', 'B', 14)
-
-		pdf.cell(10, 10, '', ln=1)
-		pdf.cell(10)
-		pdf.cell(20, 10, 'Montag - 25.01.2021', ln=0)
-		pdf.cell(80)
-		pdf.cell(20, 10, 'Dienstag - 26.01.2021', ln=1)
-		pdf.set_font('GNU', '', 14)
-
-
-		current_x =pdf.get_x()
-		current_y =pdf.get_y()
-
-		pdf.line(current_x, current_y, current_x+80, current_y)
-		pdf.line(current_x+100, current_y, current_x+180, current_y)
-
-		pdf.set_font('GNU', '', 14)
-		pdf.cell(40, 10, 'Tag', 0, 0)
-		pdf.cell(40, 10, 'Tag2', 0, 0)
-		pdf.cell(40)
-		pdf.cell(40, 10, 'Tag', 0, 0)
-		pdf.cell(40, 10, 'Tag2', 0, 1)
-
-
-
-		self.filename = "../../Planung/Planung_"  + self.year + '_' + self.week + ".pdf"
-		pdf.output(self.filename)
+		self.pdf=MyPDF()
+		self.pdf.time = self.date
+		self.pdf.alias_nb_pages()
+		self.pdf.add_page()
+		self.pdf.set_auto_page_break(True, 25)
+		for i in self.listOfDates:
+			self.createDay(i)
+		self.filename = "../../Planung/Planung_" + self.year + '_' + self.week + ".pdf"
+		self.pdf.output(self.filename)
 		return self.filename
 
 aux=FPDF('P', 'mm', 'A4')
