@@ -125,6 +125,30 @@ ALTER TABLE `Personal`
 COMMIT;
 ```
 
+Für die Möglichkeit zum Planen wurde die Funktionalität erweitert. Hierfür ist eine Planungstabelle notwendig.
+
+Planung:
+```mysql
+
+CREATE TABLE `Planung` (
+  `id` int(11) NOT NULL,
+  `Personalnummer` int(11) NOT NULL,
+  `Datum` date NOT NULL,
+  `Schicht` int(11) NOT NULL COMMENT '1=Früh;2=Spät;3=Variabel',
+  `Comment` varchar(50) NOT NULL,
+  `Updated` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+ALTER TABLE `Planung`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `Planung`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=383;
+COMMIT;
+```
+
+
 ## Webpage
 
 Die Webanwendung dient zu Administration der Mitarbeiter sowie zur Erzeugung von Reports und zum erstellen von Zeiten sowie deren Korrektur.

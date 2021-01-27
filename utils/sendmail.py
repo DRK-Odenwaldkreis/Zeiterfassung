@@ -111,7 +111,6 @@ def send_mail_new_dienstplan(listRecipients, week, year):
 
 def send_mail_download(filename, requester):
     try:
-        print(os.path.abspath('./MailLayout/NewDownload.html'))
         logging.debug("Receviced the following filename %s to be sent to %s" % (filename, requester))
         message = MIMEMultipart()
         url = 'https://impfzentrum-odw.de/download.php?file=' + str(filename)
@@ -128,13 +127,10 @@ def send_mail_download(filename, requester):
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         logging.debug(
             "Sending Mail with following tupel: %s" % (message))
-        #smtp.sendmail(message['From'], message['To'], message.as_string())
+        smtp.sendmail(message['From'], message['To'], message.as_string())
         logging.debug("Mail was send")
         smtp.quit()
         return True
     except Exception as err:
         logging.error("The following error occured in send mail download: %s" % (err))
         return False
-
-
-send_mail_download("test.pdf",'murat@familie-bayram.eu')
