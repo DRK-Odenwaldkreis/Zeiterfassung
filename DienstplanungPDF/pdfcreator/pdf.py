@@ -15,6 +15,7 @@ import time
 import os
 import os.path
 import datetime
+import logging
 sys.path.append("..")
 
 from utils.pausen import calculate_net_shift_time
@@ -26,6 +27,7 @@ FreeSans = './pdfcreator/FreeSans.ttf'
 FreeSansBold = './pdfcreator/FreeSansBold.ttf'
 Logo = '../utils/genericLogo.png'
 
+logger = logging.getLogger('Dienstplanung Report')
 
 def get_week(y, w):
     first = next(
@@ -65,31 +67,50 @@ class MyPDF(FPDF):
 class PDFgenerator:
 
 	def __init__(self, content, week, year):
+		logger.debug('Starting the PDF Creation')
 		self.content=content
 		self.date = datetime.date.today()
 		self.year = year
+		logger.debug('Thats the year for planning: %s' %(self.year))
 		self.week = week
+		logger.debug('Thats the week for planning: %s' %(self.week))
 		self.listOfDates = get_week(int(self.year), int(self.week))
-	
-	def input_line(self,line,type):
+		logger.debug('Thats the dates the planning is done for: %s'%(self.listOfDates))
+
+	def write_lines(self, list):
 		self.type = type
-		self.line = line
-		if self.type == "L":
-			self.pdf.set_y(self.leftCellRow)
-			self.pdf.set_x(self.leftCellColumn)
-			self.pdf.cell(60, 10, self.line, ln=1)
-			self.leftCellRow = self.pdf.get_y()
-		elif self.type == "C":
-			self.pdf.set_y(self.centerCellRow)
-			self.pdf.set_x(self.centerCellColumn)
-			self.pdf.cell(60, 10, self.line, ln=1)
-			self.centerCellRow = self.pdf.get_y()
-		elif self.type == "R":
-			self.pdf.set_y(self.rightCellRow)
-			self.pdf.set_x(self.rightCellColumn)
-			self.pdf.cell(60, 10, self.line, ln=1)
-			self.rightCellRow = self.pdf.get_y()
-	
+		self.list = list
+		logger.debug('Writing the following pre-collected lines: %s' % (self.list))
+		self.length = len(max(self.list, key=lambda coll: len(coll)))
+		for line in range(0, self.length):
+			if self.pdf.get_y() + 10 > self.pdf.page_break_trigger:
+				logger.debug('Pagertrigger was achieved, creating new page.')
+				self.new_page()
+			else:
+				for count, value in enumerate(self.list):
+					if count == 0:
+						logger.debug('Writing the frueh shift')
+						try:
+							self.pdf.cell(60, 10, value[line], ln=0)
+						except:
+							self.pdf.cell(60, 10, '', ln=0)
+					elif count == 1:
+						logger.debug('Writing the spaet shift')
+						try:
+							self.pdf.cell(60, 10, value[line], ln=0)
+						except:
+							self.pdf.cell(60, 10, '', ln=0)
+					elif count == 2:
+						logger.debug('Writing the variable shift')
+						self.pdf.set_font('GNU', '', 10)
+						try:
+							self.pdf.cell(60, 10, value[line], ln=1)
+						except:
+							self.pdf.cell(60, 10, '', ln=1)
+						finally:
+							logger.debug('Resetting font size')
+							self.pdf.set_font('GNU', '', 14)
+
 	def new_page(self):
 		self.pdf.add_font('GNU', '', FreeSans, uni=True)
 		self.pdf.add_font('GNU', 'B', FreeSansBold, uni=True)
@@ -111,44 +132,35 @@ class PDFgenerator:
 		self.pdf.line(self.pdf.get_x(), self.pdf.get_y(),
                     self.pdf.get_x()+180, self.pdf.get_y())
 
-	
 	def create_day(self, day):
 		self.day = day
+		logger.debug('Starting the creation of the page for: %s' %(self.day))
+		self.leftColumn = []
+		self.centerColumn = []
+		self.rightColumn = []
 		self.new_page()
-		self.leftCellRow = self.pdf.get_y()
-		self.rightCellRow = self.pdf.get_y()
-		self.centerCellRow = self.pdf.get_y()
-		self.leftCellColumn = self.pdf.get_x()
-		self.rightCellColumn = self.pdf.get_x() + 120
-		self.centerCellColumn = self.pdf.get_x() + 60
 		for i in self.content:
-			if self.pdf.get_y() + 10 > self.pdf.page_break_trigger:
-				self.new_page()
-				self.leftCellRow = self.pdf.get_y()
-				self.rightCellRow = self.pdf.get_y()
-				self.centerCellRow = self.pdf.get_y()
-				self.leftCellColumn = self.pdf.get_x()
-				self.rightCellColumn = self.pdf.get_x() + 120
-				self.centerCellColumn = self.pdf.get_x() + 60
-			else:
-				self.currentVorname = i[0]
-				self.currentNachname = i[1]
-				self.shift = i[2]
-				self.currentDate = i[3]
-				if self.currentDate == self.day:
-					self.pdf.set_font('GNU', '', 14)
-					if self.shift == 1:
-						self.input_line('%s, %s' % (self.currentNachname, self.currentVorname), "L")
-					elif self.shift == 2:
-						self.input_line('%s, %s' % (self.currentNachname, self.currentVorname), "C")
-					elif self.shift == 3:
-						self.pdf.set_font('GNU', '', 10)
-						self.input_line('%s, %s - (%s)' % (self.currentNachname, self.currentVorname,i[4]), "R")
-						self.pdf.set_font('GNU', '', 14)
-					else:
-						print("Should not happen")
+			logger.debug('Found the following entry: %s' % (str(i)))
+			self.currentVorname = i[0]
+			self.currentNachname = i[1]
+			self.shift = i[2]
+			self.currentDate = i[3]
+			if self.currentDate == self.day:
+				self.pdf.set_font('GNU', '', 14)
+				if self.shift == 1:
+					self.leftColumn.append('%s, %s' % (self.currentNachname, self.currentVorname))
+				elif self.shift == 2:
+					self.centerColumn.append('%s, %s' % (self.currentNachname, self.currentVorname))
+				elif self.shift == 3:
+					self.rightColumn.append('%s, %s - (%s)' % (self.currentNachname, self.currentVorname, i[4]))
 				else:
-					pass
+					logger.warning('The given shift does not exist')
+			else:
+				# No planning entry is included for that day
+				pass
+		logger.debug('Finished with the content of day: %s'%(self.day))
+		self.list = [self.leftColumn, self.centerColumn, self.rightColumn]
+		self.write_lines(self.list)
 
 
 	def generate(self):
