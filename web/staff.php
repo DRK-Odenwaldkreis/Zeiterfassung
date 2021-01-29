@@ -64,6 +64,11 @@ if( A_checkpermission(array(0,2,0,4)) ) {
                         //  create staff
                         S_set_data($Db,'INSERT INTO Personal (Vorname,Nachname,Personalnummer,Hash,id_li_user) VALUES (\''.$u_vname.'\',\''.$u_nname.'\',CAST('.$pnr.' AS int),\''.$u_hash.'\','.$new_uid.');');
                         $errorhtml2 =  H_build_boxinfo( 0, 'Personaldaten wurden erstellt.', 'green' );
+                        // Welcome email
+                        $res_email=A_send_welcome_email($Db, $u_email);
+                        if($res_email) {
+                            $errorhtml2 .=  H_build_boxinfo( 0, 'Begrüßungs-E-Mail wurde verschickt.', 'green' );
+                        }
                     } else {
                         // Message email exists already
                         $errorhtml2 =  H_build_boxinfo( 0, 'Eingetragene E-Mail-Adresse bereits eingetragen. Es sind keine Dopplungen erlaubt.<br>Sollte die Person bereits einen Login-Zugang haben, bitte den Support kontaktieren.', 'red' );

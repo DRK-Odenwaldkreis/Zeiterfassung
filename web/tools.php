@@ -172,6 +172,24 @@ function A_checkpermission($requirement) {
 return $bool_permission;
 }
 
+// send welcome email
+function A_send_welcome_email($Db,$to) {
+	$FLAG_EMAIL_NEWEMPLOYEE=S_get_entry($Db,'SELECT value FROM website_settings WHERE name="FLAG_EMAIL_NEWEMPLOYEE";');
+	if($FLAG_EMAIL_NEWEMPLOYEE==1 && filter_var($to, FILTER_VALIDATE_EMAIL)) {
+		// send email
+		$header = "From: support@impfzentrum-odw.de\r\n";
+		$header .= "Content-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit";
+		$content="TEST";
+		$title='DRK Impfzentrum Zeiterfassung - Willkommen';
+		mail($to, $title, $content, $header, "-r support@impfzentrum-odw.de");
+
+		return true;
+	} else {
+		return false;
+	}
+	
+
+}
 
 
 

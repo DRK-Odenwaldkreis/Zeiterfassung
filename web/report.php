@@ -56,7 +56,7 @@ if( A_checkpermission(array(0,2,0,4)) ) {
 
             $dir="/home/webservice/Zeiterfassung/EinzelAbrechnungPDF/";
             chdir($dir);
-            $job="python3 job.py $month $year $uid";
+            $job="python3 job.py $month $year $uid > /dev/null &";
             exec($job,$script_output);
             $errorhtml0 = H_build_boxinfo( 0, "Report wird erstellt und Downloadlink an Ihre E-Mail verschickt. Dies kann einen Augenblick dauern.", 'green' );
             
