@@ -91,7 +91,7 @@ if( A_checkpermission(array(0,0,3,4)) ) {
     <!-- MAX_FILE_SIZE muss vor dem Dateiupload Input Feld stehen -->
     <input type="hidden" name="MAX_FILE_SIZE" value="30000000" />
     <!-- Der Name des Input Felds bestimmt den Namen im $_FILES Array -->
-    Neuen Dienstplan hochladen:<br><input name="userfile" type="file" />
+    Neuen Dienstplan hochladen als PDF:<br><input name="userfile" type="file" />
     <select id="select-state" placeholder="Wähle eine Woche" name="week">
     <option value="" selected>Wähle...</option>
         ';

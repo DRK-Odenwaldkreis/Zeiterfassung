@@ -270,6 +270,37 @@ if( A_checkpermission(array(1,0,3,4)) ) {
 
     echo '</div></div>';
 
+    // Dienstplan download
+    echo '<h3>Download verfügbarer Dienstpläne</h3>';
+    echo '<div class="card"><div class="row">
+    <div class="col-sm-12">';
+    echo '<p><ul>';
+    //Get list of files
+    // Available weeks
+    $today = date('Y-m-d');
+    $twoweek_date=date('Y-m-d', strtotime($today. ' + 0 days'));
+    $start_date=date('Y-m-d', strtotime('next monday', strtotime($twoweek_date)));
+    //build array of next 5 weeks
+    $kw_array=array(
+        array(date('Y',strtotime($start_date. ' - 14 days')),date('W',strtotime($start_date. ' - 14 days')),date('d.m.Y',strtotime($start_date. ' - 14 days'))),
+        array(date('Y',strtotime($start_date. ' - 7 days')),date('W',strtotime($start_date. ' - 7 days')),date('d.m.Y',strtotime($start_date. ' - 7 days'))),
+        array(date('Y',strtotime($start_date)),date('W',strtotime($start_date)),date('d.m.Y',strtotime($start_date))),
+        array(date('Y',strtotime($start_date. ' + 7 days')),date('W',strtotime($start_date. ' + 7 days')),date('d.m.Y',strtotime($start_date. ' + 7 days'))),
+        array(date('Y',strtotime($start_date. ' + 14 days')),date('W',strtotime($start_date. ' + 14 days')),date('d.m.Y',strtotime($start_date. ' + 14 days')))
+    );
+    $log_path="/home/webservice/Dienstplaene/";
+    $array_files=scandir($log_path);
+    foreach($kw_array as $i) {
+        $a='Dienstplan_'.$i[0].'_kw'.$i[1].'.pdf';
+        if(file_exists($log_path.$a)) {
+            echo '<li><a href="https://impfzentrum-odw.de/download.php?dir=d&file='.$a.'">KW '.$i[1].' gültig ab '.$i[2].'</a> (Erstellt: '.date ("d.m.Y H:i", filemtime($log_path.$a)).')</li>';
+        }
+    }
+    echo '</ul></p>';
+
+    echo '</div>';
+    echo '</div></div>';
+
 } else {
     // Print html header
     echo $GLOBALS['G_html_header'];
