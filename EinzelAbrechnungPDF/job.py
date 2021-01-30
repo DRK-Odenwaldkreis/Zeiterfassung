@@ -62,6 +62,8 @@ if __name__ == "__main__":
             'Getting employee infos with the following query: %s' % (sql))
         employee = DatabaseConnect.read_all(sql)
         logger.debug('Received the following employee: %s' % (str(employee)))
+        if type == "all":
+            print("Done")
         for i in employee:
             vorname = i[0]
             nachname = i[1]

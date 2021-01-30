@@ -91,22 +91,22 @@ class PDFgenerator:
 					if count == 0:
 						logger.debug('Writing the frueh shift')
 						try:
-							self.pdf.cell(60, 10, value[line], ln=0)
+							self.pdf.cell(60, 5, value[line][:20], ln=0)
 						except:
-							self.pdf.cell(60, 10, '', ln=0)
+							self.pdf.cell(60, 5, '', ln=0)
 					elif count == 1:
 						logger.debug('Writing the spaet shift')
 						try:
-							self.pdf.cell(60, 10, value[line], ln=0)
+							self.pdf.cell(60, 5, value[line][:20], ln=0)
 						except:
-							self.pdf.cell(60, 10, '', ln=0)
+							self.pdf.cell(60, 5, '', ln=0)
 					elif count == 2:
 						logger.debug('Writing the variable shift')
 						self.pdf.set_font('GNU', '', 10)
 						try:
-							self.pdf.cell(60, 10, value[line], ln=1)
+							self.pdf.cell(60, 5, value[line][:35], ln=1)
 						except:
-							self.pdf.cell(60, 10, '', ln=1)
+							self.pdf.cell(60, 5, '', ln=1)
 						finally:
 							logger.debug('Resetting font size')
 							self.pdf.set_font('GNU', '', 14)
@@ -152,7 +152,7 @@ class PDFgenerator:
 				elif self.shift == 2:
 					self.centerColumn.append('%s, %s' % (self.currentNachname, self.currentVorname))
 				elif self.shift == 3:
-					self.rightColumn.append('%s, %s - (%s)' % (self.currentNachname, self.currentVorname, i[4]))
+					self.rightColumn.append('(%s) - %s, %s' % (i[4],self.currentNachname, self.currentVorname))
 				else:
 					logger.warning('The given shift does not exist')
 			else:
