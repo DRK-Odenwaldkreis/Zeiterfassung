@@ -274,7 +274,8 @@ if( A_checkpermission(array(1,0,3,4)) ) {
     echo '<h3>Download verfügbarer Dienstpläne</h3>';
     echo '<div class="card"><div class="row">
     <div class="col-sm-12">';
-    echo '<p><ul>';
+    echo '<p>Vom Dienstplaner bereitgestellte Dienstpläne für eine Kalenderwoche:
+    </p>';
     //Get list of files
     // Available weeks
     $today = date('Y-m-d');
@@ -293,10 +294,9 @@ if( A_checkpermission(array(1,0,3,4)) ) {
     foreach($kw_array as $i) {
         $a='Dienstplan_'.$i[0].'_kw'.$i[1].'.pdf';
         if(file_exists($log_path.$a)) {
-            echo '<li><a href="https://impfzentrum-odw.de/download.php?dir=d&file='.$a.'">KW '.$i[1].' gültig ab '.$i[2].'</a> (Erstellt: '.date ("d.m.Y H:i", filemtime($log_path.$a)).')</li>';
+            echo '<a class="list-group-item list-group-item-action list-group-item-redtext" href="https://impfzentrum-odw.de/download.php?dir=d&file='.$a.'">KW '.$i[1].' gültig ab '.$i[2].'<span class="FAIR-sep-l"></span><span class="FAIR-text-med">(Erstellt: '.date ("d.m.Y H:i", filemtime($log_path.$a)).')</a>';
         }
     }
-    echo '</ul></p>';
 
     echo '</div>';
     echo '</div></div>';

@@ -64,6 +64,11 @@ $Db=S_open_db();
 
 
 
+// Case: shutdown active -> show message
+$FLAG_SHUTDOWN=S_get_entry($Db,'SELECT value FROM website_settings WHERE name="FLAG_SHUTDOWN";');
+
+
+
 // Forward after login to refering site
 	// Is referer url not a login site
 	 if( !preg_match('/login/',$refererPATH) ) {
@@ -142,7 +147,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$pwd_lock) {
 	
 }
 	
-if ( $FLAG_SHUTDOWN=='false' && $login_user_id>0 && $tokenreceived!='' ) {
+if ( $FLAG_SHUTDOWN==0 && $login_user_id>0 && $tokenreceived!='' ) {
 
 	// ------------------------------------ //
 	// -- Begin: CODE SIGN IN - RESET PWD - //
@@ -289,7 +294,7 @@ if($pwd_lock) {
 	<div style="font-size:130%; position: relative;top: 50px;left: 18px;"><a href="index.php" id="entersite" class="btn btn-default" name="entersite">Zur Startseite</a></div></div></div>';
 	$html_box_login .= '</div></div>';
 	
-} elseif( $pwd_reset && $FLAG_SHUTDOWN!='true' ) {
+} elseif( $pwd_reset && $FLAG_SHUTDOWN==0 ) {
 	
 	// //////////////
 	// PASSWORD RESET
@@ -321,7 +326,7 @@ if($pwd_lock) {
 	$html_box_login.= H_build_boxfoot( );
 	$html_box_login.= '</div>';
 
-} elseif ($FLAG_SHUTDOWN!='true') {
+} elseif ($FLAG_SHUTDOWN==0) {
 		
 	// //////////////
 	// PASSWORD LOGIN
@@ -329,7 +334,7 @@ if($pwd_lock) {
 	$html_box_login.='<div style="text-align: left; display: inline-block; vertical-align: top;">';
 	$html_box_login.=H_build_boxhead( $box_width, 'boxl1', 'Bitte melden Sie sich an' );
 	
-	if($FLAG_SHUTDOWN=='true') {
+	if($FLAG_SHUTDOWN==1) {
 		$html_box_login.=H_build_boxinfo( 0, 'Diese Website und die Datenbank sind derzeit geschlossen.<br>Diese Anmeldung ist nur für Administratoren.', 'blue' );	
 	}
 	
@@ -354,7 +359,7 @@ if($pwd_lock) {
 	$html_box_login.='<li class="FAIR-editmenu-ul"><a class="FAIR-editmenu-td" href="'.$current_site.'.php?b=1">
 	<div class="FAIR-editmenu-left">Passwort vergessen?</div><div class="FAIR-editmenu-right"></div>
 	</a></li>';
-	if($FLAG_SHUTDOWN=='true') {
+	if($FLAG_SHUTDOWN==1) {
 		$html_box_login.='<li class="FAIR-editmenu-sep"></li>';
 		$html_box_login.='<li class="FAIR-editmenu-ul"><a class="FAIR-editmenu-td" href="'.$current_site.'.php">
 		<div class="FAIR-editmenu-left"><span style="margin-left:10px;"></span>Zurück</div><div class="FAIR-editmenu-right"></div>
@@ -366,22 +371,22 @@ if($pwd_lock) {
 	$html_box_login.=H_build_boxfoot( );
 	$html_box_login.='</div>';
 		
-} elseif($FLAG_SHUTDOWN=='true') {
+} elseif($FLAG_SHUTDOWN==1) {
 	
 	// //////////////
 	// SITE CLOSED
 	
 	$html_box_login.='<div style="text-align: left; display: inline-block; vertical-align: top;">';
 	$html_box_login.=H_build_boxhead( $box_width, 'boxl1', 'Dienst vorübergehend nicht verfügbar' );
-	$html_box_login.=H_build_boxinfo( 0, 'Diese Website und die Datenbank sind derzeit geschlossen. Bitte versuchen Sie es zu einem späteren Zeitpunkt noch einmal.', 'red' );		
+	$html_box_login.=H_build_boxinfo( 0, 'Diese Website ist derzeit geschlossen. Bitte versuchen Sie es zu einem späteren Zeitpunkt noch einmal.', 'red' );		
 	$html_box_login.= '<p></p>';
-	$html_box_login.='<ul class="FAIR-editmenu-ul">';
+	/* $html_box_login.='<ul class="FAIR-editmenu-ul">';
 	$html_box_login.='<li class="FAIR-editmenu-sep"></li>';
 	$html_box_login.= '<li class="FAIR-editmenu-ul"><a class="FAIR-editmenu-td" href="'.$current_site.'.php?a=1">
 	<div class="FAIR-editmenu-left">Administrator Login</div><div class="FAIR-editmenu-right"></div>
 	</a></li>';
 	$html_box_login.='<li class="FAIR-editmenu-sep"></li>';
-	$html_box_login.= '</ul>';
+	$html_box_login.= '</ul>'; */
 	
 	$html_box_login.= H_build_boxfoot( );
 	$html_box_login.= '</div>';

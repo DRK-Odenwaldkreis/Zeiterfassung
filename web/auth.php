@@ -29,10 +29,15 @@ $linked_URL=$_SERVER['REQUEST_URI'];
 
 if( $sec_level>0 ) {
 	// Case: shutdown active -> go to login site
-	if ($FLAG_SHUTDOWN=='true' ) {
-		session_destroy();
-		header('Location: '.$FLAG_http.'://'.$hostname.($path == '/' ? '' : $path).'/login.php');
-	exit;
+	$Db=S_open_db();
+	if(isset($Db)) {
+		$FLAG_SHUTDOWN=S_get_entry($Db,'SELECT value FROM website_settings WHERE name="FLAG_SHUTDOWN";');
+		if ($FLAG_SHUTDOWN==1 ) {
+			session_destroy();
+			header('Location: '.$FLAG_http.'://'.$hostname.($path == '/' ? '' : $path).'/login.php');
+		exit;
+		}
+	S_close_db($Db);
 	}
 
 

@@ -10,7 +10,7 @@ January 2021
 
 $ADMINEMAIL = 'support@impfzentrum-odw.com';
 $HOSTNAME_WEB = 'impfzentrum-odw.de/';
-$FLAG_SHUTDOWN = 'false';
+//$FLAG_SHUTDOWN = 'false';
 $LOGINTOKENTIME = 6;
 $LOCK_VALUE_THRESHOLD = 6;
 ?>
