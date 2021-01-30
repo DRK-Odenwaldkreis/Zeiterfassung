@@ -39,8 +39,7 @@ $_module_array=array(
     22=>array("text"=>'<h4 class="list-group-item-heading">Dienstplan hochladen</h4><p class="list-group-item-text">Neuen Dienstplan hochladen</p>',"link"=>"dienstplan_upload.php","role"=>array(0,0,3,4),"role-disabled"=>array(0,2,0,0)),
     30=>array("text"=>'<h4 class="list-group-item-heading">Admin: Web user</h4><p class="list-group-item-text">User-Management</p>',"link"=>"user_admin.php","role"=>array(0,0,0,4),"role-disabled"=>array(0,0,0,0)),
     31=>array("text"=>'<h4 class="list-group-item-heading">Admin: Files</h4><p class="list-group-item-text">Dateien von Reports</p>',"link"=>"downloadlist.php","role"=>array(0,0,0,4),"role-disabled"=>array(0,0,0,0)),
-    32=>array("text"=>'<h4 class="list-group-item-heading">Admin: Logs</h4><p class="list-group-item-text">Server-Logs</p>',"link"=>"log.php","role"=>array(0,0,0,4),"role-disabled"=>array(0,0,0,0)),
-    33=>array("text"=>'<h4 class="list-group-item-heading">Admin: Cronjobs</h4><p class="list-group-item-text">Display server cronjobs</p>',"link"=>"log_cron.php","role"=>array(0,0,0,4),"role-disabled"=>array(0,0,0,0))
+    32=>array("text"=>'<h4 class="list-group-item-heading">Admin: Logs</h4><p class="list-group-item-text">Server-Logs</p>',"link"=>"log.php","role"=>array(0,0,0,4),"role-disabled"=>array(0,0,0,0))
 );
 
 echo '<div class="row">';

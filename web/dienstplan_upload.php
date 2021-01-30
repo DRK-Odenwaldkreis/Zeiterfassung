@@ -61,7 +61,7 @@ if( A_checkpermission(array(0,0,3,4)) ) {
     echo '<div class="row">';
 
     echo '<div class="card">
-    <div class="col-sm-6">';
+    <div class="col-sm-12">';
     echo '<h3>Verfügbare Dienstpläne</h3>';
     echo '<p></p>';
     //Get list of files
@@ -109,6 +109,9 @@ if( A_checkpermission(array(0,0,3,4)) ) {
     echo '
     </select>
     </div><div class="input-group">
+    <input type="checkbox" id="mailsending" name="mailsending" value="mailsending"/>
+    <label for="mailsending">E-Mail an Personal schicken</label>
+    </div><div class="input-group">
     <div class="FAIR-si-button">
     <input type="submit" class="btn btn-danger" value="Hochladen" name="upload_file" />
     </div>
@@ -124,7 +127,7 @@ if( A_checkpermission(array(0,0,3,4)) ) {
     echo '<div class="row">';
 
     echo '<div class="card">
-    <div class="col-sm-6">';
+    <div class="col-sm-12">';
     echo '<h3>Schichtverfügbarkeiten</h3>';
     echo '<p></p>';
     //Get list of files
