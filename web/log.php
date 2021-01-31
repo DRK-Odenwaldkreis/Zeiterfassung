@@ -60,6 +60,7 @@ if( A_checkpermission(array(0,0,0,4)) ) {
         }
     }
 
+
 } else {
     // Print html header
     echo $GLOBALS['G_html_header'];

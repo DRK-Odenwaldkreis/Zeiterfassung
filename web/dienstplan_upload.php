@@ -22,6 +22,9 @@ include_once 'menu.php';
 // role check
 if( A_checkpermission(array(0,0,3,4)) ) {
 
+    // Open database connection
+    $Db=S_open_db();
+
     $errorhtml0 ='';
 
     // Save file from upload
@@ -35,10 +38,18 @@ if( A_checkpermission(array(0,0,3,4)) ) {
 
             if (move_uploaded_file($_FILES['userfile']['tmp_name'], $new_file)) {
                 $errorhtml0 = H_build_boxinfo( 0, "Datei wurde erfolgreich hochgeladen.", 'green' );
+                // Send email to staff members
+                if($_POST['mailsending']=='mailsending') {
+                    A_send_staffroster_email($Db,$week);
+                }
+
             }
         } else {
             $errorhtml0 = H_build_boxinfo( 0, "Keine Kalenderwoche ausgewählt.", 'red' );
         }
+
+    // Close connection to database
+    S_close_db($Db);
 
     }
 

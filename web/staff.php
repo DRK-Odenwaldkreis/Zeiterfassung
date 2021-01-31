@@ -186,13 +186,12 @@ if( A_checkpermission(array(0,2,0,4)) ) {
             $file=$script_output[0];
             var_dump($script_output);
             if( file_exists("/home/webservice/Reports/$file") ) {
-                header('Content-Description: File Transfer');
+                //header('Content-Description: File Transfer');
                 header('Content-Type: application/octet-stream');
                 header('Content-Disposition: attachment; filename="'.basename($file).'"');
+                header('Pragma: no-cache');
                 header('Expires: 0');
-                header('Cache-Control: must-revalidate');
-                header('Pragma: public');
-                header('Content-Length: ' . filesize($file));
+                //header('Content-Length: ' . filesize($file));
                 readfile("/home/webservice/Reports/$file");
                 exit;
             }

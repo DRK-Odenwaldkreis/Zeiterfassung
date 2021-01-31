@@ -41,7 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         header('Content-Disposition: attachment; filename="'.basename($file).'"');
         header('Pragma: no-cache');
         header('Expires: 0');
-        //header('Cache-Control: must-revalidate');
         //header('Content-Length: ' . filesize($file));
         readfile("/home/webservice/$dir/$file");
         exit;
