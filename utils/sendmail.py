@@ -33,6 +33,7 @@ def send_mail_report(filename, day, requester):
         message['Subject'] = "Neue Tagesreport für: %s" % (str(day))
         message['From'] = 'report@impfzentrum-odw.de'
         message['To'] = requester
+        message['Cc'] = 'report@impfzentrum-odw.de'
         filenameRaw = filename
         filename = '../../Reports/' + str(filenameRaw)
         files = []
@@ -48,7 +49,7 @@ def send_mail_report(filename, day, requester):
         smtp = smtplib.SMTP(SMTP_SERVER,port=587)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
-        smtp.sendmail(message['From'], message['To'], message.as_string())
+        smtp.send_message(message)
         logging.debug("Mail was send")
         smtp.quit()
         return True
@@ -70,10 +71,11 @@ def send_mail_reminder(listRecipients, week, year):
         message['Subject'] = "Erinnerung für Planung KW %s in %s" % (str(week), str(year))
         message['From'] = 'planung@impfzentrum-odw.de'
         message['Bcc'] = ", ".join(listRecipients)
+        message['Cc'] = 'report@impfzentrum-odw.de'
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
-        smtp.sendmail(message['From'], message['Bcc'], message.as_string())
+        smtp.send_message(message)
         logging.debug("Mail was send")
         smtp.quit()
         return True
@@ -96,10 +98,11 @@ def send_mail_new_dienstplan(listRecipients, week, year):
             str(week), str(year))
         message['From'] = 'dienstplan@impfzentrum-odw.de'
         message['Bcc'] = ", ".join(listRecipients)
+        message['Cc'] = 'report@impfzentrum-odw.de'
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
-        smtp.sendmail(message['From'], message['Bcc'], message.as_string())
+        smtp.send_message(message)
         logging.debug("Mail was send")
         smtp.quit()
         return True
@@ -122,12 +125,13 @@ def send_mail_download(filename, requester):
         message['Subject'] = "Einzelnachweise sind zum Download verfügbar"
         message['From'] = 'report@impfzentrum-odw.de'
         message['To'] = requester
+        message['Cc'] = 'report@impfzentrum-odw.de'
         smtp = smtplib.SMTP(SMTP_SERVER,port=587)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         logging.debug(
             "Sending Mail with following tupel: %s" % (message))
-        smtp.sendmail(message['From'], message['To'], message.as_string())
+        smtp.send_message(message)
         logging.debug("Mail was send")
         smtp.quit()
         return True
