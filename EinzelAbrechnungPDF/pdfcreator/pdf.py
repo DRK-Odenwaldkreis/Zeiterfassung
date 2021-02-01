@@ -22,7 +22,7 @@ from utils.month import monthInt_to_string
 
 FreeSans = './pdfcreator/FreeSans.ttf'
 FreeSansBold = './pdfcreator/FreeSansBold.ttf'
-Logo = '../utils/genericLogo.png'
+Logo = '../utils/logo.png'
 class MyPDF(FPDF):
 
     #it sucks that these members do not belong to specific object instances, but I can use __init__

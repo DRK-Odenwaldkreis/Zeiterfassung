@@ -25,7 +25,7 @@ from utils.day import dayInt_to_string
 
 FreeSans = './pdfcreator/FreeSans.ttf'
 FreeSansBold = './pdfcreator/FreeSansBold.ttf'
-Logo = '../utils/genericLogo.png'
+Logo = '../utils/logo.png'
 
 logger = logging.getLogger('Dienstplanung Report')
 
