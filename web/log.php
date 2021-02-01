@@ -50,18 +50,16 @@ if( A_checkpermission(array(0,0,0,4)) ) {
 
     //Get log file
     $log_path="/home/webservice/Logs/";
-    echo '<h3>reportJob.log</h3>';
-    echo '<pre>';
-    echo file_tail($log_path."reportJob.log",40);
-    echo '</pre>';
-    echo '<h3>CSVExportJob.log</h3>';
-    echo '<pre>';
-    echo file_tail($log_path."CSVExportJob.log",40);
-    echo '</pre>';
-    echo '<h3>singleReportJob.log</h3>';
-    echo '<pre>';
-    echo file_tail($log_path."singleReportJob.log",40);
-    echo '</pre>';
+    $log_array=scandir($log_path);
+    foreach($log_array as $a) {
+        if(!($a=="." || $a=="..")) {
+            echo '<h3>'.$a.'</h3>';
+            echo '<pre>';
+            echo file_tail($log_path.$a,40);
+            echo '</pre>';
+        }
+    }
+
 
 } else {
     // Print html header

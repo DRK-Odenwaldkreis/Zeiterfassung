@@ -38,13 +38,10 @@ if( A_checkpermission(array(0,2,0,4)) ) {
             exec($job,$script_output);
             $file=$script_output[0];
             if( file_exists("/home/webservice/Reports/$file") ) {
-                header('Content-Description: File Transfer');
                 header('Content-Type: application/octet-stream');
                 header('Content-Disposition: attachment; filename="'.basename($file).'"');
+                header('Pragma: no-cache');
                 header('Expires: 0');
-                header('Cache-Control: must-revalidate');
-                header('Pragma: public');
-                header('Content-Length: ' . filesize($file));
                 readfile("/home/webservice/Reports/$file");
                 exit;
             }
@@ -56,7 +53,7 @@ if( A_checkpermission(array(0,2,0,4)) ) {
 
             $dir="/home/webservice/Zeiterfassung/EinzelAbrechnungPDF/";
             chdir($dir);
-            $job="python3 job.py $month $year $uid";
+            $job="python3 job.py $month $year $uid > /dev/null &";
             exec($job,$script_output);
             $errorhtml0 = H_build_boxinfo( 0, "Report wird erstellt und Downloadlink an Ihre E-Mail verschickt. Dies kann einen Augenblick dauern.", 'green' );
             
@@ -69,13 +66,10 @@ if( A_checkpermission(array(0,2,0,4)) ) {
             exec($job,$script_output);
             $file=$script_output[0];
             if( file_exists("/home/webservice/Reports/$file") ) {
-                header('Content-Description: File Transfer');
                 header('Content-Type: application/octet-stream');
                 header('Content-Disposition: attachment; filename="'.basename($file).'"');
+                header('Pragma: no-cache');
                 header('Expires: 0');
-                header('Cache-Control: must-revalidate');
-                header('Pragma: public');
-                header('Content-Length: ' . filesize($file));
                 readfile("/home/webservice/Reports/$file");
                 exit;
             }

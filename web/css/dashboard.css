@@ -219,7 +219,12 @@ a.badge-white-text:hover {
 	color: #111;;
 	background-color: red;
 }
-
+a.list-group-item-redtext {
+	color: #c9302c;
+}
+a.list-group-item-redtext:hover {
+	color: #333;
+}
 
 /* ********** */
 /*   Boxes    */
@@ -558,7 +563,7 @@ box-shadow: 0 2px 0 rgba(0,0,0,0.40);
 }
 a.FAIR-default {
 text-decoration: none;
-background-color: #c9302cf;
+background-color: #c9302c;
 color: #fff;
 padding: 7px 10px 7px 10px;
 margin: 3px 20px 5px 5px;

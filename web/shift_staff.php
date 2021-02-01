@@ -88,19 +88,25 @@ if( A_checkpermission(array(1,0,3,4)) ) {
                 }
                 // comment (3rd shift)
                 $shift_value=$_POST['e_'.$i.'3'];
+                $shift_value_comment=$_POST['e_'.$i.'4'];
                 // entry in DB existing?
-                $shift_in_db=S_get_entry($Db,'SELECT Schicht FROM Planung WHERE Personalnummer=\''.$pnr.'\' AND Datum=\''.$date.'\' AND Schicht=3;');
+                $shift_in_db=S_get_multientry($Db,'SELECT Schicht, Comment FROM Planung WHERE Personalnummer=\''.$pnr.'\' AND Datum=\''.$date.'\' AND Schicht=3;');
                 if($shift_value!='') {
-                    if( !($shift_in_db>0) ) {
+                    if( !($shift_in_db[0]>0) ) {
                         // add shift
-                        S_set_data($Db,'INSERT INTO Planung (Personalnummer, Datum, Schicht, Comment) VALUES (\''.$pnr.'\', \''.$date.'\', 3, \''.$shift_value.'\');');
+                        $shift_value_comment = mysqli_real_escape_string($Db, $shift_value_comment);
+                        S_set_data($Db,'INSERT INTO Planung (Personalnummer, Datum, Schicht, Comment) VALUES (\''.$pnr.'\', \''.$date.'\', 3, \''.$shift_value_comment.'\');');
+                        $errorhtml3 =  H_build_boxinfo( 0, 'Änderungen wurden gespeichert.', 'green' );
+                    } elseif($shift_in_db[1]!=$shift_value_comment) {
+                        // update comment
+                        S_set_data($Db,'UPDATE Planung SET Comment=\''.$shift_value_comment.'\' WHERE Personalnummer=\''.$pnr.'\' AND Datum=\''.$date.'\' AND Schicht=3;');
                         $errorhtml3 =  H_build_boxinfo( 0, 'Änderungen wurden gespeichert.', 'green' );
                     }
-                } elseif($shift_in_db>0) {
+                } elseif($shift_in_db[0]>0) {
                     // remove shift if existing
                     S_set_data($Db,'DELETE FROM Planung WHERE Personalnummer=\''.$pnr.'\' AND Datum=\''.$date.'\' AND Schicht=3;');
                     $errorhtml3 =  H_build_boxinfo( 0, 'Änderungen wurden gespeichert.', 'green' );
-                }
+                } 
             }
         }
     }
@@ -138,10 +144,12 @@ if( A_checkpermission(array(1,0,3,4)) ) {
     for($i=1; $i <= 7; $i++) {
         $s[$i][1]=S_get_entry($Db,'SELECT id FROM Planung WHERE Personalnummer='.$pnr.' AND Datum=\''.date('Y-m-d', strtotime($start_date_sql. ' + '.($i-1).' days')).'\' AND Schicht=1;');
         $s[$i][2]=S_get_entry($Db,'SELECT id FROM Planung WHERE Personalnummer='.$pnr.' AND Datum=\''.date('Y-m-d', strtotime($start_date_sql. ' + '.($i-1).' days')).'\' AND Schicht=2;');
-        $s[$i][3]=S_get_entry($Db,'SELECT Comment FROM Planung WHERE Personalnummer='.$pnr.' AND Datum=\''.date('Y-m-d', strtotime($start_date_sql. ' + '.($i-1).' days')).'\' AND Schicht=3;');
+        $s[$i][3]=S_get_entry($Db,'SELECT id FROM Planung WHERE Personalnummer='.$pnr.' AND Datum=\''.date('Y-m-d', strtotime($start_date_sql. ' + '.($i-1).' days')).'\' AND Schicht=3;');
+        $s[$i][4]=S_get_entry($Db,'SELECT Comment FROM Planung WHERE Personalnummer='.$pnr.' AND Datum=\''.date('Y-m-d', strtotime($start_date_sql. ' + '.($i-1).' days')).'\' AND Schicht=3;');
         if($s[$i][1]>0) {$s_selected[$i][1]="checked";} else {$s_selected[$i][1]="";}
         if($s[$i][2]>0) {$s_selected[$i][2]="checked";} else {$s_selected[$i][2]="";}
-        $s_selected[$i][3]=$s[$i][3];
+        if($s[$i][3]>0) {$s_selected[$i][3]="checked";} else {$s_selected[$i][3]="";}
+        $s_selected[$i][4]=$s[$i][4];
     }
 
 
@@ -236,10 +244,12 @@ if( A_checkpermission(array(1,0,3,4)) ) {
         <label for="e_'.$i.'1">Früh</label><span style="padding-left:20px;"></span>
         <input type="checkbox" id="e_'.$i.'2" name="e_'.$i.'2" value="2" '.$s_selected[$i][2].'/>
         <label for="e_'.$i.'2">Spät</label><span style="padding-left:20px;"></span>
+        <input type="checkbox" id="e_'.$i.'3" name="e_'.$i.'3" value="3" '.$s_selected[$i][3].'/>
+        <label for="e_'.$i.'3">Variabel</label><span style="padding-left:20px;"></span>
         </td><td class="FAIR-data-height1 FAIR-data-bottom">
         <div class="input-group">
-        <span class="input-group-addon" id="e_'.$i.'3_label">Variable Angabe</span>
-        <input type="text" id="e_'.$i.'3" name="e_'.$i.'3" class="form-control" placeholder="xx:xx - xx:xx" autocomplete="off" value="'.$s_selected[$i][3].'"   />
+        <span class="input-group-addon" id="e_'.$i.'4_label">Variable Angabe</span>
+        <input type="text" id="e_'.$i.'4" name="e_'.$i.'4" class="form-control" placeholder="xx:xx - xx:xx" autocomplete="off" value="'.$s_selected[$i][4].'"   />
         </div>
         </td>
         </tr>';
@@ -258,6 +268,37 @@ if( A_checkpermission(array(1,0,3,4)) ) {
     echo '</div>';
     
 
+    echo '</div></div>';
+
+    // Dienstplan download
+    echo '<h3>Download verfügbarer Dienstpläne</h3>';
+    echo '<div class="card"><div class="row">
+    <div class="col-sm-12">';
+    echo '<p>Vom Dienstplaner bereitgestellte Dienstpläne für eine Kalenderwoche:
+    </p>';
+    //Get list of files
+    // Available weeks
+    $today = date('Y-m-d');
+    $twoweek_date=date('Y-m-d', strtotime($today. ' + 0 days'));
+    $start_date=date('Y-m-d', strtotime('next monday', strtotime($twoweek_date)));
+    //build array of next 5 weeks
+    $kw_array=array(
+        array(date('Y',strtotime($start_date. ' - 14 days')),date('W',strtotime($start_date. ' - 14 days')),date('d.m.Y',strtotime($start_date. ' - 14 days'))),
+        array(date('Y',strtotime($start_date. ' - 7 days')),date('W',strtotime($start_date. ' - 7 days')),date('d.m.Y',strtotime($start_date. ' - 7 days'))),
+        array(date('Y',strtotime($start_date)),date('W',strtotime($start_date)),date('d.m.Y',strtotime($start_date))),
+        array(date('Y',strtotime($start_date. ' + 7 days')),date('W',strtotime($start_date. ' + 7 days')),date('d.m.Y',strtotime($start_date. ' + 7 days'))),
+        array(date('Y',strtotime($start_date. ' + 14 days')),date('W',strtotime($start_date. ' + 14 days')),date('d.m.Y',strtotime($start_date. ' + 14 days')))
+    );
+    $log_path="/home/webservice/Dienstplaene/";
+    $array_files=scandir($log_path);
+    foreach($kw_array as $i) {
+        $a='Dienstplan_'.$i[0].'_kw'.$i[1].'.pdf';
+        if(file_exists($log_path.$a)) {
+            echo '<a class="list-group-item list-group-item-action list-group-item-redtext" href="https://impfzentrum-odw.de/download.php?dir=d&file='.$a.'">KW '.$i[1].' gültig ab '.$i[2].'<span class="FAIR-sep-l"></span><span class="FAIR-text-med">(Erstellt: '.date ("d.m.Y H:i", filemtime($log_path.$a)).')</a>';
+        }
+    }
+
+    echo '</div>';
     echo '</div></div>';
 
 } else {

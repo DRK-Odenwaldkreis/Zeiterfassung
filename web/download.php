@@ -20,16 +20,29 @@ include_once 'auth.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $file=($_GET['file']);
-
-    if( file_exists("/home/webservice/Reports/$file") ) {
-        header('Content-Description: File Transfer');
+    if(isset($_GET['dir'])) { $dir_id=$_GET['dir']; } else {$dir_id=0;}
+    switch($dir_id) {
+        case "r":
+            $dir="Reports";
+            break;
+        case "d":
+            $dir="Dienstplaene";
+            break;
+        case "p":
+            $dir="Planung";
+            break;
+        default:
+            $dir="Reports";   
+    }
+    
+    if( file_exists("/home/webservice/$dir/$file") ) {
+        //header('Content-Description: File Transfer');
         header('Content-Type: application/octet-stream');
         header('Content-Disposition: attachment; filename="'.basename($file).'"');
+        header('Pragma: no-cache');
         header('Expires: 0');
-        header('Cache-Control: must-revalidate');
-        header('Pragma: public');
-        header('Content-Length: ' . filesize($file));
-        readfile("/home/webservice/Reports/$file");
+        //header('Content-Length: ' . filesize($file));
+        readfile("/home/webservice/$dir/$file");
         exit;
     }
 }

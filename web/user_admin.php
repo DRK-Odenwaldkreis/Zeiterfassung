@@ -91,6 +91,15 @@ if( A_checkpermission(array(0,0,0,4)) ) {
                 $u_display='(nicht mit Mitarbeiter*in verknüpft)';
             }
         }
+
+        // save settings for web app
+        if( isset($_POST['save_settings']) ) {
+            if(isset($_POST['s_1'])) {
+                S_set_data($Db,'UPDATE website_settings SET value=1 WHERE name="FLAG_EMAIL_NEWEMPLOYEE";');
+            } else {
+                S_set_data($Db,'UPDATE website_settings SET value=0 WHERE name="FLAG_EMAIL_NEWEMPLOYEE";');
+            }
+        }
     }
 
     // Get user details
@@ -193,6 +202,33 @@ if( A_checkpermission(array(0,0,0,4)) ) {
     }
 
     echo '</div></div>';
+
+
+
+
+    // Checks for website administration
+    echo '<div class="card"><div class="row">
+    <div class="col-sm-4">
+    <h3>Set values</h3>';
+    $FLAG_EMAIL_NEWEMPLOYEE=S_get_entry($Db,'SELECT value FROM website_settings WHERE name="FLAG_EMAIL_NEWEMPLOYEE";');
+    if($FLAG_EMAIL_NEWEMPLOYEE==1) {
+        $s_selected['FLAG_EMAIL_NEWEMPLOYEE']='checked';
+    } else {
+        $s_selected['FLAG_EMAIL_NEWEMPLOYEE']='';
+    }
+
+    echo'<form action="'.$current_site.'.php" method="post">
+
+    <input type="checkbox" id="s_1" name="s_1" value="s1" '.$s_selected['FLAG_EMAIL_NEWEMPLOYEE'].'/>
+    <label for="s_1">Welcome email</label><br>
+    
+    <div class="FAIR-si-button">
+    <input type="submit" class="btn btn-danger" value="Speichern" name="save_settings" />
+    </div></form>';
+    echo '</div>';
+
+
+
 
 } else {
     // Print html header
