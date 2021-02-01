@@ -88,7 +88,9 @@ if( A_checkpermission(array(1,0,3,4)) ) {
                 }
                 // comment (3rd shift)
                 $shift_value=$_POST['e_'.$i.'3'];
-                $shift_value_comment=$_POST['e_'.$i.'4'];
+                $shift_value_comment_v=$_POST['e_'.$i.'4v'];
+                $shift_value_comment_b=$_POST['e_'.$i.'4b'];
+                $shift_value_comment="$shift_value_comment_v - $shift_value_comment_b";
                 // entry in DB existing?
                 $shift_in_db=S_get_multientry($Db,'SELECT Schicht, Comment FROM Planung WHERE Personalnummer=\''.$pnr.'\' AND Datum=\''.$date.'\' AND Schicht=3;');
                 if($shift_value!='') {
@@ -149,7 +151,8 @@ if( A_checkpermission(array(1,0,3,4)) ) {
         if($s[$i][1]>0) {$s_selected[$i][1]="checked";} else {$s_selected[$i][1]="";}
         if($s[$i][2]>0) {$s_selected[$i][2]="checked";} else {$s_selected[$i][2]="";}
         if($s[$i][3]>0) {$s_selected[$i][3]="checked";} else {$s_selected[$i][3]="";}
-        $s_selected[$i][4]=$s[$i][4];
+        $s_selected[$i][4]=substr($s[$i][4],0,5);
+        $s_selected[$i][5]=substr($s[$i][4],8,5);
     }
 
 
@@ -220,7 +223,7 @@ if( A_checkpermission(array(1,0,3,4)) ) {
 
     
 
-    echo '<div class="col-sm-8">
+    echo '<div class="col-sm-10">
     <h3>KW '.$selected_kw.' in '.$selected_year.'</h3>';
     
 
@@ -229,8 +232,16 @@ if( A_checkpermission(array(1,0,3,4)) ) {
     <input type="text" value="'.$selected_kw.'" name="kw" style="display:none;">
     <input type="text" value="'.$selected_staff_id.'" name="selected_staff" style="display:none;">
     <table class="FAIR-data">
+    <tr>
+    <td class="FAIR-data-height1 FAIR-data-bottom">
+    </td><td class="FAIR-data-height1 FAIR-data-bottom">
+    Schichtwunsch<br><span style="font-size:75%;">(Beide = ich kann den ganzen Tag)</span>
+    </td><td class="FAIR-data-height1 FAIR-data-bottom" colspan="2">
+    Sonstige Angabe<br><span style="font-size:75%;">mit Uhrzeit von xx:xx bis xx:xx</span>
+    </td>
+    </tr>
     ';
-    $de_array=array('Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag','Sonntag');
+    $de_array=array('Mon','Die','Mit','Don','Fre','Sam','Son');
 
     // print rows for each day
     for($i=1; $i <= 7; $i++) {
@@ -241,15 +252,18 @@ if( A_checkpermission(array(1,0,3,4)) ) {
         '.$de_array[$i-1].', '.date('d.m.y',strtotime($selected_year."W".$selected_kw.$i)).'
         </td><td class="FAIR-data-height1 FAIR-data-bottom">
         <input type="checkbox" id="e_'.$i.'1" name="e_'.$i.'1" value="1" '.$s_selected[$i][1].'/>
-        <label for="e_'.$i.'1">Früh</label><span style="padding-left:20px;"></span>
+        <label for="e_'.$i.'1">Früh</label>
         <input type="checkbox" id="e_'.$i.'2" name="e_'.$i.'2" value="2" '.$s_selected[$i][2].'/>
-        <label for="e_'.$i.'2">Spät</label><span style="padding-left:20px;"></span>
+        <label for="e_'.$i.'2">Spät</label>
+        </td><td class="FAIR-data-height1 FAIR-data-bottom">
         <input type="checkbox" id="e_'.$i.'3" name="e_'.$i.'3" value="3" '.$s_selected[$i][3].'/>
-        <label for="e_'.$i.'3">Variabel</label><span style="padding-left:20px;"></span>
+        <label for="e_'.$i.'3">Sonst</label>
         </td><td class="FAIR-data-height1 FAIR-data-bottom">
         <div class="input-group">
-        <span class="input-group-addon" id="e_'.$i.'4_label">Variable Angabe</span>
-        <input type="text" id="e_'.$i.'4" name="e_'.$i.'4" class="form-control" placeholder="xx:xx - xx:xx" autocomplete="off" value="'.$s_selected[$i][4].'"   />
+        <span class="input-group-addon" id="e_'.$i.'4_label">von</span>
+        <input type="time" id="e_'.$i.'4v" name="e_'.$i.'4v" class="form-control" placeholder="xx:xx" autocomplete="off" value="'.$s_selected[$i][4].'"   />
+        <span class="input-group-addon" id="e_'.$i.'4_label">bis</span>
+        <input type="time" id="e_'.$i.'4b" name="e_'.$i.'4b" class="form-control" placeholder="xx:xx - xx:xx" autocomplete="off" value="'.$s_selected[$i][5].'"   />
         </div>
         </td>
         </tr>';

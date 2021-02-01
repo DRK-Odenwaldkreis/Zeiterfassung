@@ -33,8 +33,9 @@ echo $GLOBALS['G_html_main_right_a'];
 // Menu
 $_module_array=array(
     0=>array("text"=>'<h4 class="list-group-item-heading">Zeitkorrektur</h4><p class="list-group-item-text">Zeiten korrigieren oder nachtragen</p>',"link"=>"times.php","role"=>array(0,2,0,4),"role-disabled"=>array(0,0,3,0)),
-    1=>array("text"=>'<h4 class="list-group-item-heading">Personaldaten</h4><p class="list-group-item-text">Name und Personalnummer, Personalreport, QR-Code exportieren</p>',"link"=>"staff.php","role"=>array(0,2,0,4),"role-disabled"=>array(0,0,3,0)),
-    2=>array("text"=>'<h4 class="list-group-item-heading">Report</h4><p class="list-group-item-text">Monats- und Tagesreport</p>',"link"=>"report.php","role"=>array(0,2,0,4)),
+    1=>array("text"=>'<h4 class="list-group-item-heading">Live-Zeiterfassung</h4><p class="list-group-item-text">Übersicht der erfassten Zeiten pro Tag</p>',"link"=>"times_live.php","role"=>array(0,2,0,4),"role-disabled"=>array(0,0,3,0)),
+    3=>array("text"=>'<h4 class="list-group-item-heading">Personaldaten</h4><p class="list-group-item-text">Name und Personalnummer, Personalreport, QR-Code exportieren</p>',"link"=>"staff.php","role"=>array(0,2,0,4),"role-disabled"=>array(0,0,3,0)),
+    4=>array("text"=>'<h4 class="list-group-item-heading">Report</h4><p class="list-group-item-text">Monats- und Tagesreport</p>',"link"=>"report.php","role"=>array(0,2,0,4)),
     20=>array("text"=>'<h4 class="list-group-item-heading">Verfügbarkeit melden / Dienstplan-Download</h4><p class="list-group-item-text">Meine Schichtverfügbarkeiten melden und Dienstplan herunterladen</p>',"link"=>"shift_staff.php","role"=>array(1,0,3,4),"role-disabled"=>array(0,2,0,0)),
     22=>array("text"=>'<h4 class="list-group-item-heading">Dienstplan hochladen</h4><p class="list-group-item-text">Neuen Dienstplan hochladen</p>',"link"=>"dienstplan_upload.php","role"=>array(0,0,3,4),"role-disabled"=>array(0,2,0,0)),
     30=>array("text"=>'<h4 class="list-group-item-heading">Admin: Web user</h4><p class="list-group-item-text">User-Management</p>',"link"=>"user_admin.php","role"=>array(0,0,0,4),"role-disabled"=>array(0,0,0,0)),
