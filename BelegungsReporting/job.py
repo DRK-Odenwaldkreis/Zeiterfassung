@@ -6,7 +6,7 @@ sys.path.append("..")
 from utils.database import Database
 
 logFile = '../../Logs/rotationJob.log'
-logging.basicConfig(level=logging.DEBUG,
+logging.basicConfig(filename=logFile,level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Reminder Planning')
 logger.debug('Starting')
