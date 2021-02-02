@@ -13,3 +13,16 @@ def get_Mail_from_UserID(id):
         return userMail[0]
     except:
         return "service@impfzentrum-odw.de"
+
+
+def get_Mail_List(idList):
+    try:
+        DatabaseConnect = Database()
+        sql = "Select username from li_user where id in %s" % (str(tuple(idList)))
+        userMail = DatabaseConnect.read_all(sql)
+        mailingList = []
+        for i in userMail:
+            mailingList.append(i[0])
+        return mailingList
+    except Exception as e:
+        print("The following error occured in reminder job: %s" % (e))
