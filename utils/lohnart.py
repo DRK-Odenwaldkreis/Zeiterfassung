@@ -15,6 +15,8 @@ def get_lohnart(date, art):
             return 567
         elif art == "Urlaub":
             return 566
+        elif art == "Rufbereitschaft":
+            return 490
         elif art == "Normal":
             if date.weekday() < 6 and not date in holidays:
                 return 490
