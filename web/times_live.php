@@ -53,7 +53,7 @@ if( A_checkpermission(array(0,2,0,4)) ) {
   $array_staff=S_get_multientry($Db,'SELECT Dienste.Personalnummer, Personal.Vorname, Personal.Nachname, Dienste.Dienstbeginn, Dienste.Dienstende, Dienste.Art, Dienste.AutoClosed FROM Dienste JOIN Personal ON Personal.Personalnummer=Dienste.Personalnummer WHERE Date(Dienstbeginn)="'.$today.'";');
 
 
-  echo '<h1>Live Ansicht</h1>';
+  echo '<h1>Ansicht Personalbesetzung</h1>';
 
   // show available Schichtverfügbarkeiten
   echo '<div class="row">';
@@ -78,8 +78,14 @@ if( A_checkpermission(array(0,2,0,4)) ) {
   foreach($array_staff as $i) {
     if($i[6]==1) {
       // Dienstende AutoClosed
+      $dienstende=date("H:i",strtotime($i[4]));
       $class_dienstende='FAIR-change-red';
+    } elseif($i[4]==NULL) {
+      // Dienstende offen
+      $dienstende='';
+      $class_dienstende='FAIR-text-red';
     } else {
+      $dienstende=date("H:i",strtotime($i[4]));
       $class_dienstende='';
     }
     echo '<form action="times.php" method="post">
@@ -93,7 +99,7 @@ if( A_checkpermission(array(0,2,0,4)) ) {
     echo '<span class="input-group-addon" id="basic-addon3">Kommen</span>';
     echo '<input type="time" class="form-control" placeholder="" aria-describedby="basic-addon3" value="'.date("H:i",strtotime($i[3])).'" disabled>';
     echo '<span class="input-group-addon '.$class_dienstende.'" id="basic-addon4">Gehen</span>';
-    echo '<input type="time" class="form-control" placeholder="" aria-describedby="basic-addon4" value="'.date("H:i",strtotime($i[4])).'" disabled>';
+    echo '<input type="time" class="form-control" placeholder="" aria-describedby="basic-addon4" value="'.$dienstende.'" disabled>';
     echo '<span class="input-group-addon" id="basic-addon4">Lohnart</span>';
     echo '<input type="text" class="form-control" placeholder="" aria-describedby="basic-addon4" value="'.$i[5].'" disabled>';
     echo'<span class="input-group-btn">

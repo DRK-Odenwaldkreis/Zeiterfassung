@@ -212,6 +212,7 @@ if( A_checkpermission(array(0,2,0,4)) ) {
             <option value="Normal" selected>Normal</option>
             <option value="Krank">Krank</option>
             <option value="Urlaub">Urlaub</option>
+            <option value="Rufbereitschaft">Rufbereitschaft</option>
           </select>
 
           <span class="input-group-btn">
@@ -235,11 +236,13 @@ if( A_checkpermission(array(0,2,0,4)) ) {
         foreach($u_shifts as $i) {
           switch ($i[3]) {
             case "Normal":
-              $selected[0]="selected"; $selected[1]=""; $selected[2]=""; break;
+              $selected[0]="selected"; $selected[1]=""; $selected[2]=""; $selected[3]=""; break;
             case "Krank":
-              $selected[1]="selected"; $selected[0]=""; $selected[2]=""; break;
+              $selected[1]="selected"; $selected[0]=""; $selected[2]=""; $selected[3]=""; break;
             case "Urlaub":
-              $selected[2]="selected"; $selected[1]=""; $selected[1]=""; break;
+              $selected[2]="selected"; $selected[0]=""; $selected[1]=""; $selected[3]=""; break;
+            case "Rufbereitschaft":
+              $selected[3]="selected"; $selected[0]=""; $selected[1]=""; $selected[2]=""; break;
           }
 
           if($i[2]==NULL) {
@@ -275,6 +278,7 @@ if( A_checkpermission(array(0,2,0,4)) ) {
               <option value="Normal" '.$selected[0].'>Normal</option>
               <option value="Krank" '.$selected[1].'>Krank</option>
               <option value="Urlaub" '.$selected[2].'>Urlaub</option>
+              <option value="Rufbereitschaft" '.$selected[3].'>Rufbereitschaft</option>
             </select>
 
             <span class="input-group-btn">

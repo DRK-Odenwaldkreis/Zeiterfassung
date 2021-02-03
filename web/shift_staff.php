@@ -237,7 +237,7 @@ if( A_checkpermission(array(1,0,3,4)) ) {
     </td><td class="FAIR-data-height1 FAIR-data-bottom">
     Schichtwunsch<br><span style="font-size:75%;">(Beide = ich kann den ganzen Tag)</span>
     </td><td class="FAIR-data-height1 FAIR-data-bottom" colspan="2">
-    Sonstige Angabe<br><span style="font-size:75%;">mit Uhrzeit von xx:xx bis xx:xx</span>
+    Alternative Angabe<br><span style="font-size:75%;">mit Uhrzeit von xx:xx bis xx:xx</span>
     </td>
     </tr>
     ';
@@ -257,13 +257,13 @@ if( A_checkpermission(array(1,0,3,4)) ) {
         <label for="e_'.$i.'2">Spät</label>
         </td><td class="FAIR-data-height1 FAIR-data-bottom">
         <input type="checkbox" id="e_'.$i.'3" name="e_'.$i.'3" value="3" '.$s_selected[$i][3].'/>
-        <label for="e_'.$i.'3">Sonst</label>
+        <label for="e_'.$i.'3">Alternativ</label>
         </td><td class="FAIR-data-height1 FAIR-data-bottom">
         <div class="input-group">
         <span class="input-group-addon" id="e_'.$i.'4_label">von</span>
-        <input type="time" id="e_'.$i.'4v" name="e_'.$i.'4v" class="form-control" placeholder="xx:xx" autocomplete="off" value="'.$s_selected[$i][4].'"   />
+        <input type="time" id="e_'.$i.'4v" name="e_'.$i.'4v" class="form-control" autocomplete="off" value="'.$s_selected[$i][4].'"   />
         <span class="input-group-addon" id="e_'.$i.'4_label">bis</span>
-        <input type="time" id="e_'.$i.'4b" name="e_'.$i.'4b" class="form-control" placeholder="xx:xx - xx:xx" autocomplete="off" value="'.$s_selected[$i][5].'"   />
+        <input type="time" id="e_'.$i.'4b" name="e_'.$i.'4b" class="form-control" autocomplete="off" value="'.$s_selected[$i][5].'"   />
         </div>
         </td>
         </tr>';
@@ -271,6 +271,13 @@ if( A_checkpermission(array(1,0,3,4)) ) {
 
     
     echo'
+    <tr>
+    <td class="FAIR-data-height1 FAIR-data-bottom">
+    </td><td class="FAIR-data-height1 FAIR-data-bottom">
+    <span style="font-size:75%;">Früh von 07:00 bis 14:30<br>Spät von 14:30 bis 22:00</span>
+    </td><td class="FAIR-data-height1 FAIR-data-bottom" colspan="2">
+    </td>
+    </tr>
     </table>
 
     <div class="FAIR-si-button">

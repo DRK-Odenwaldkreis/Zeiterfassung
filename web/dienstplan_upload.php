@@ -139,7 +139,7 @@ if( A_checkpermission(array(0,0,3,4)) ) {
 
     echo '<div class="card">
     <div class="col-sm-12">';
-    echo '<h3>Schichtverfügbarkeiten</h3>';
+    echo '<h3>Schichtverfügbarkeiten abfragen</h3>';
     echo '<p></p>';
     //Get list of files
     $log_path="/home/webservice/Planung/";
