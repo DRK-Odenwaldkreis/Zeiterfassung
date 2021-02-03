@@ -234,6 +234,7 @@ if( A_checkpermission(array(1,0,3,4)) ) {
     foreach($kw_array as $kw) {
         echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" id="module-'.$kw[1].'" href="'.$current_site.'.php?kw='.$kw[1].'&year='.$kw[0].'&selected_staff='.$selected_staff_id.'">KW '.$kw[1].'</a>';
     }
+    echo '<p>&nbsp;</p><p>Die oberste Kalenderwoche wird am Sonntag um Mitternacht geschlossen. Ab Montag steht dann eine neue Kalenderwoche zum Eintragen zur Verfügung.</p>';
     echo '</div>';
 
     
