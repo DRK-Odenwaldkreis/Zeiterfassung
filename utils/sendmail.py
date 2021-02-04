@@ -48,6 +48,7 @@ def send_mail_report(filename, day, requester):
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Neue Tagesreport für: %s" % (str(day))
         message['From'] = 'report@impfzentrum-odw.de'
+        message['reply-to']= 'dienstplan.impfzentrum@drk-odenwaldkreis.de'
         message['To'] = requester
         message['Cc'] = 'report@impfzentrum-odw.de'
         filenameRaw = filename
@@ -86,6 +87,7 @@ def send_mail_reminder(listRecipients, week, year):
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Erinnerung für Planung KW %s in %s" % (str(week), str(year))
         message['From'] = 'planung@impfzentrum-odw.de'
+        message['reply-to']= 'dienstplan.impfzentrum@drk-odenwaldkreis.de'
         message['Bcc'] = ", ".join(listRecipients)
         message['Cc'] = 'report@impfzentrum-odw.de'
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
@@ -115,6 +117,7 @@ def send_mail_new_dienstplan(listRecipients, week, year):
         message['From'] = 'dienstplan@impfzentrum-odw.de'
         message['Bcc'] = ", ".join(listRecipients)
         message['Cc'] = 'report@impfzentrum-odw.de'
+        message['reply-to']= 'dienstplan.impfzentrum@drk-odenwaldkreis.de'
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
