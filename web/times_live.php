@@ -126,6 +126,45 @@ if( A_checkpermission(array(0,2,0,4)) ) {
 
   echo '</div>';
 
+
+  // show analytics
+  $array_staff=S_get_multientry($Db,'SELECT Stunde, Anzahl FROM Besetzung WHERE Date(Datum)="'.$today.'";');
+  $k=0;
+
+  echo "<script type=\"text/javascript\" src=\"https://www.gstatic.com/charts/loader.js\"></script>
+  <script type=\"text/javascript\">
+      google.charts.load('current', {'packages':['bar']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Stunde', 'Besetzung'],
+          ";
+          foreach($array_staff as $i) {
+            if($k>0) { echo ","; }
+            echo "['".$i[0]." Uhr', ".$i[1]."]";
+            $k++;
+          }
+          echo "
+        ]);
+
+        var options = {
+          chart: {
+            title: 'Besetzung Personal',
+            subtitle: 'für den ausgewählten Tag',
+          }
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+      }
+    </script>
+";
+echo '<div class="col-sm-12">';
+echo '<div id="columnchart_material" style="width: 800px; height: 500px;"></div>';
+echo '</div>';
+
   // Close connection to database
   S_close_db($Db);
 
