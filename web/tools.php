@@ -222,8 +222,7 @@ function A_send_staffroster_email($Db,$kw) {
 	$content=preg_replace('/\[\[KW]]/',substr($kw,7,2),$content);
     $content=preg_replace('/\[\[YEAR]]/',substr($kw,0,4),$content);
 	$title='DRK Impfzentrum Zeiterfassung - Dienstplan '.$kw;
-	// to: is null
-	mail(null, $title, $content, $header, "-r support@impfzentrum-odw.de");
+	mail('report@impfzentrum-odw.de', $title, $content, $header, "-r support@impfzentrum-odw.de");
 	
 	return true;
 }
