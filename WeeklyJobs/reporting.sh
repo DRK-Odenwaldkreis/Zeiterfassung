@@ -18,4 +18,5 @@
 echo "Starting Report"
 cd /home/webservice/Zeiterfassung/TagesReportPDF
 python3 job.py
+chown www-data:www-data /home/webservice/Reports/Tagesreport_*
 echo "Reporting complete"
