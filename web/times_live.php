@@ -55,8 +55,14 @@ if( A_checkpermission(array(0,2,0,4)) ) {
     if(isset($_POST['show_times'])) {
       $u_date=($_POST['date']);
       $today=$u_date; // for overwriting default search value in box
-    } elseif(isset($_POST['edit_times'])){
-
+    } elseif(isset($_POST['show_times_minus1'])){
+      $u_date=($_POST['date']);
+      $today=date("Y-m-d",strtotime($u_date.' - 1 days'));
+    } elseif(isset($_POST['show_times_plus1'])){
+      $u_date=($_POST['date']);
+      $today=date("Y-m-d",strtotime($u_date.' + 1 days'));
+    } elseif(isset($_POST['show_times_today'])){
+      
     }
   }
 
@@ -80,6 +86,11 @@ if( A_checkpermission(array(0,2,0,4)) ) {
   <div class="input-group">
   <span class="input-group-addon" id="basic-addonA2">Tag auswählen</span>
   <input type="date" class="form-control" placeholder="Arbeitstag wählen" aria-describedby="basic-addonA2" value="'.$today.'" name="date">
+  <span class="input-group-btn">
+  <input type="submit" class="btn btn-default" value="- 1 Tag" name="show_times_minus1" />
+  <input type="submit" class="btn btn-default" value="Heute" name="show_times_today" />
+  <input type="submit" class="btn btn-default" value="+ 1 Tag" name="show_times_plus1" />
+  </span>
   </div>
   <div class="FAIR-si-button">
     <input type="submit" class="btn btn-danger" value="Zeiten anzeigen" name="show_times" />
@@ -145,13 +156,23 @@ if( A_checkpermission(array(0,2,0,4)) ) {
             echo "['".$i[0]." Uhr', ".$i[1]."]";
             $k++;
           }
+          if($k==0) {
+            echo "['7 Uhr', 0]";
+            $k++;
+          }
+          if($k<16) {
+            for($kk=$k;$kk<=(21-7);$kk++) {
+              echo ",['".($k+7)." Uhr', 0]";
+              $k++;
+            }
+          }
           echo "
         ]);
 
         var options = {
           chart: {
             title: 'Besetzung Personal',
-            subtitle: 'für den ausgewählten Tag',
+            subtitle: 'für den ausgewählten Tag'
           }
         };
 
