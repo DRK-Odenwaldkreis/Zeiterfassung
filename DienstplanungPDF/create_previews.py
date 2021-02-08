@@ -28,5 +28,5 @@ today = datetime.datetime.today()
 for i in range(2,9):
     previewWeek = int((today + datetime.timedelta(days=i*7)).strftime("%V"))
     previewYear = int((today + datetime.timedelta(days=i*7)).strftime("%G"))
-    logger.debug('Starting planning for KW: %s and Year: %s' % (previewWeek))
+    logger.debug('Starting planning for KW: %s and Year: %s' % (previewWeek, previewYear))
     os.system("python3 ./job.py %s %s"%(previewWeek,previewYear))
