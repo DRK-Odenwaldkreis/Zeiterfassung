@@ -38,9 +38,9 @@ SMTP_USERNAME = read_config("Mail", "SMTP_USERNAME")
 SMTP_PASSWORD = read_config("Mail", "SMTP_PASSWORD")
 
 
-def send_mail_report(filename, day, requester):
+def send_mail_report(filename, day):
     try:
-        logging.debug("Receviced the following filename %s to be sent to %s" % (filename, requester))
+        logging.debug("Receviced the following filename %s to be sent." % (filename))
         message = MIMEMultipart()
         with open('../utils/MailLayout/NewReport.html', encoding='utf-8') as f:
             fileContent = f.read()
@@ -48,9 +48,10 @@ def send_mail_report(filename, day, requester):
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Neue Tagesreport für: %s" % (str(day))
         message['From'] = 'report@impfzentrum-odw.de'
-        message['reply-to']= 'dienstplan.impfzentrum@drk-odenwaldkreis.de'
-        message['To'] = requester
+        message['reply-to'] = 'schichtleitung.impfzentrum@drk-odenwaldkreis.de'
         message['Cc'] = 'report@impfzentrum-odw.de'
+        message['To'] = 'dienstplan.impfzentrum@drk-odenwaldkreis.de'
+        message['To'] = 'schichtleitung.impfzentrum@drk-odenwaldkreis.de'
         filenameRaw = filename
         filename = '../../Reports/' + str(filenameRaw)
         files = []
