@@ -46,12 +46,12 @@ def send_mail_report(filename, day):
             fileContent = f.read()
         messageContent = fileContent.replace('[[DAY]]', str(day))
         message.attach(MIMEText(messageContent, 'html'))
+        recipients = ['dienstplan.impfzentrum@drk-odenwaldkreis.de', 'schichtleitung.impfzentrum@drk-odenwaldkreis.de']
         message['Subject'] = "Neue Tagesreport für: %s" % (str(day))
         message['From'] = 'report@impfzentrum-odw.de'
         message['reply-to'] = 'schichtleitung.impfzentrum@drk-odenwaldkreis.de'
         message['Cc'] = 'report@impfzentrum-odw.de'
-        message['To'] = 'dienstplan.impfzentrum@drk-odenwaldkreis.de'
-        message['To'] = 'schichtleitung.impfzentrum@drk-odenwaldkreis.de'
+        message['To'] = ", ".join(recipients)
         filenameRaw = filename
         filename = '../../Reports/' + str(filenameRaw)
         files = []
