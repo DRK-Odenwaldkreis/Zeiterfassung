@@ -55,7 +55,8 @@ echo $GLOBALS['G_html_main_right_a'];
 if(isset( $_SESSION['uid']) && $_SESSION['uid']>=0 ) {
     echo '<h3>Personalorganisation</h3>
     <p>Bei Fragen zu Vertragsthemen oder organisatorischen Anfragen bitte eine E-Mail schreiben an:</p>
-    <p><a href="mailto:corona-impfen@drk-odenwaldkreis.de">corona-impfen@drk-odenwaldkreis.de</a></p>
+    <p><a href="mailto:dienstplan.impfzentrum@drk-odenwaldkreis.de">dienstplan.impfzentrum@drk-odenwaldkreis.de</a></p>
+    <p><a href="tel:+4960626019994">Telefon: 06062 - 60 19 994</a></p>
     <p>&nbsp;</p>';
 
     echo '<h3>Technischer Support</h3>
