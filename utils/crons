@@ -1,0 +1,25 @@
+# This file is part of DRK Zeiterfassung.
+
+# DRK Zeiterfassung is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# DRK Zeiterfassung is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with DRK Zeiterfassung.  If not, see <http://www.gnu.org/licenses/>.
+############ WEEKLY JOBS
+0 16 * * 5 cd /home/webservice/Zeiterfassung/WeeklyJobs/ && python3 ./reminder_dienstplanung.py
+0 23 * * 0 /home/webservice/Zeiterfassung/WeeklyJobs/delete_dienstplaene.sh > /home/webservice/Logs/clean.log
+0 23 * * 0 /home/webservice/Zeiterfassung/WeeklyJobs/delete_planung.sh > /home/webservice/Logs/clean.log
+############# DAILY JOBS
+59 7-21 * * * cd /home/webservice/Zeiterfassung/BelegungsReporting/ && python3 ./job.py
+58 23 * * * cd /home/webservice/Zeiterfassung/NightlyAutoClose && python3 ./job.py
+59 23 * * * /home/webservice/Zeiterfassung/WeeklyJobs/reporting.sh > /home/webservice/Logs/reporting.log
+0 0 * * * /usr/bin/certbot renew > /home/philipp/certbot.log
+0 0 * * * /etc/mysql/ssl/copy_keys.sh > /home/philipp/copy_key.log
+5 0 * * * cd /home/webservice/Zeiterfassung/DienstplanungPDF/ && python3 ./create_previews.py
