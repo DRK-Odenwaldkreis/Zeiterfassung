@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # This file is part of DRK Zeiterfassung.
 
 # DRK Zeiterfassung is free software: you can redistribute it and/or modify
@@ -13,20 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with DRK Zeiterfassung.  If not, see <http://www.gnu.org/licenses/>.
 
-
-import datetime
-import os
-import logging
-
-logFile = '../../Logs/planning.log'
-logging.basicConfig(filename=logFile,level=logging.DEBUG,format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-logger = logging.getLogger('Dienstplanung Report')
-logger.debug('Starting')
-
-
-today = datetime.datetime.today()
-for i in range(2,9):
-    previewWeek = int((today + datetime.timedelta(days=i*7)).strftime("%V"))
-    previewYear = int((today + datetime.timedelta(days=i*7)).strftime("%G"))
-    logger.debug('Starting planning for KW: %s and Year: %s' % (previewWeek, previewYear))
-    os.system("python3 ./job.py %s %s"%(previewWeek,previewYear))
+echo "Starting Cleanup of old Verfuegbarkeiten"
+find /home/webservice/Planung/* -mtime +21 -exec rm {} \;
+echo "Cleanup Done complete"
