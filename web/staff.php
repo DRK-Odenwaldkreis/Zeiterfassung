@@ -57,8 +57,8 @@ if( A_checkpermission(array(0,2,0,4)) ) {
             if( ctype_digit($pnr) ) {
                 // check unique pnr
                 if( !(S_get_entry($Db,'SELECT id FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);')>0) ) {
-                    $u_vname=($_POST['vname']);
-                    $u_nname=($_POST['nname']);
+                    $u_vname=preg_replace("/'/","´",$_POST['vname']);
+                    $u_nname=preg_replace("/'/","´",$_POST['nname']);
                     $u_email=($_POST['email']);
                     // check unique email
                     if( !(S_get_entry($Db,'SELECT id FROM li_user WHERE username=\''.$u_email.'\';')>0) ) {
@@ -106,8 +106,8 @@ if( A_checkpermission(array(0,2,0,4)) ) {
             if( ctype_digit($pnr) ) {
                 // check unique pnr or same pnr
                 if( $pnr==$old_pnr || !(S_get_entry($Db,'SELECT id FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);')>0) ) {
-                    $u_vname=($_POST['e_vname']);
-                    $u_nname=($_POST['e_nname']);
+                    $u_vname=preg_replace("/'/","´",$_POST['e_vname']);
+                    $u_nname=preg_replace("/'/","´",$_POST['e_nname']);
                     if(isset($_POST['e_active'])) { $u_active=1;} else {$u_active=0;}
                     $u_email=($_POST['e_email']);
                     $u_old_email=($_POST['old_email']);
