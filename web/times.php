@@ -307,6 +307,67 @@ if( A_checkpermission(array(0,2,0,4)) ) {
 
     echo '</div></div>';
 
+    //
+    // show auto closed shifts
+    //
+    
+
+    $array_list_autoclosed=S_get_multientry($Db,'SELECT Dienste.Personalnummer, Personal.Vorname, Personal.Nachname, Dienste.Dienstbeginn, Dienste.Dienstende, Dienste.Art, Dienste.AutoClosed FROM Dienste JOIN Personal ON Personal.Personalnummer=Dienste.Personalnummer WHERE Dienste.AutoClosed=1;');
+
+
+    echo '<div class="card"><div class="row">
+    <div class="col-sm-12">';
+    echo '<h3>Automatisch geschlossene Schichten</h3>';
+    
+    //Get list of times
+    if($array_list_autoclosed==NULL) {
+      echo '<p>
+      <span style="font-size:120%;">Sehr gut, keine automatisch geschlossenen Schichten gefunden. Alle Schichten wurden ordnungsgemäß gebucht.</span>
+      </p>';
+    } else {
+
+      foreach($array_list_autoclosed as $i) {
+        if($i[6]==1) {
+          // Dienstende AutoClosed
+          $dienstende=date("H:i",strtotime($i[4]));
+          $class_dienstende='FAIR-change-red';
+        } elseif($i[4]==NULL) {
+          // Dienstende offen
+          $dienstende='';
+          $class_dienstende='FAIR-text-red';
+        } else {
+          $dienstende=date("H:i",strtotime($i[4]));
+          $class_dienstende='';
+        }
+        echo '<form action="times.php" method="post">
+        <div class="input-group">';
+        echo '<span class="input-group-addon" id="basic-addon0">Datum</span>';
+        echo '<input type="text" class="form-control" value="'.date("d.m.Y",strtotime($i[3])).'" name="date_string" disabled>';
+        echo '<input type="text" value="'.date("Y-m-d",strtotime($i[3])).'" name="date" style="display:none;">';
+        echo '<span class="input-group-addon" id="basic-addon1">Personal</span>';
+        echo '<input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$i[0].'" disabled>';
+        echo '<input type="text" value="'.$i[0].'" name="pnr" style="display:none;">';
+        echo '<span class="input-group-addon" id="basic-addon2">Name</span>';
+        echo '<input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" value="'.$i[2].', '.$i[1].'" disabled>';
+        echo '<span class="input-group-addon" id="basic-addon3">Kommen</span>';
+        echo '<input type="time" class="form-control" placeholder="" aria-describedby="basic-addon3" value="'.date("H:i",strtotime($i[3])).'" disabled>';
+        echo '<span class="input-group-addon '.$class_dienstende.'" id="basic-addon4">Gehen</span>';
+        echo '<input type="time" class="form-control" placeholder="" aria-describedby="basic-addon4" value="'.$dienstende.'" disabled>';
+        echo '<span class="input-group-addon" id="basic-addon4">Lohnart</span>';
+        echo '<input type="text" class="form-control" placeholder="" aria-describedby="basic-addon4" value="'.$i[5].'" disabled>';
+        echo'<span class="input-group-btn">
+              <input type="submit" class="btn btn-success" value="Ändern" name="search_staff" />
+              </span>';
+        echo '</div></form>';
+      }
+      echo '<p>
+      <span style="font-size:90%;">Personal wird hier gelistet, wenn eine Schicht nicht mit einem Scan beendet wurde. Solche Schichten werden technisch automatisch geschlossen mit einer rot-markierten Zeit. Diese müssen korrigiert werden, damit eine korrekte Lohnabrechung möglich ist.</span>
+      </p>';
+    }
+    
+
+    echo '</div></div>';
+
 } else {
   // Print html header
   echo $GLOBALS['G_html_header'];
