@@ -216,7 +216,7 @@ function A_send_staffroster_email($Db,$kw) {
 	// send email
 	$header = "From: support@impfzentrum-odw.de\r\n";
 	$header .= "Bcc: $bcc\r\n";
-	$header .= "Reply-To: support@impfzentrum-odw.de\r\n";
+	$header .= "Reply-To: dienstplan.impfzentrum@drk-odenwaldkreis.de\r\n";
 	$header .= "Content-Type: text/html; charset=UTF-8\nContent-Transfer-Encoding: 8bit";
 	$content=file_get_contents("/home/webservice/Zeiterfassung/utils/MailLayout/NewDienstplan.html");
 	$content=preg_replace('/\[\[KW]]/',substr($kw,7,2),$content);
