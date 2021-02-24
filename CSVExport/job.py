@@ -44,7 +44,7 @@ if __name__ == "__main__":
         requestedMonth = sys.argv[1]
         requestedYear = sys.argv[2]
         DatabaseConnect = Database()
-        sql = "Select Dienste.Personalnummer, Dienste.Dienstbeginn, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art FROM Dienste JOIN Personal ON Personal.Personalnummer = Dienste.Personalnummer WHERE MONTH(Dienstbeginn)=%s AND YEAR(Dienstbeginn)= %s AND Dienstende is not Null ORDER BY Dienste.Dienstbeginn ASC;" % (
+        sql = "Select Dienste.Personalnummer, Dienste.Dienstbeginn, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art FROM Dienste JOIN Personal ON Personal.Personalnummer = Dienste.Personalnummer WHERE MONTH(Dienste.Dienstbeginn)=%s AND YEAR(Dienste.Dienstbeginn)= %s AND Dienste.Dienstende is not Null AND Personal.Aktiv = 1 ORDER BY Dienste.Dienstbeginn ASC;" % (
             requestedMonth, requestedYear)
         logger.debug('Getting all Events for employee of the month and year with the following query: %s' % (sql))
         exportEvents = DatabaseConnect.read_all(sql)
