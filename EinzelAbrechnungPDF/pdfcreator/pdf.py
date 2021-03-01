@@ -122,31 +122,26 @@ class PDFgenerator:
 		for i in self.content:
 			if pdf.y + 10 > pdf.page_break_trigger:
 				pdf.set_font('GNU', 'B' , 14)
-
 				pdf.cell(40, 10, 'Tag', 0, 0)
 				pdf.cell(40, 10, 'Beginn', 0, 0)
 				pdf.cell(40, 10, 'Ende', 0, 0)
 				pdf.cell(40, 10, 'Art', 0, 0)
 				pdf.cell(40, 10, 'Zeit', 0, 1)
-
 				current_x =pdf.get_x()
 				current_y =pdf.get_y()
-
 				pdf.line(current_x, current_y, current_x+190, current_y)
-
 				pdf.set_font('GNU', '', 14)
-			else:
-				self.begin = i[0].strftime("%H:%M")
-				self.ende = i[1].strftime("%H:%M")
-				self.netShiftTime, self.netShiftTimeHours, self.netShiftTimeMinutes = calculate_net_shift_time(i[0], i[1])
-				self.totalSeconds = self.totalSeconds + int(self.netShiftTime.seconds)
-				if self.netShiftTimeMinutes < 10:
-					self.netShiftTimeMinutes = '0%s' % (self.netShiftTimeMinutes)
-				pdf.cell(40, 10, i[0].strftime("%d.%m.%Y"),0,0)
-				pdf.cell(40, 10, self.begin, 0, 0)
-				pdf.cell(40, 10, self.ende, 0, 0)
-				pdf.cell(40, 10, i[2], 0, 0)
-				pdf.cell(40, 10, '%s:%s' %(self.netShiftTimeHours, self.netShiftTimeMinutes), 0, 1)
+			self.begin = i[0].strftime("%H:%M")
+			self.ende = i[1].strftime("%H:%M")
+			self.netShiftTime, self.netShiftTimeHours, self.netShiftTimeMinutes = calculate_net_shift_time(i[0], i[1])
+			self.totalSeconds = self.totalSeconds + int(self.netShiftTime.seconds)
+			if self.netShiftTimeMinutes < 10:
+				self.netShiftTimeMinutes = '0%s' % (self.netShiftTimeMinutes)
+			pdf.cell(40, 10, i[0].strftime("%d.%m.%Y"),0,0)
+			pdf.cell(40, 10, self.begin, 0, 0)
+			pdf.cell(40, 10, self.ende, 0, 0)
+			pdf.cell(40, 10, i[2], 0, 0)
+			pdf.cell(40, 10, '%s:%s' %(self.netShiftTimeHours, self.netShiftTimeMinutes), 0, 1)
 		self.totalHours, self.remainder = divmod(self.totalSeconds, 3600)
 		self.totalMinutes, self.rest = divmod(self.remainder, 60)
 		if self.totalMinutes < 10:

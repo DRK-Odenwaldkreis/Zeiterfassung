@@ -101,30 +101,29 @@ class PDFgenerator:
 			if self.pdf.get_y() + 10 > self.pdf.page_break_trigger:
 				logger.debug('Pagertrigger was achieved, creating new page.')
 				self.new_page()
-			else:
-				for count, value in enumerate(self.list):
-					if count == 0:
-						logger.debug('Writing the frueh shift')
-						try:
-							self.pdf.cell(60, 5, value[line][:20], ln=0)
-						except:
-							self.pdf.cell(60, 5, '', ln=0)
-					elif count == 1:
-						logger.debug('Writing the spaet shift')
-						try:
-							self.pdf.cell(60, 5, value[line][:20], ln=0)
-						except:
-							self.pdf.cell(60, 5, '', ln=0)
-					elif count == 2:
-						logger.debug('Writing the variable shift')
-						self.pdf.set_font('GNU', '', 10)
-						try:
-							self.pdf.cell(60, 5, value[line][:35], ln=1)
-						except:
-							self.pdf.cell(60, 5, '', ln=1)
-						finally:
-							logger.debug('Resetting font size')
-							self.pdf.set_font('GNU', '', 14)
+			for count, value in enumerate(self.list):
+				if count == 0:
+					logger.debug('Writing the frueh shift')
+					try:
+						self.pdf.cell(60, 5, value[line][:20], ln=0)
+					except:
+						self.pdf.cell(60, 5, '', ln=0)
+				elif count == 1:
+					logger.debug('Writing the spaet shift')
+					try:
+						self.pdf.cell(60, 5, value[line][:20], ln=0)
+					except:
+						self.pdf.cell(60, 5, '', ln=0)
+				elif count == 2:
+					logger.debug('Writing the variable shift')
+					self.pdf.set_font('GNU', '', 10)
+					try:
+						self.pdf.cell(60, 5, value[line][:35], ln=1)
+					except:
+						self.pdf.cell(60, 5, '', ln=1)
+					finally:
+						logger.debug('Resetting font size')
+						self.pdf.set_font('GNU', '', 14)
 
 	def new_page(self):
 		self.pdf.add_font('GNU', '', FreeSans, uni=True)

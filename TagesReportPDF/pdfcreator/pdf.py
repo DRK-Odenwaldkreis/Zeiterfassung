@@ -123,34 +123,29 @@ class PDFgenerator:
 				pdf.cell(35, 10, 'Ende', 0, 0)
 				pdf.cell(35, 10, 'Art', 0, 0)
 				pdf.cell(35, 10, 'Zeit', 0, 1)
-
 				current_x =pdf.get_x()
 				current_y =pdf.get_y()
-
 				pdf.line(current_x, current_y, current_x+190, current_y)
-
 				pdf.set_font('GNU', '', 14)
-
+			if i[6] == 1:
+				pdf.set_text_color(255,0,0)
 			else:
-				if i[6] == 1:
-					pdf.set_text_color(255,0,0)
-				else:
-					pdf.set_text_color(0, 0, 0)
-				self.begin = i[1].strftime("%H:%M")
-				self.ende = i[2].strftime("%H:%M")
-				self.netShiftTime, self.netShiftTimeHours, self.netShiftTimeMinutes = calculate_net_shift_time(
-					i[1], i[2])
-				self.totalSeconds = self.totalSeconds + int(self.netShiftTime.seconds)
-				if self.netShiftTimeMinutes < 10:
-					self.netShiftTimeMinutes = '0%s' % (self.netShiftTimeMinutes)
-				pdf.cell(35, 10, str(i[0]), 0, 0)
-				#pdf.cell(40, 10, str(i[3]), 0, 0)
-				pdf.cell(35, 10, str(i[4]), 0, 0)
-				pdf.cell(35, 10, self.begin, 0, 0)
-				pdf.cell(35, 10, self.ende, 0, 0)
-				pdf.cell(35, 10, str(i[5]), 0, 0)
-				pdf.cell(35,10,'%s:%s' % (self.netShiftTimeHours,self.netShiftTimeMinutes),0,1)
 				pdf.set_text_color(0, 0, 0)
+			self.begin = i[1].strftime("%H:%M")
+			self.ende = i[2].strftime("%H:%M")
+			self.netShiftTime, self.netShiftTimeHours, self.netShiftTimeMinutes = calculate_net_shift_time(
+				i[1], i[2])
+			self.totalSeconds = self.totalSeconds + int(self.netShiftTime.seconds)
+			if self.netShiftTimeMinutes < 10:
+				self.netShiftTimeMinutes = '0%s' % (self.netShiftTimeMinutes)
+			pdf.cell(35, 10, str(i[0]), 0, 0)
+			#pdf.cell(40, 10, str(i[3]), 0, 0)
+			pdf.cell(35, 10, str(i[4]), 0, 0)
+			pdf.cell(35, 10, self.begin, 0, 0)
+			pdf.cell(35, 10, self.ende, 0, 0)
+			pdf.cell(35, 10, str(i[5]), 0, 0)
+			pdf.cell(35,10,'%s:%s' % (self.netShiftTimeHours,self.netShiftTimeMinutes),0,1)
+			pdf.set_text_color(0, 0, 0)
 		self.totalHours, self.remainder = divmod(self.totalSeconds, 3600)
 		self.totalMinutes, self.rest = divmod(self.remainder, 60)
 		if self.totalMinutes < 10:
