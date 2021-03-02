@@ -36,7 +36,6 @@ def get_lohnart(date, art):
         elif art == "Normal":
             if date.weekday() < 6 and not date in holidays:
                 code.append(490)
-                code.append(491)
             elif date.weekday() == 6 and not date in holidays:
                 code.append(490)
                 code.append(558)
