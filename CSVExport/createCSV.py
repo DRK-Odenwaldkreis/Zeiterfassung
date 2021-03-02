@@ -60,7 +60,6 @@ def create_CSV(content, month, year):
         for i in content:
             netShiftTime, netShiftTimeHours, netShiftTimeMinutes, breakTimes = calculate_net_shift_time(i[1],i[2])
             lohnart = get_lohnart(i[1],i[5])
-            if i[0] > 6000:
-                for z in lohnart:
-                    writeEntry.writerow(create_row(i, z, month))
+            for z in lohnart:
+                writeEntry.writerow(create_row(i, z, month))
     return filename
