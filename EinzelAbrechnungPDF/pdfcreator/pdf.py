@@ -34,8 +34,9 @@ sys.path.append("..")
 from utils.pausen import calculate_net_shift_time
 from utils.month import monthInt_to_string
 
-FreeSans = './pdfcreator/FreeSans.ttf'
-FreeSansBold = './pdfcreator/FreeSansBold.ttf'
+FreeSans = '../utils/Schriftart/FreeSans.ttf'
+FreeSansBold = '../utils/Schriftart/FreeSansBold.ttf'
+print("TEST")
 Logo = '../utils/logo.png'
 class MyPDF(FPDF):
 
@@ -88,60 +89,55 @@ class PDFgenerator:
 		pdf.set_auto_page_break(True, 25)
 		pdf.add_font('GNU', '', FreeSans, uni=True)
 		pdf.add_font('GNU', 'B', FreeSansBold, uni=True)
-
 		pdf.set_font('GNU', 'B', 14)
-
 		pdf.cell(10, 10, '', ln=1)
-
 		pdf.cell(20, 10, 'Arbeitszeitabrechnung', ln=1)
-
 		pdf.set_font('GNU', '', 14)
-
 		pdf.cell(20, 10, 'Mitarbeiter: {}'.format(self.nachname)+", "+self.vorname, ln=1)
 		pdf.cell(20, 10, 'Personalnummer: {}'.format(self.personalnummer), ln=1)
 		pdf.cell(20, 10, 'Arbeitszeitnachweis: {}'.format(self.monat)+", "+ self.year, ln=1)
-
 		pdf.set_font('GNU', 'B' , 14)
 		pdf.ln(10)
 		pdf.cell(20, 10, 'Arbeitszeit:', 0, 1)
-
 		pdf.cell(40, 10, 'Tag', 0, 0)
-		pdf.cell(40, 10, 'Beginn', 0, 0)
-		pdf.cell(40, 10, 'Ende', 0, 0)
+		pdf.cell(25, 10, 'Beginn', 0, 0)
+		pdf.cell(25, 10, 'Ende', 0, 0)
 		pdf.cell(40, 10, 'Art', 0, 0)
-		pdf.cell(40, 10, 'Zeit', 0, 1)
-
+		pdf.cell(40, 10, 'Arbeitszeit', 0, 0)
+		pdf.cell(40, 10, 'Pausen', 0, 1)
 		current_x =pdf.get_x()
 		current_y =pdf.get_y()
-
 		pdf.line(current_x, current_y, current_x+190, current_y)
-
 		pdf.set_font('GNU', '', 14)
-
-
 		for i in self.content:
 			if pdf.y + 10 > pdf.page_break_trigger:
-				pdf.set_font('GNU', 'B' , 14)
+				pdf.set_font('GNU', 'B', 14)
+				pdf.ln(10)
+				pdf.cell(20, 10, 'Arbeitszeit:', 0, 1)
 				pdf.cell(40, 10, 'Tag', 0, 0)
-				pdf.cell(40, 10, 'Beginn', 0, 0)
-				pdf.cell(40, 10, 'Ende', 0, 0)
-				pdf.cell(40, 10, 'Art', 0, 0)
-				pdf.cell(40, 10, 'Zeit', 0, 1)
+				pdf.cell(25, 10, 'Beginn', 0, 0)
+				pdf.cell(25, 10, 'Ende', 0, 0)
+				pdf.cell(40, 10, 'Arbeitszeit', 0, 0)
+				pdf.cell(40, 10, 'Pausen', 0, 1)
 				current_x =pdf.get_x()
 				current_y =pdf.get_y()
 				pdf.line(current_x, current_y, current_x+190, current_y)
 				pdf.set_font('GNU', '', 14)
 			self.begin = i[0].strftime("%H:%M")
 			self.ende = i[1].strftime("%H:%M")
-			self.netShiftTime, self.netShiftTimeHours, self.netShiftTimeMinutes = calculate_net_shift_time(i[0], i[1])
+			self.netShiftTime, self.netShiftTimeHours, self.netShiftTimeMinutes, self.breakTime = calculate_net_shift_time(i[0], i[1])
 			self.totalSeconds = self.totalSeconds + int(self.netShiftTime.seconds)
 			if self.netShiftTimeMinutes < 10:
 				self.netShiftTimeMinutes = '0%s' % (self.netShiftTimeMinutes)
+			self.breaktTimeMinutes = int((self.breakTime.total_seconds() % 3600) // 60)
+			if self.breaktTimeMinutes == 0:
+				self.breaktTimeMinutes = '00'
 			pdf.cell(40, 10, i[0].strftime("%d.%m.%Y"),0,0)
-			pdf.cell(40, 10, self.begin, 0, 0)
-			pdf.cell(40, 10, self.ende, 0, 0)
+			pdf.cell(25, 10, self.begin, 0, 0)
+			pdf.cell(25, 10, self.ende, 0, 0)
 			pdf.cell(40, 10, i[2], 0, 0)
-			pdf.cell(40, 10, '%s:%s' %(self.netShiftTimeHours, self.netShiftTimeMinutes), 0, 1)
+			pdf.cell(40, 10, '%s:%s' %(self.netShiftTimeHours, self.netShiftTimeMinutes), 0, 0)
+			pdf.cell(40, 10, '0:%s'%(self.breaktTimeMinutes), 0, 1)
 		self.totalHours, self.remainder = divmod(self.totalSeconds, 3600)
 		self.totalMinutes, self.rest = divmod(self.remainder, 60)
 		if self.totalMinutes < 10:

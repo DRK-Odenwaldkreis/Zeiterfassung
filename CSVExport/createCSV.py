@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # This file is part of DRK Zeiterfassung.
 
 # DRK Zeiterfassung is free software: you can redistribute it and/or modify
@@ -25,6 +27,11 @@ netShiftTime=0
 netShiftTimeHours=0
 netShiftTimeMinutes=0
 
+def create_row(entry,lohnart,month):
+    netShiftTime, netShiftTimeHours, netShiftTimeMinutes, breakTimes = calculate_net_shift_time(entry[1], entry[2])
+    row = ["[VARTAB]","INSERT","800","4",entry[0],entry[4],entry[3],"1",lohnart,"",round(netShiftTime.seconds/3600, 2),"","","","","",entry[1].replace(day=1).strftime("%d/%m/%Y"),entry[1].replace(day=1).replace(month=int(month)+1).strftime("%d/%m/%Y"),"IMPVAR1",entry[1].replace(day=1).strftime("%d/%m/%Y")]
+    return row
+
 def create_CSV(content, month, year):
     filename = "../../Reports/export.csv"
     with open(filename, mode='w', newline='') as csvfile:
@@ -51,27 +58,9 @@ def create_CSV(content, month, year):
                              "VD_HER_DAT"
                              ])
         for i in content:
-            netShiftTime, netShiftTimeHours, netShiftTimeMinutes = calculate_net_shift_time(i[1],i[2])
+            netShiftTime, netShiftTimeHours, netShiftTimeMinutes, breakTimes = calculate_net_shift_time(i[1],i[2])
             lohnart = get_lohnart(i[1],i[5])
-            writeEntry.writerow(["[VARTAB]",
-                                 "INSERT",
-                                 "800",
-                                 "4",
-                                 i[0],
-                                 i[4],
-                                 i[3],
-                                 "1",
-                                 lohnart,
-                                 "",
-                                 round(netShiftTime.seconds/3600, 2),
-                                 "",
-                                 "",
-                                 "",
-                                 "",
-                                 "",
-                                 i[1].replace(day=1).strftime("%d/%m/%Y"),
-                                 i[1].replace(day=1).replace(month=int(month)+1).strftime("%d/%m/%Y"),
-                                 "IMPVAR1",
-                                 i[1].replace(day=1).strftime("%d/%m/%Y")
-                                 ])
+            if i[0] > 6000:
+                for z in lohnart:
+                    writeEntry.writerow(create_row(i, z, month))
     return filename

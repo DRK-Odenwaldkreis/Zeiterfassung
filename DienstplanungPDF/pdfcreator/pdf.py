@@ -37,9 +37,8 @@ from utils.pausen import calculate_net_shift_time
 from utils.day import dayInt_to_string
 
 
-
-FreeSans = './pdfcreator/FreeSans.ttf'
-FreeSansBold = './pdfcreator/FreeSansBold.ttf'
+FreeSans = '../utils/Schriftart/FreeSans.ttf'
+FreeSansBold = '../utils/Schriftart/FreeSansBold.ttf'
 Logo = '../utils/logo.png'
 
 logger = logging.getLogger('Dienstplanung Report')

@@ -31,7 +31,7 @@ def calculate_net_shift_time(start,end):
         firstBreak = datetime.timedelta(minutes=0)
         secondBreak = datetime.timedelta(minutes=0)
         bruttoShiftTime = end - start
-        logging.debug("Brutto shitft times are calculated as: %s" % (bruttoShiftTime))
+        logging.debug("Brutto shift times are calculated as: %s" % (bruttoShiftTime))
         bruttoShiftTimeHours = bruttoShiftTime.seconds//3600
         bruttoShiftTimeMinutes = (bruttoShiftTime.seconds % 3600)//60
         if bruttoShiftTimeHours == 6:
@@ -48,11 +48,12 @@ def calculate_net_shift_time(start,end):
                 secondBreak = datetime.timedelta(minutes=15)
         elif bruttoShiftTimeHours > 9:
             secondBreak = datetime.timedelta(minutes=15)
-        logging.debug("Sceond break due to 9 hours is calculated as : %s" % (secondBreak))
+        logging.debug("Second break due to 9 hours is calculated as : %s" % (secondBreak))
         netShiftTime = bruttoShiftTime - firstBreak - secondBreak
         netShiftTimeHours = netShiftTime.seconds//3600
         netShiftTimeMinutes = (netShiftTime.seconds % 3600)//60
-        return netShiftTime, netShiftTimeHours, netShiftTimeMinutes
+        totalBreakTime = firstBreak + secondBreak
+        return netShiftTime, netShiftTimeHours, netShiftTimeMinutes, totalBreakTime
     except Exception as err:
         logging.debug("Raised exception within the net shift calculation with the following message: %s"% (err))
         return datetime.timedelta(hours=0,minutes=0), 0, 0

@@ -35,8 +35,8 @@ from utils.pausen import calculate_net_shift_time
 from utils.month import monthInt_to_string
 Logo = '../utils/logo.png'
 
-FreeSans='./pdfcreator/FreeSans.ttf'
-FreeSansBold = './pdfcreator/FreeSansBold.ttf'
+FreeSans = '../utils/Schriftart/FreeSans.ttf'
+FreeSansBold = '../utils/Schriftart/FreeSansBold.ttf'
 
 class MyPDF(FPDF):
 
@@ -116,7 +116,8 @@ class PDFgenerator:
 
 		for i in self.content:
 			if pdf.y + 10 > pdf.page_break_trigger:
-				pdf.set_font('GNU', 'B' , 14)
+				pdf.set_font('GNU', 'B', 14)
+				pdf.ln(10)
 				pdf.cell(35, 10, 'Personal-Nr.', 0, 0)
 				pdf.cell(35, 10, 'Nachname', 0, 0)
 				pdf.cell(35, 10, 'Beginn', 0, 0)
