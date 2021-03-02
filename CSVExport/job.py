@@ -27,7 +27,7 @@ from utils.database import Database
 from createCSV import create_CSV
 
 logFile = '../../Logs/CSVExportJob.log'
-logging.basicConfig(level=logging.DEBUG,
+logging.basicConfig(filename=logFile,level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('CSV Export')
 logger.debug('Starting')

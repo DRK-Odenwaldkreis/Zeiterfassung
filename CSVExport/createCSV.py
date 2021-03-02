@@ -29,7 +29,8 @@ netShiftTimeMinutes=0
 
 def create_row(entry,lohnart,month):
     netShiftTime, netShiftTimeHours, netShiftTimeMinutes, breakTimes = calculate_net_shift_time(entry[1], entry[2])
-    row = ["[VARTAB]","INSERT","800","4",entry[0],entry[4],entry[3],"1",lohnart,"",round(netShiftTime.seconds/3600, 2),"","","","","",entry[1].replace(day=1).strftime("%d/%m/%Y"),entry[1].replace(day=1).replace(month=int(month)+1).strftime("%d/%m/%Y"),"IMPVAR1",entry[1].replace(day=1).strftime("%d/%m/%Y")]
+    row = ["[VARTAB]", "INSERT", "800", "4", entry[0], entry[4], entry[3], "1", lohnart, "", str(round(netShiftTime.seconds/3600, 2)).replace(".",","), "", "", "", "", "", entry[1].replace(
+        day=1).strftime("%Y-%m-%d"), entry[1].replace(day=1).replace(month=int(month)+1).strftime("%Y-%m-%d"), "IMPVAR1", entry[1].replace(day=1).strftime("%Y-%m-%d")]
     return row
 
 def create_CSV(content, month, year):
