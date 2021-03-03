@@ -36,7 +36,6 @@ from utils.month import monthInt_to_string
 
 FreeSans = '../utils/Schriftart/FreeSans.ttf'
 FreeSansBold = '../utils/Schriftart/FreeSansBold.ttf'
-print("TEST")
 Logo = '../utils/logo.png'
 class MyPDF(FPDF):
 
