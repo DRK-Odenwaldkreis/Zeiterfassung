@@ -60,6 +60,9 @@ if( A_checkpermission(array(0,2,0,4)) ) {
                     $u_vname=preg_replace("/'/","´",$_POST['vname']);
                     $u_nname=preg_replace("/'/","´",$_POST['nname']);
                     $u_email=($_POST['email']);
+                    $u_lohngruppe=$_POST['lohngruppe'];
+                    $u_taetigkeit=$_POST['taetigkeit'];
+                    if(isset($_POST['hauptamtlich'])) { $u_hauptamtlich=1;} else {$u_hauptamtlich=0;}
                     // check unique email
                     if( !(S_get_entry($Db,'SELECT id FROM li_user WHERE username=\''.$u_email.'\';')>0) ) {
                         // create hash / token (unique)
@@ -77,7 +80,15 @@ if( A_checkpermission(array(0,2,0,4)) ) {
                             $new_uid=0;
                         }
                         //  create staff
-                        S_set_data($Db,'INSERT INTO Personal (Vorname,Nachname,Personalnummer,Hash,id_li_user) VALUES (\''.$u_vname.'\',\''.$u_nname.'\',CAST('.$pnr.' AS int),\''.$u_hash.'\','.$new_uid.');');
+                        S_set_data($Db,'INSERT INTO Personal (Vorname,Nachname,Personalnummer,Hash,id_li_user,Taetigkeit,Gruppe,Hauptamtlich) VALUES (
+                        \''.$u_vname.'\',
+                        \''.$u_nname.'\',
+                        CAST('.$pnr.' AS int),
+                        \''.$u_hash.'\',
+                        '.$new_uid.',
+                        \''.$u_taetigkeit.'\',
+                        \''.$u_lohngruppe.'\',
+                        '.$u_hauptamtlich.');');
                         $errorhtml2 =  H_build_boxinfo( 0, 'Personaldaten wurden erstellt.', 'green' );
                         // Welcome email
                         $res_email=A_send_welcome_email($Db, $u_email);
@@ -111,6 +122,9 @@ if( A_checkpermission(array(0,2,0,4)) ) {
                     if(isset($_POST['e_active'])) { $u_active=1;} else {$u_active=0;}
                     $u_email=($_POST['e_email']);
                     $u_old_email=($_POST['old_email']);
+                    $u_lohngruppe=$_POST['e_lohngruppe'];
+                    $u_taetigkeit=$_POST['e_taetigkeit'];
+                    if(isset($_POST['e_hauptamtlich'])) { $u_hauptamtlich=1;} else {$u_hauptamtlich=0;}
                     // check unique email or same email
                     if( $u_email==$u_old_email || !(S_get_entry($Db,'SELECT id FROM li_user WHERE username=\''.$u_email.'\';')>0) ) {
                         // write data
@@ -135,7 +149,7 @@ if( A_checkpermission(array(0,2,0,4)) ) {
                             }
                         }
                         //  edit staff data
-                        S_set_data($Db,'UPDATE Personal SET Personalnummer=\''.$pnr.'\', Vorname=\''.$u_vname.'\', Nachname=\''.$u_nname.'\', Aktiv='.$u_active.' WHERE Personalnummer=CAST('.$old_pnr.' AS int);');
+                        S_set_data($Db,'UPDATE Personal SET Personalnummer=\''.$pnr.'\', Vorname=\''.$u_vname.'\', Nachname=\''.$u_nname.'\', Aktiv='.$u_active.', Gruppe=\''.$u_lohngruppe.'\', Taetigkeit=\''.$u_taetigkeit.'\', Hauptamtlich='.$u_hauptamtlich.' WHERE Personalnummer=CAST('.$old_pnr.' AS int);');
                         $errorhtml3 =  H_build_boxinfo( 0, 'Änderungen wurden gespeichert.', 'green' );
                     } else {
                         // Message email exists already
@@ -163,6 +177,9 @@ if( A_checkpermission(array(0,2,0,4)) ) {
                     $bool_staff_display=true;
                     $u_vname=S_get_entry($Db,'SELECT Vorname FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
                     $u_nname=S_get_entry($Db,'SELECT Nachname FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
+                    $u_taetigkeit=S_get_entry($Db,'SELECT Taetigkeit FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
+                    $u_lohngruppe=S_get_entry($Db,'SELECT Gruppe FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
+                    $u_hauptamtlich=S_get_entry($Db,'SELECT Hauptamtlich FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
                     $u_id_li_user=S_get_entry($Db,'SELECT id_li_user FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
                     $u_active=S_get_entry($Db,'SELECT Aktiv FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
                     $u_email=S_get_entry($Db,'SELECT username FROM li_user WHERE id='.$u_id_li_user.';');
@@ -178,6 +195,9 @@ if( A_checkpermission(array(0,2,0,4)) ) {
                     $bool_staff_display=true;
                     $u_vname=S_get_entry($Db,'SELECT Vorname FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
                     $u_nname=S_get_entry($Db,'SELECT Nachname FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
+                    $u_taetigkeit=S_get_entry($Db,'SELECT Taetigkeit FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
+                    $u_lohngruppe=S_get_entry($Db,'SELECT Gruppe FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
+                    $u_hauptamtlich=S_get_entry($Db,'SELECT Hauptamtlich FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
                     $u_id_li_user=S_get_entry($Db,'SELECT id_li_user FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
                     $u_active=S_get_entry($Db,'SELECT Aktiv FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
                     $u_email=S_get_entry($Db,'SELECT username FROM li_user WHERE id='.$u_id_li_user.';');
@@ -217,6 +237,7 @@ if( A_checkpermission(array(0,2,0,4)) ) {
 
     // Get staff number and name for select box
     $array_staff=S_get_multientry($Db,'SELECT Id, Personalnummer, Vorname, Nachname, Hash FROM Personal;');
+    $array_salary=S_get_multientry($Db,'SELECT Bezeichnung FROM Lohngruppe;');
 
 
     // Print html header
@@ -240,7 +261,7 @@ if( A_checkpermission(array(0,2,0,4)) ) {
 
     echo "<script>
     $(document).ready(function () {
-        $('select').selectize({
+        $('#select-state').selectize({
             sortField: 'text'
         });
     });
@@ -287,6 +308,19 @@ if( A_checkpermission(array(0,2,0,4)) ) {
         echo '<div class="col-sm-5">
         <h3>Personal '.$pnr.'</h3>';
         if($u_active==1) {$u_act_selected="checked";} else {$u_act_selected="";}
+        if($u_hauptamtlich==1) {$u_hauptamtlich_selected="checked";} else {$u_hauptamtlich_selected="";}
+        switch ($u_taetigkeit) {
+            case "0":
+              $selected[0]="selected"; $selected[1]=""; $selected[2]=""; $selected[3]=""; $selected[4]=""; break;
+            case "Medizinisch":
+              $selected[1]="selected"; $selected[0]=""; $selected[2]=""; $selected[3]=""; $selected[4]=""; break;
+            case "Rettungssanitäter":
+              $selected[2]="selected"; $selected[0]=""; $selected[1]=""; $selected[3]=""; $selected[4]=""; break;
+            case "Verwaltung":
+              $selected[3]="selected"; $selected[0]=""; $selected[1]=""; $selected[2]=""; $selected[4]=""; break;
+            case "Sanitätshelfer":
+              $selected[4]="selected"; $selected[0]=""; $selected[1]=""; $selected[2]=""; $selected[3]=""; break;
+          }
 
         echo'<form action="'.$current_site.'.php" method="post">
         <div class="input-group">
@@ -306,6 +340,28 @@ if( A_checkpermission(array(0,2,0,4)) ) {
         </div><div class="input-group">
         <span class="input-group-addon" id="basic-addon1">E-Mail</span>
         <input type="text" class="form-control" placeholder="E-Mail-Adresse" aria-describedby="basic-addon1" name="e_email" autocomplete="off" value="'.$u_email.'">
+        </div><div class="input-group">
+        <span class="input-group-addon">
+        <input type="checkbox" aria-label="Hauptamtlich" name="e_hauptamtlich" '.$u_hauptamtlich_selected.'>
+        <label for="Hauptamtlich">Hauptamtlich</label>
+        </span>
+        <span class="input-group-addon" id="basic-addon6">Tätigkeit</span>
+        <select class="custom-select" id="inputGroupSelect01" name="e_taetigkeit" style="margin-top:0px;">
+          <option value="0" '.$selected[0].'>n/v</option>
+          <option value="Medizinisch" '.$selected[1].'>Medizinisch</option>
+          <option value="Rettungssanitäter" '.$selected[2].'>Rettungssanitäter</option>
+          <option value="Verwaltung" '.$selected[3].'>Verwaltung</option>
+          <option value="Sanitätshelfer" '.$selected[4].'>Sanitätshelfer</option>
+        </select>
+        <span class="input-group-addon" id="basic-addon6">Lohngruppe</span>
+        <select class="custom-select" id="inputGroupSelect02" name="e_lohngruppe" style="margin-top:0px;">';
+        // get values from Lohngruppe
+        echo '<option value="">n/v</option>';
+        foreach($array_salary as $l) {
+            if($l[0]==$u_lohngruppe) {$selected="selected";} else {$selected="";}
+            echo '<option value="'.$l[0].'" '.$selected.'>'.$l[0].'</option>';
+        }
+        echo '</select>
         </div>
         <div class="FAIR-si-button">
         <input type="submit" class="btn btn-danger" value="Änderung speichern" name="edit_staff" />
@@ -362,6 +418,26 @@ if( A_checkpermission(array(0,2,0,4)) ) {
         </div><div class="input-group">
         <span class="input-group-addon" id="basic-addon1">E-Mail</span>
         <input type="text" class="form-control" placeholder="E-Mail-Adresse" aria-describedby="basic-addon1" name="email" autocomplete="off">
+        </div><div class="input-group">
+        <span class="input-group-addon">
+        <input type="checkbox" aria-label="Hauptamtlich" name="hauptamtlich">
+        <label for="Hauptamtlich">Hauptamtlich</label>
+        </span>
+        <span class="input-group-addon" id="basic-addon6">Tätigkeit</span>
+        <select class="custom-select" id="inputGroupSelect01" name="taetigkeit" style="margin-top:0px;">
+          <option value="Medizinisch">Medizinisch</option>
+          <option value="Rettungssanitäter">Rettungssanitäter</option>
+          <option value="Verwaltung">Verwaltung</option>
+          <option value="Sanitätshelfer">Sanitätshelfer</option>
+        </select>
+        <span class="input-group-addon" id="basic-addon6">Lohngruppe</span>
+        <select class="custom-select" id="inputGroupSelect01" name="lohngruppe" style="margin-top:0px;">';
+        // get values from Lohngruppe
+        //echo '<option value="">n/v</option>';
+        foreach($array_salary as $l) {
+            echo '<option value="'.$l[0].'">'.$l[0].'</option>';
+        }
+        echo '</select>
         </div>
         <div class="FAIR-si-button">
         <input type="submit" class="btn btn-danger" value="Eintragen und anschließend anzeigen" name="create_staff" />
