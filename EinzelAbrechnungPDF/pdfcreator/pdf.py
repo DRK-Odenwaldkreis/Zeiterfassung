@@ -68,11 +68,12 @@ class MyPDF(FPDF):
 
 class PDFgenerator:
 
-	def __init__(self, content, nachname, vorname, personalnummer, monat, year):
+	def __init__(self, content, nachname, vorname, personalnummer, taetigkeit, monat, year):
 		self.content=content
 		self.nachname=nachname
 		self.vorname=vorname
 		self.personalnummer=personalnummer
+		self.taetigkeit = taetigkeit
 		self.date = datetime.date.today()
 		self.year = year
 		self.monat=monthInt_to_string(int(monat))
@@ -94,6 +95,7 @@ class PDFgenerator:
 		pdf.set_font('GNU', '', 14)
 		pdf.cell(20, 10, 'Mitarbeiter: {}'.format(self.nachname)+", "+self.vorname, ln=1)
 		pdf.cell(20, 10, 'Personalnummer: {}'.format(self.personalnummer), ln=1)
+		pdf.cell(20, 10, 'Tätigkeit: {}'.format(self.taetigkeit), ln=1)
 		pdf.cell(20, 10, 'Arbeitszeitnachweis: {}'.format(self.monat)+", "+ self.year, ln=1)
 		pdf.set_font('GNU', 'B' , 14)
 		pdf.ln(10)

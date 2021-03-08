@@ -69,9 +69,9 @@ if __name__ == "__main__":
         requester = sys.argv[3]
         DatabaseConnect = Database()
         if type == "single":
-            sql = "SELECT Vorname,Nachname,Personalnummer FROM Personal WHERE Personalnummer = %s;" % (requestedPersonalnummer)
+            sql = "SELECT Vorname,Nachname,Personalnummer,Taetigkeit FROM Personal WHERE Personalnummer = %s;" % (requestedPersonalnummer)
         else:
-            sql = "SELECT Vorname,Nachname,Personalnummer FROM Personal where Aktiv=1;"
+            sql = "SELECT Vorname,Nachname,Personalnummer,Taetigkeit FROM Personal where Aktiv=1;"
             zipFilename = '../../Reports/Einzelnachweise_' + monthInt_to_string(int(requestedMonth)) + '_' + requestedYear + '.zip'
             zipObj = ZipFile(zipFilename, 'w')
         logger.debug(
@@ -84,12 +84,13 @@ if __name__ == "__main__":
             vorname = i[0]
             nachname = i[1]
             personalnummer = i[2]
+            taetigkeit = i[3]
             sql = "SELECT Dienstbeginn, Dienstende, Art FROM Dienste WHERE Personalnummer = %s AND MONTH(Dienstbeginn)=%s AND YEAR(Dienstbeginn)=%s AND Dienstende IS NOT NULL ORDER BY Dienstbeginn ASC;" % (
                 personalnummer, requestedMonth, requestedYear)
             logger.debug('Getting all Events for employee of the month with the following query: %s' % (sql))
             shiftTimes = DatabaseConnect.read_all(sql)
             logger.debug('Received the following entries: %s' % (str(shiftTimes)))
-            PDF = PDFgenerator(shiftTimes, nachname, vorname, personalnummer, requestedMonth, requestedYear)
+            PDF = PDFgenerator(shiftTimes, nachname, vorname, personalnummer, taetigkeit, requestedMonth, requestedYear)
             singleFilename = PDF.generate()
             if type == "all":
                 zipObj.write(singleFilename, singleFilename.replace('../../Reports/Einzelnachweis_', 'Einzelnachweise_'))
