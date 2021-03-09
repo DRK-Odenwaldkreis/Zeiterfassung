@@ -40,7 +40,7 @@ def create_row(entry,lohnart,month):
         logger.debug("Stundensatz is set to %s: " % entry[7])
         stundensatz=entry[7]
     try:
-        if entry[0] <= 6000:
+        if entry[0] < 6000:
             logger.debug("In entry[0] <= 6000")
             return False
         elif entry[6] == 1 and lohnart == 490:
@@ -111,7 +111,7 @@ def create_CSV(content, month, year):
                                 ])
             for i in content:
                 netShiftTime, netShiftTimeHours, netShiftTimeMinutes, breakTimes = calculate_net_shift_time(i[1],i[2])
-                lohnart = get_lohnart(i[1],i[5])
+                lohnart = get_lohnart(i[1],i[5],i[2])
                 for z in lohnart:
                     new_entry = create_row(i, z, month)
                     if new_entry:

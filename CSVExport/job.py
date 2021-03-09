@@ -47,6 +47,10 @@ if __name__ == "__main__":
             raise Exception
         logger.debug(
             'Was started for the following month: %s' % (sys.argv[1]))
+        logger.debug(
+            'Was started for the following year: %s' % (sys.argv[2]))
+        logger.debug(
+            'Was started for the following requester: %s' % (sys.argv[3]))
         requestedMonth = sys.argv[1]
         requestedYear = sys.argv[2]
         requester = sys.argv[3]

@@ -24,7 +24,7 @@ logger = logging.getLogger('Leistungsart')
 logger.debug('Logger for Leistungsartberechnung was initialised')
 holidays = holidays.CountryHoliday('DE', prov='HE')
 
-def get_lohnart(date, art):
+def get_lohnart(begin, art, ende):
     code = []
     try:
         if art == "Krank":
@@ -34,12 +34,12 @@ def get_lohnart(date, art):
         elif art == "Rufbereitschaft":
             code.append(490)
         elif art == "Normal":
-            if date.weekday() < 6 and not date in holidays:
+            if begin.weekday() < 6 and not begin in holidays:
                 code.append(490)
-            elif date.weekday() == 6 and not date in holidays:
+            elif begin.weekday() == 6 and not begin in holidays:
                 code.append(490)
                 code.append(558)
-            elif date in holidays:
+            elif begin in holidays:
                 code.append(556)
                 code.append(490)
             else:
