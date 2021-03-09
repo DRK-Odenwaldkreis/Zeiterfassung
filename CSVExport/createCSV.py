@@ -81,8 +81,8 @@ def create_row(entry,lohnart,month):
 
 
 def create_CSV(content, month, year):
-    filename = "../../Reports/export_" + str(month) + "_" + str(year) + ".csv"
-    errorFilename = "../../Reports/error_export_"+ str(month) + "_" + str(year) + ".csv"
+    filename = "../../Reports/CSVExport_" + str(month) + "_" + str(year) + ".csv"
+    errorFilename = "../../Reports/CSVExport_OUTLINER_"+ str(month) + "_" + str(year) + ".csv"
     with open(errorFilename, mode='w', newline='') as errorfile:
         writeErrorEntry = csv.writer(errorfile,delimiter=';')
         writeErrorEntry.writerow(["Personalnummer","Begin","Ende","Dauer","Name","Vorname","Dienstart"])
@@ -118,4 +118,16 @@ def create_CSV(content, month, year):
                         writeEntry.writerow(new_entry)
                     else:
                         writeErrorEntry.writerow([i[0], i[1], i[2], str(round(netShiftTime.seconds/3600, 2)).replace(".", ","), i[3], i[4], i[5]])
-    return filename
+    return filename, errorFilename
+
+
+def create_sum_CSV(content,month,year):
+    filename = "../../Reports/CSVExport_SUMMENUEBERSICHT_" + str(month) + "_" + str(year) + ".csv"
+    with open(filename, mode='w', newline='') as file:
+        writeEntry = csv.writer(file, delimiter=';')
+        writeEntry.writerow(["Personalnummer", "Summe"])
+        for key, value in content.items():
+            writeEntry.writerow([key,value])
+        return filename
+
+
