@@ -16,10 +16,11 @@
 
 # You should have received a copy of the GNU General Public License
 # along with DRK Zeiterfassung.  If not, see <http://www.gnu.org/licenses/>.
-
+import sys
 import logging
 import datetime
-
+sys.path.append("..")
+from utils.database import Database
 
 logger = logging.getLogger('Pausenberechnung')
 logger.debug('Logger for pausen berechnung was initialised')
@@ -57,5 +58,14 @@ def calculate_net_shift_time(start,end):
     except Exception as err:
         logging.debug("Raised exception within the net shift calculation with the following message: %s"% (err))
         return datetime.timedelta(hours=0,minutes=0), 0, 0
+
+def calculate_net_shift_sum_time(entries):
+    netShiftTimeSum = 0
+    for i in entries:
+        netShiftTime, netShiftTimeHours, netShiftTimeMinutes, totalBreakTime = calculate_net_shift_time(
+            i[0], i[1])
+        netShiftTimeSum = netShiftTimeSum + netShiftTime.seconds
+    return round(netShiftTimeSum/3600,2)
+
 
 
