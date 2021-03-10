@@ -38,6 +38,7 @@ include_once 'menu.php';
 if( A_checkpermission(array(0,2,0,4)) ) {
 
     $errorhtml0 ='';
+    $errorhtml1 ='';
 
     // Create report
     $val_report_display=0;
@@ -46,10 +47,13 @@ if( A_checkpermission(array(0,2,0,4)) ) {
         if(isset($_POST['get_report_all_staff_csv'])) {
             $month=($_POST['month']);
             $year=($_POST['year']);
+            $uid=$_SESSION['uid'];
 
             $dir="/home/webservice/Zeiterfassung/CSVExport/";
             chdir($dir);
-            $job="python3 job.py $month $year";
+
+            // direct download
+            /* $job="python3 job.py $month $year";
             exec($job,$script_output);
             $file=$script_output[0];
             if( file_exists("/home/webservice/Reports/$file") ) {
@@ -59,7 +63,12 @@ if( A_checkpermission(array(0,2,0,4)) ) {
                 header('Expires: 0');
                 readfile("/home/webservice/Reports/$file");
                 exit;
-            }
+            } */
+
+            // create file and send email
+            $job="python3 job.py $month $year $uid > /dev/null &";
+            exec($job,$script_output);
+            $errorhtml1 = H_build_boxinfo( 0, "Report wird erstellt und Downloadlink an Ihre E-Mail verschickt. Dies kann einen Augenblick dauern.", 'green' );
             
         } elseif(isset($_POST['get_report_all_staff'])) {
             $month=($_POST['month']);
@@ -146,6 +155,7 @@ if( A_checkpermission(array(0,2,0,4)) ) {
         </span>
         </div>
         </form>';
+        echo $errorhtml1;
     echo '</div></div>';
 
     echo '<div class="card">
