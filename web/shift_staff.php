@@ -290,7 +290,7 @@ if( A_checkpermission(array(1,0,3,4)) ) {
     <tr>
     <td class="FAIR-data-height1 FAIR-data-bottom">
     </td><td class="FAIR-data-height1 FAIR-data-bottom">
-    <span style="font-size:75%;">Früh von 07:00 bis 14:30<br>Spät von 14:30 bis 22:00</span>
+    <span style="font-size:75%;">Früh von 07:00 bis 15:30<br>Spät von 15:00 bis 22:00</span>
     </td><td class="FAIR-data-height1 FAIR-data-bottom" colspan="2">
     </td>
     </tr>
