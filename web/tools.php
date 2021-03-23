@@ -192,11 +192,11 @@ function A_send_welcome_email($Db,$to) {
 	$FLAG_EMAIL_NEWEMPLOYEE=S_get_entry($Db,'SELECT value FROM website_settings WHERE name="FLAG_EMAIL_NEWEMPLOYEE";');
 	if($FLAG_EMAIL_NEWEMPLOYEE==1 && filter_var($to, FILTER_VALIDATE_EMAIL)) {
 		// send email
-		$header = "From: support@impfzentrum-odw.de\r\n";
+		$header = "From: info@impfzentrum-odenwald.de\r\n";
 		$header .= "Content-Type: text/html; charset=UTF-8\nContent-Transfer-Encoding: 8bit";
 		$content=file_get_contents("/home/webservice/Zeiterfassung/utils/MailLayout/NewEmployee.html");
 		$title='DRK Impfzentrum Zeiterfassung - Willkommen';
-		mail($to, $title, $content, $header, "-r support@impfzentrum-odw.de");
+		mail($to, $title, $content, $header, "-r info@impfzentrum-odenwald.de");
 
 		return true;
 	} else {
@@ -214,7 +214,7 @@ function A_send_staffroster_email($Db,$kw) {
 	$bcc=substr($bcc, 0, -1);
 
 	// send email
-	$header = "From: support@impfzentrum-odw.de\r\n";
+	$header = "From: info@impfzentrum-odenwald.de\r\n";
 	$header .= "Bcc: $bcc\r\n";
 	$header .= "Reply-To: dienstplan.impfzentrum@drk-odenwaldkreis.de\r\n";
 	$header .= "Content-Type: text/html; charset=UTF-8\nContent-Transfer-Encoding: 8bit";
@@ -222,7 +222,7 @@ function A_send_staffroster_email($Db,$kw) {
 	$content=preg_replace('/\[\[KW]]/',substr($kw,7,2),$content);
     $content=preg_replace('/\[\[YEAR]]/',substr($kw,0,4),$content);
 	$title='DRK Impfzentrum Zeiterfassung - Dienstplan '.$kw;
-	mail('report@impfzentrum-odw.de', $title, $content, $header, "-r support@impfzentrum-odw.de");
+	mail('report@impfzentrum-odw.de', $title, $content, $header, "-r info@impfzentrum-odenwald.de");
 	
 	return true;
 }
