@@ -81,7 +81,7 @@ if __name__ == "__main__":
         zipObj.write(errorFilename, errorFilename.replace('../../Reports/', ''))
         zipObj.write(sumFilename, sumFilename.replace('../../Reports/', ''))
         zipObj.close()
-        send_mail_csvexport_download(zipFilename.replace('../../Reports/', ''), get_Mail_from_UserID(requester))
+        #send_mail_csvexport_download(zipFilename.replace('../../Reports/', ''), get_Mail_from_UserID(requester))
         print(zipFilename)
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
