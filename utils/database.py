@@ -71,8 +71,6 @@ class Database(object):
                 'The following error occured in inserting: %s' % (e))
             self.connection.rollback()
             raise UpdateError
-        finally:
-            self.cursor.close()
 
     def update(self, query):
         try:
@@ -83,8 +81,6 @@ class Database(object):
                 'The following error occured in updating: %s' % (e))
             self.connection.rollback()
             raise UpdateError
-        finally:
-            self.cursor.close()
 
     def read_all(self, query):
         try:

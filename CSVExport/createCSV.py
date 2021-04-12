@@ -132,7 +132,7 @@ def create_sum_CSV(content,month,year):
         writeEntry = csv.writer(file, delimiter=';')
         writeEntry.writerow(["Personalnummer", "Summe"])
         for key, value in content.items():
-            writeEntry.writerow([key,value])
+            writeEntry.writerow([key,str(value).replace(".",",")])
         return filename
 
 

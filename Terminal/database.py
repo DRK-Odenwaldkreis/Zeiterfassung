@@ -43,10 +43,10 @@ class Database(object):
     def __init__(self):
         try:
             logger.debug('Constructor was called')
-            self.__host= 'xxx'
-            self.__user= 'xxx'
-            self.__passwd = 'xx'
-            self.__dbName = 'impfzentrum'
+            self.__host = 'xyxyxy'
+            self.__user= 'xyxyxy'
+            self.__passwd = 'xyxyxy'
+            self.__dbName = 'xyxyxy'
             self.connection = mysql.connector.connect(
                 host=self.__host, user=self.__user, passwd=self.__passwd, db=self.__dbName)
             self.cursor = self.connection.cursor()
@@ -64,8 +64,6 @@ class Database(object):
                 'The following error occured in inserting: %s' % (e))
             self.connection.rollback()
             raise UpdateError
-        finally:
-            self.cursor.close()
 
     def update(self, query):
         try:
@@ -76,8 +74,6 @@ class Database(object):
                 'The following error occured in updating: %s' % (e))
             self.connection.rollback()
             raise UpdateError
-        finally:
-            self.cursor.close()
 
     def read_all(self, query):
         try:

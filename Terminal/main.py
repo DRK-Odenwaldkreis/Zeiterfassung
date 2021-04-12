@@ -46,14 +46,15 @@ logFile = './Log/output.log'
 try:
     logLevel = read_config("Terminal", "logLevel")
     if logLevel == "Error":
-        logging.basicConfig(filename=logFile,level=logging.ERROR,format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        logging.basicConfig(filename=logFile, level=logging.ERROR,
+                            format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     elif logLevel == "Debug":
-        logging.basicConfig(filename=logFile, level=logging.DEBUG,format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        logging.basicConfig(filename=logFile,level=logging.DEBUG,format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     else:
         logging.basicConfig(filename=logFile, level=logging.INFO,
                             format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 except:
-    logging.basicConfig(filename=logFile, level=logging.ERROR,
+    logging.basicConfig(filename=logFile,level=logging.DEBUG,
                         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Main')
 logger.debug('Starting')
