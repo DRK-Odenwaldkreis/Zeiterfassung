@@ -107,10 +107,17 @@ if( A_checkpermission(array(0,2,0,4)) ) {
           $u_shift_start=$_POST['start_time'];
           $u_shift_end=$_POST['end_time'];
           $u_shift_type=$_POST['lohnart'];
+          if($GLOBALS["SYSMOD_Verrechnung"]) {
+            $u_shift_verrechnung=$_POST['verrechnung'];
+          }
           // Make sql timestamps
           $u_s_start=$u_date.' '.$u_shift_start.':00';
           $u_s_end=$u_date.' '.$u_shift_end.':00';
-          $res=S_set_data($Db,'INSERT INTO Dienste (Personalnummer,Dienstbeginn,Dienstende,Art) VALUES (CAST('.$pnr.' AS int),\''.$u_s_start.'\',\''.$u_s_end.'\',\''.$u_shift_type.'\');');
+          if($GLOBALS["SYSMOD_Verrechnung"]) {
+            $res=S_set_data($Db,'INSERT INTO Dienste (Personalnummer,Dienstbeginn,Dienstende,Art,Verrechnung) VALUES (CAST('.$pnr.' AS int),\''.$u_s_start.'\',\''.$u_s_end.'\',\''.$u_shift_type.'\',\''.$u_shift_verrechnung.'\');');
+          } else {
+            $res=S_set_data($Db,'INSERT INTO Dienste (Personalnummer,Dienstbeginn,Dienstende,Art) VALUES (CAST('.$pnr.' AS int),\''.$u_s_start.'\',\''.$u_s_end.'\',\''.$u_shift_type.'\');');
+          }
           if(!$res){
             $errorhtml0 = H_build_boxinfo( 0, "Fehler beim Eintragen - ungültige Werte", 'red' );
           } else {
@@ -125,10 +132,18 @@ if( A_checkpermission(array(0,2,0,4)) ) {
           $u_shift_start=$_POST['start_time'];
           $u_shift_end=$_POST['end_time'];
           $u_shift_type=$_POST['lohnart'];
+          if($GLOBALS["SYSMOD_Verrechnung"]) {
+            $u_shift_verrechnung=$_POST['verrechnung'];
+          }
           // Make sql timestamps
           $u_s_start=$u_date.' '.$u_shift_start.':00';
           $u_s_end=$u_date.' '.$u_shift_end.':00';
-          $res=S_set_data($Db,'UPDATE Dienste SET Dienstbeginn=\''.$u_s_start.'\', Dienstende=\''.$u_s_end.'\', Art=\''.$u_shift_type.'\', AutoClosed=0  WHERE id=CAST('.$id.' AS int);');
+          if($GLOBALS["SYSMOD_Verrechnung"]) {
+            $res=S_set_data($Db,'UPDATE Dienste SET Dienstbeginn=\''.$u_s_start.'\', Dienstende=\''.$u_s_end.'\', Art=\''.$u_shift_type.'\', Verrechnung=\''.$u_shift_verrechnung.'\', AutoClosed=0  WHERE id=CAST('.$id.' AS int);');
+          } else {
+            $res=S_set_data($Db,'UPDATE Dienste SET Dienstbeginn=\''.$u_s_start.'\', Dienstende=\''.$u_s_end.'\', Art=\''.$u_shift_type.'\', AutoClosed=0  WHERE id=CAST('.$id.' AS int);');
+          }
+         
           if(!$res){
             $errorhtml0 = H_build_boxinfo( 0, "Fehler beim Eintragen - ungültige Werte", 'red' );
           } else {
@@ -229,7 +244,17 @@ if( A_checkpermission(array(0,2,0,4)) ) {
             <option value="Urlaub">Urlaub</option>
             <option value="Rufbereitschaft">Rufbereitschaft</option>
           </select>
+          ';
+          if($GLOBALS["SYSMOD_Verrechnung"]) {
+            echo '<span class="input-group-addon" id="basic-addon6">Verrechnung</span>
+            <select class="custom-select" id="inputGroupSelect02" name="verrechnung">
+              <option value="Intern" selected>Intern</option>
+              <option value="Extern">Extern</option>
+            </select>
+            ';
+          }
 
+          echo '
           <span class="input-group-btn">
           <input type="submit" class="btn btn-danger" value="Eintragen" name="submit_times" />
           </span>
@@ -258,6 +283,14 @@ if( A_checkpermission(array(0,2,0,4)) ) {
               $selected[2]="selected"; $selected[0]=""; $selected[1]=""; $selected[3]=""; break;
             case "Rufbereitschaft":
               $selected[3]="selected"; $selected[0]=""; $selected[1]=""; $selected[2]=""; break;
+          }
+          if($GLOBALS["SYSMOD_Verrechnung"]) {
+            switch ($i[5]) {
+              case "Intern":
+                $selected_verr[0]="selected"; $selected_verr[1]=""; break;
+              case "Extern":
+                $selected_verr[1]="selected"; $selected_verr[0]=""; break;
+            }
           }
 
           if($i[2]==NULL) {
@@ -295,6 +328,17 @@ if( A_checkpermission(array(0,2,0,4)) ) {
               <option value="Urlaub" '.$selected[2].'>Urlaub</option>
               <option value="Rufbereitschaft" '.$selected[3].'>Rufbereitschaft</option>
             </select>
+            ';
+          if($GLOBALS["SYSMOD_Verrechnung"]) {
+            echo '<span class="input-group-addon" id="basic-addon6-'.$i[0].'">Verrechnung</span>
+            <select class="custom-select" id="inputGroupSelect02" name="verrechnung">
+              <option value="Intern" '.$selected_verr[0].'>Intern</option>
+              <option value="Extern" '.$selected_verr[1].'>Extern</option>
+            </select>
+            ';
+          }
+
+          echo '
 
             <span class="input-group-btn">
             <input type="submit" class="btn btn-success" value="Speichern" name="save_times" />
@@ -311,8 +355,11 @@ if( A_checkpermission(array(0,2,0,4)) ) {
     // show auto closed shifts
     //
     
-
-    $array_list_autoclosed=S_get_multientry($Db,'SELECT Dienste.Personalnummer, Personal.Vorname, Personal.Nachname, Dienste.Dienstbeginn, Dienste.Dienstende, Dienste.Art, Dienste.AutoClosed FROM Dienste JOIN Personal ON Personal.Personalnummer=Dienste.Personalnummer WHERE Dienste.AutoClosed=1;');
+    if($GLOBALS["SYSMOD_Verrechnung"]) {
+      $array_list_autoclosed=S_get_multientry($Db,'SELECT Dienste.Personalnummer, Personal.Vorname, Personal.Nachname, Dienste.Dienstbeginn, Dienste.Dienstende, Dienste.Art, Dienste.AutoClosed, Dienste.Verrechnung FROM Dienste JOIN Personal ON Personal.Personalnummer=Dienste.Personalnummer WHERE Dienste.AutoClosed=1;');
+    } else {
+      $array_list_autoclosed=S_get_multientry($Db,'SELECT Dienste.Personalnummer, Personal.Vorname, Personal.Nachname, Dienste.Dienstbeginn, Dienste.Dienstende, Dienste.Art, Dienste.AutoClosed FROM Dienste JOIN Personal ON Personal.Personalnummer=Dienste.Personalnummer WHERE Dienste.AutoClosed=1;');
+    }
 
 
     echo '<div class="card"><div class="row">
@@ -355,6 +402,10 @@ if( A_checkpermission(array(0,2,0,4)) ) {
         echo '<input type="time" class="form-control" placeholder="" aria-describedby="basic-addon4" value="'.$dienstende.'" disabled>';
         echo '<span class="input-group-addon" id="basic-addon4">Lohnart</span>';
         echo '<input type="text" class="form-control" placeholder="" aria-describedby="basic-addon4" value="'.$i[5].'" disabled>';
+        if($GLOBALS["SYSMOD_Verrechnung"]) {
+          echo '<span class="input-group-addon" id="basic-addon4">Verrechn.</span>';
+          echo '<input type="text" class="form-control" placeholder="" aria-describedby="basic-addon4" value="'.$i[7].'" disabled>';
+        }
         echo'<span class="input-group-btn">
               <input type="submit" class="btn btn-success" value="Ändern" name="search_staff" />
               </span>';

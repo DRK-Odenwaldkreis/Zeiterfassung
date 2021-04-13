@@ -23,9 +23,66 @@ January 2021
 
 ** ************** */
 
+
+// ///////////////////////////////////////////
+// FOLLOWING VALUES MUST BE SET FOR PROPER USE
+
+// admin email /not in use right now?/
 $ADMINEMAIL = 'support@impfzentrum-odw.com';
+//$ADMINEMAIL = 'support@testzentrum-odw.com';
+
+// write in here the domain, e.g. 'example.com/'
 $HOSTNAME_WEB = 'impfzentrum-odw.de/';
-//$FLAG_SHUTDOWN = 'false';
+//$HOSTNAME_WEB = 'dienst.testzentrum-odw.de/';
+
+// header names and system names
+$SYSNAME_display = 'Impfzentrum Zeiterfassung';
+//$SYSNAME_display = 'Testzentrum Zeiterfassung';
+$SYSNAME_preheaddisplay = 'DRK';
+
+// for imprint site - links to email and telephone (set in <p>-tag)
+$SYSNAME_imprint_org_link = '<p><a href="mailto:dienstplan.impfzentrum@drk-odenwaldkreis.de">dienstplan.impfzentrum@drk-odenwaldkreis.de</a></p><p><a href="tel:+4960626019994">Telefon: 06062 - 60 19 994</a></p>';
+//$SYSNAME_imprint_org_link = '<p><a href="mailto:testzentrum@drk-odenwaldkreis.de">testzentrum@drk-odenwaldkreis.de</a></p>';
+$SYSNAME_imprint_support_link = '<p><a href="mailto:support@impfzentrum-odw.de">support@impfzentrum-odw.de</a></p>';
+//$SYSNAME_imprint_support_link = '<p><a href="mailto:info@testzentrum-odenwald.de">info@testzentrum-odenwald.de</a></p>';
+
+// with this email address outgoing mail will be sent
+$SYSNAME_mail_sending = 'support@impfzentrum-odw.de';
+//$SYSNAME_mail_sending = 'info@testzentrum-odenwald.de';
+
+// to this email address reports will be sent
+$SYSNAME_mail_report = 'report@impfzentrum-odw.de';
+//$SYSNAME_mail_report = 'info@testzentrum-odenwald.de';
+
+// to this email address shift plans will be sent / reply-to address
+$SYSNAME_mail_shift_bcc = 'dienstplan.impfzentrum@drk-odenwaldkreis.de';
+//$SYSNAME_mail_shift_bcc = 'testzentrum@drk-odenwaldkreis.de';
+
+
+
+// pathes
+$SYSPATH_main = '/home/webservice/';
+//$SYSPATH_main = '/home/webservice_testz/';
+
+$SYSPATH_logs = '/home/webservice/Logs/';
+//$SYSPATH_logs = '/home/webservice_testz/Logs/';
+
+$SYSPATH_reports = '/home/webservice/Reports/';
+//$SYSPATH_reports = '/home/webservice_testz/Reports/';
+
+$SYSPATH_scripts = '/home/webservice/Zeiterfassung/';
+//$SYSPATH_scripts = '/home/webservice_testz/Zeiterfassung/';
+
+
+
+// modules - can be switched on and off
+// // Show "Verrechnung" in Dropdown and in List
+$SYSMOD_Verrechnung=false;
+
+
+
+// only for login and password reset function
 $LOGINTOKENTIME = 6;
 $LOCK_VALUE_THRESHOLD = 6;
+
 ?>

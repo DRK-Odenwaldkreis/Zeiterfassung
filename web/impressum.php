@@ -55,8 +55,7 @@ echo $GLOBALS['G_html_main_right_a'];
 if(isset( $_SESSION['uid']) && $_SESSION['uid']>=0 ) {
     echo '<h3>Personalorganisation</h3>
     <p>Bei Fragen zu Vertragsthemen oder organisatorischen Anfragen bitte eine E-Mail schreiben an:</p>
-    <p><a href="mailto:dienstplan.impfzentrum@drk-odenwaldkreis.de">dienstplan.impfzentrum@drk-odenwaldkreis.de</a></p>
-    <p><a href="tel:+4960626019994">Telefon: 06062 - 60 19 994</a></p>
+    '.$GLOBALS["SYSNAME_imprint_org_link"].'
     <p>&nbsp;</p>';
 
     echo '<h3>Technischer Support</h3>
@@ -64,7 +63,7 @@ if(isset( $_SESSION['uid']) && $_SESSION['uid']>=0 ) {
     <p><a target="_blank" href="https://github.com/DRK-Odenwaldkreis/Zeiterfassung#webpage">Für die Dokumentation der Web-Anwendung hier klicken</a></p>
     <p>&nbsp;</p>
     <p>Bei technischen Fragen zum Zeiterfassungssystem bitte eine E-Mail schreiben an den Support:</p>
-    <p><a href="mailto:support@impfzentrum-odw.de">support@impfzentrum-odw.de</a></p>
+    '.$GLOBALS["SYSNAME_imprint_support_link"].'
     <p>&nbsp;</p>';
 }
 

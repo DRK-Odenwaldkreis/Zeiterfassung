@@ -53,11 +53,11 @@ if( A_checkpermission(array(0,0,0,4)) ) {
     echo '<h3>Reports/</h3>';
     echo '<p>';
     //Get list of files
-    $log_path="/home/webservice/Reports/";
+    $log_path=$GLOBALS["SYSPATH_main"]."Reports/";
     $array_files=scandir($log_path);
     foreach($array_files as $a) {
         if( preg_match('/.pdf/',$a) || preg_match('/.zip/',$a) ) {
-            echo '<a href="https://impfzentrum-odw.de/download.php?dir=r&file='.$a.'">'.$a.'</a><br>';
+            echo '<a href="https://'.$GLOBALS["HOSTNAME_WEB"].'download.php?dir=r&file='.$a.'">'.$a.'</a><br>';
         }
         
     }
@@ -66,11 +66,11 @@ if( A_checkpermission(array(0,0,0,4)) ) {
     echo '<h3>Dienstplaene/</h3>';
     echo '<p>';
     //Get list of files
-    $log_path="/home/webservice/Dienstplaene/";
+    $log_path=$GLOBALS["SYSPATH_main"]."Dienstplaene/";
     $array_files=scandir($log_path);
     foreach($array_files as $a) {
         if( preg_match('/.pdf/',$a) || preg_match('/.zip/',$a) ) {
-            echo '<a href="https://impfzentrum-odw.de/download.php?dir=d&file='.$a.'">'.$a.'</a><br>';
+            echo '<a href="https://'.$GLOBALS["HOSTNAME_WEB"].'download.php?dir=d&file='.$a.'">'.$a.'</a><br>';
         }
         
     }
@@ -79,11 +79,11 @@ if( A_checkpermission(array(0,0,0,4)) ) {
     echo '<h3>Planung/</h3>';
     echo '<p>';
     //Get list of files
-    $log_path="/home/webservice/Planung/";
+    $log_path=$GLOBALS["SYSPATH_main"]."Planung/";
     $array_files=scandir($log_path);
     foreach($array_files as $a) {
         if( preg_match('/.pdf/',$a) || preg_match('/.zip/',$a) ) {
-            echo '<a href="https://impfzentrum-odw.de/download.php?dir=p&file='.$a.'">'.$a.'</a><br>';
+            echo '<a href="https://'.$GLOBALS["HOSTNAME_WEB"].'download.php?dir=p&file='.$a.'">'.$a.'</a><br>';
         }
         
     }

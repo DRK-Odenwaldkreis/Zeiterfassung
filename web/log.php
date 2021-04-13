@@ -64,7 +64,7 @@ if( A_checkpermission(array(0,0,0,4)) ) {
     }
 
     //Get log file
-    $log_path="/home/webservice/Logs/";
+    $log_path=$GLOBALS["SYSPATH_logs"];
     $log_array=scandir($log_path);
     foreach($log_array as $a) {
         if(!($a=="." || $a=="..")) {

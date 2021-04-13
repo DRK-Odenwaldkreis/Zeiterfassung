@@ -31,7 +31,7 @@ and some global used values
 // HTML header with complete <head> element
 $G_html_header='<html lang="en">
   <head>
-    <title>DRK Impfzentrum - Zeiterfassung</title>
+    <title>'.$GLOBALS["SYSNAME_preheaddisplay"].' '.$GLOBALS["SYSNAME_display"].'</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -53,7 +53,7 @@ $G_html_menu_login='<body style="background-color:#ccc;">';
 $G_html_menu2='<nav class="navbar navbar-inverse navbar-fixed-top FAIR-navbar">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="index.php"><span style="color:#eee;">DRK</span><span class="shorten"> Impfzentrum Zeiterfassung</span></a>';
+          <a class="navbar-brand" href="index.php"><span style="color:#eee;">'.$GLOBALS["SYSNAME_preheaddisplay"].'</span><span class="shorten"> '.$GLOBALS["SYSNAME_display"].'</span></a>';
 if($_SESSION['uid']>0) {
 	$G_html_menu2.='<ul class="nav navbar-nav navbar-left">';
 	

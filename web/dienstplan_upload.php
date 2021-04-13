@@ -44,7 +44,7 @@ if( A_checkpermission(array(0,0,3,4)) ) {
 
     // Save file from upload
     if (!empty($_FILES)) {
-        $uploaddir = '/home/webservice/Dienstplaene/';
+        $uploaddir = $GLOBALS["SYSPATH_main"].'Dienstplaene/';
         $filename = pathinfo($_FILES['userfile']['name'], PATHINFO_FILENAME);
         $extension = strtolower(pathinfo($_FILES['userfile']['name'], PATHINFO_EXTENSION));
         $week=$_POST['week'];
@@ -91,11 +91,11 @@ if( A_checkpermission(array(0,0,3,4)) ) {
     echo '<h3>Verfügbare Dienstpläne</h3>';
     echo '<p></p>';
     //Get list of files
-    $log_path="/home/webservice/Dienstplaene/";
+    $log_path=$GLOBALS["SYSPATH_main"]."Dienstplaene/";
     $array_files=scandir($log_path);
     foreach($array_files as $a) {
         if( preg_match('/.pdf/',$a) || preg_match('/.zip/',$a) ) {
-            echo '<a class="list-group-item list-group-item-action list-group-item-redtext" href="https://impfzentrum-odw.de/download.php?dir=d&file='.$a.'">'.$a.'<span class="FAIR-sep-l"></span><span class="FAIR-text-med">(Erstellt: '.date ("d.m.Y H:i", filemtime($log_path.$a)).')</span></a>';
+            echo '<a class="list-group-item list-group-item-action list-group-item-redtext" href="https://'.$GLOBALS["HOSTNAME_WEB"].'download.php?dir=d&file='.$a.'">'.$a.'<span class="FAIR-sep-l"></span><span class="FAIR-text-med">(Erstellt: '.date ("d.m.Y H:i", filemtime($log_path.$a)).')</span></a>';
         }
         
     }
@@ -157,12 +157,12 @@ if( A_checkpermission(array(0,0,3,4)) ) {
     echo '<h3>Schichtverfügbarkeiten abfragen</h3>';
     echo '<p></p>';
     //Get list of files
-    $log_path="/home/webservice/Planung/";
+    $log_path=$GLOBALS["SYSPATH_main"]."Planung/";
     $array_files=scandir($log_path);
     foreach($array_files as $a) {
         if( preg_match('/.pdf/',$a) || preg_match('/.zip/',$a) ) {
             $display_filename='Planung '.substr($a,8,4).' KW'.preg_replace ('/\./','',substr($a,13,2));
-            echo '<a class="list-group-item list-group-item-action list-group-item-redtext" href="https://impfzentrum-odw.de/download.php?dir=p&file='.$a.'">'.$display_filename.'<span class="FAIR-sep-l"></span><span class="FAIR-text-med">(Erstellt: '.date ("d.m.Y H:i", filemtime($log_path.$a)).')</span></a>';
+            echo '<a class="list-group-item list-group-item-action list-group-item-redtext" href="https://'.$GLOBALS["HOSTNAME_WEB"].'download.php?dir=p&file='.$a.'">'.$display_filename.'<span class="FAIR-sep-l"></span><span class="FAIR-text-med">(Erstellt: '.date ("d.m.Y H:i", filemtime($log_path.$a)).')</span></a>';
         }
         
     }

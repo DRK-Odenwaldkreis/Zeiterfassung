@@ -98,7 +98,11 @@ function S_set_data ($Db,$sQuery) {
 // Returns for single staff in single date all shifts
 function S_get_shift_single_date ($Db,$pnr,$date) {
 	//get all shifts
-	$shifts=S_get_multientry($Db,'SELECT id, Dienstbeginn, Dienstende, Art, AutoClosed FROM Dienste WHERE Personalnummer='.$pnr.' AND Date(Dienstbeginn)="'.$date.'";');
+	if($GLOBALS["SYSMOD_Verrechnung"]) {
+		$shifts=S_get_multientry($Db,'SELECT id, Dienstbeginn, Dienstende, Art, AutoClosed, Verrechnung FROM Dienste WHERE Personalnummer='.$pnr.' AND Date(Dienstbeginn)="'.$date.'";');
+	} else {
+		$shifts=S_get_multientry($Db,'SELECT id, Dienstbeginn, Dienstende, Art, AutoClosed FROM Dienste WHERE Personalnummer='.$pnr.' AND Date(Dienstbeginn)="'.$date.'";');
+	}
 	return $shifts;
 }
 
@@ -192,11 +196,11 @@ function A_send_welcome_email($Db,$to) {
 	$FLAG_EMAIL_NEWEMPLOYEE=S_get_entry($Db,'SELECT value FROM website_settings WHERE name="FLAG_EMAIL_NEWEMPLOYEE";');
 	if($FLAG_EMAIL_NEWEMPLOYEE==1 && filter_var($to, FILTER_VALIDATE_EMAIL)) {
 		// send email
-		$header = "From: info@impfzentrum-odenwald.de\r\n";
+		$header = "From: ".$GLOBALS["SYSNAME_mail_sending"]."\r\n";
 		$header .= "Content-Type: text/html; charset=UTF-8\nContent-Transfer-Encoding: 8bit";
-		$content=file_get_contents("/home/webservice/Zeiterfassung/utils/MailLayout/NewEmployee.html");
-		$title='DRK Impfzentrum Zeiterfassung - Willkommen';
-		mail($to, $title, $content, $header, "-r info@impfzentrum-odenwald.de");
+		$content=file_get_contents($GLOBALS["SYSPATH_scripts"]."utils/MailLayout/NewEmployee.html");
+		$title=''.$GLOBALS["SYSNAME_preheaddisplay"].' '.$GLOBALS["SYSNAME_display"].' - Willkommen';
+		mail($to, $title, $content, $header, "-r ".$GLOBALS["SYSNAME_mail_sending"]."");
 
 		return true;
 	} else {
@@ -214,15 +218,15 @@ function A_send_staffroster_email($Db,$kw) {
 	$bcc=substr($bcc, 0, -1);
 
 	// send email
-	$header = "From: info@impfzentrum-odenwald.de\r\n";
+	$header = "From: ".$GLOBALS["SYSNAME_mail_sending"]."\r\n";
 	$header .= "Bcc: $bcc\r\n";
-	$header .= "Reply-To: dienstplan.impfzentrum@drk-odenwaldkreis.de\r\n";
+	$header .= "Reply-To: ".$GLOBALS["SYSNAME_mail_shift_bcc"]."\r\n";
 	$header .= "Content-Type: text/html; charset=UTF-8\nContent-Transfer-Encoding: 8bit";
-	$content=file_get_contents("/home/webservice/Zeiterfassung/utils/MailLayout/NewDienstplan.html");
+	$content=file_get_contents($GLOBALS["SYSPATH_scripts"]."utils/MailLayout/NewDienstplan.html");
 	$content=preg_replace('/\[\[KW]]/',substr($kw,7,2),$content);
     $content=preg_replace('/\[\[YEAR]]/',substr($kw,0,4),$content);
-	$title='DRK Impfzentrum Zeiterfassung - Dienstplan '.$kw;
-	mail('report@impfzentrum-odw.de', $title, $content, $header, "-r info@impfzentrum-odenwald.de");
+	$title=''.$GLOBALS["SYSNAME_preheaddisplay"].' '.$GLOBALS["SYSNAME_display"].' - Dienstplan '.$kw;
+	mail($GLOBALS["SYSNAME_mail_report"], $title, $content, $header, "-r ".$GLOBALS["SYSNAME_mail_sending"]."");
 	
 	return true;
 }

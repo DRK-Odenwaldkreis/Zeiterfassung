@@ -214,20 +214,20 @@ if( A_checkpermission(array(0,2,0,4)) ) {
             $month=($_POST['month']);
             $year=($_POST['year']);
 
-            $dir="/home/webservice/Zeiterfassung/EinzelAbrechnungPDF/";
+            $dir=$GLOBALS["SYSPATH_scripts"]."EinzelAbrechnungPDF/";
             chdir($dir);
             $job="python3 job.py $month $year 0 $pnr";
             exec($job,$script_output);
             $file=$script_output[0];
             var_dump($script_output);
-            if( file_exists("/home/webservice/Reports/$file") ) {
+            if( file_exists($GLOBALS["SYSPATH_reports"].$file) ) {
                 //header('Content-Description: File Transfer');
                 header('Content-Type: application/octet-stream');
                 header('Content-Disposition: attachment; filename="'.basename($file).'"');
                 header('Pragma: no-cache');
                 header('Expires: 0');
                 //header('Content-Length: ' . filesize($file));
-                readfile("/home/webservice/Reports/$file");
+                readfile($GLOBALS["SYSPATH_reports"].$file);
                 exit;
             }
 

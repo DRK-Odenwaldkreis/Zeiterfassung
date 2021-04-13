@@ -326,12 +326,12 @@ if( A_checkpermission(array(1,0,3,4)) ) {
         array(date('Y',strtotime($start_date. ' + 7 days')),date('W',strtotime($start_date. ' + 7 days')),date('d.m.Y',strtotime($start_date. ' + 7 days'))),
         array(date('Y',strtotime($start_date. ' + 14 days')),date('W',strtotime($start_date. ' + 14 days')),date('d.m.Y',strtotime($start_date. ' + 14 days')))
     );
-    $log_path="/home/webservice/Dienstplaene/";
+    $log_path=$GLOBALS["SYSPATH_main"]."Dienstplaene/";
     $array_files=scandir($log_path);
     foreach($kw_array as $i) {
         $a='Dienstplan_'.$i[0].'_kw'.$i[1].'.pdf';
         if(file_exists($log_path.$a)) {
-            echo '<a class="list-group-item list-group-item-action list-group-item-redtext" href="https://impfzentrum-odw.de/download.php?dir=d&file='.$a.'">KW '.$i[1].' gültig ab '.$i[2].'<span class="FAIR-sep-l"></span><span class="FAIR-text-med">(Erstellt: '.date ("d.m.Y H:i", filemtime($log_path.$a)).')</a>';
+            echo '<a class="list-group-item list-group-item-action list-group-item-redtext" href="https://'.$GLOBALS["HOSTNAME_WEB"].'download.php?dir=d&file='.$a.'">KW '.$i[1].' gültig ab '.$i[2].'<span class="FAIR-sep-l"></span><span class="FAIR-text-med">(Erstellt: '.date ("d.m.Y H:i", filemtime($log_path.$a)).')</a>';
         }
     }
 

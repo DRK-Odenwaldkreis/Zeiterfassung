@@ -71,7 +71,12 @@ if( A_checkpermission(array(0,2,0,4)) ) {
   $Db=S_open_db();
 
   // Get all shifts for today
-  $array_staff=S_get_multientry($Db,'SELECT Dienste.Personalnummer, Personal.Vorname, Personal.Nachname, Dienste.Dienstbeginn, Dienste.Dienstende, Dienste.Art, Dienste.AutoClosed FROM Dienste JOIN Personal ON Personal.Personalnummer=Dienste.Personalnummer WHERE Date(Dienstbeginn)="'.$today.'";');
+  if($GLOBALS["SYSMOD_Verrechnung"]) {
+    $array_staff=S_get_multientry($Db,'SELECT Dienste.Personalnummer, Personal.Vorname, Personal.Nachname, Dienste.Dienstbeginn, Dienste.Dienstende, Dienste.Art, Dienste.AutoClosed, Dienste.Verrechnung FROM Dienste JOIN Personal ON Personal.Personalnummer=Dienste.Personalnummer WHERE Date(Dienstbeginn)="'.$today.'";');
+  } else {
+    $array_staff=S_get_multientry($Db,'SELECT Dienste.Personalnummer, Personal.Vorname, Personal.Nachname, Dienste.Dienstbeginn, Dienste.Dienstende, Dienste.Art, Dienste.AutoClosed FROM Dienste JOIN Personal ON Personal.Personalnummer=Dienste.Personalnummer WHERE Date(Dienstbeginn)="'.$today.'";');
+  }
+  
 
 
   echo '<h1>Ansicht Personalbesetzung</h1>';
@@ -128,6 +133,10 @@ if( A_checkpermission(array(0,2,0,4)) ) {
     echo '<input type="time" class="form-control" placeholder="" aria-describedby="basic-addon4" value="'.$dienstende.'" disabled>';
     echo '<span class="input-group-addon" id="basic-addon4">Lohnart</span>';
     echo '<input type="text" class="form-control" placeholder="" aria-describedby="basic-addon4" value="'.$i[5].'" disabled>';
+    if($GLOBALS["SYSMOD_Verrechnung"]) {
+      echo '<span class="input-group-addon" id="basic-addon5">Verrechnung</span>';
+      echo '<input type="text" class="form-control" placeholder="" aria-describedby="basic-addon5" value="'.$i[7].'" disabled>';
+    }
     echo'<span class="input-group-btn">
           <input type="submit" class="btn btn-success" value="Ändern" name="search_staff" />
           </span>';

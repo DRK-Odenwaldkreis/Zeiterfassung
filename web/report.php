@@ -49,21 +49,8 @@ if( A_checkpermission(array(0,2,0,4)) ) {
             $year=($_POST['year']);
             $uid=$_SESSION['uid'];
 
-            $dir="/home/webservice/Zeiterfassung/CSVExport/";
+            $dir=$GLOBALS["SYSPATH_scripts"]."CSVExport/";
             chdir($dir);
-
-            // direct download
-            /* $job="python3 job.py $month $year";
-            exec($job,$script_output);
-            $file=$script_output[0];
-            if( file_exists("/home/webservice/Reports/$file") ) {
-                header('Content-Type: application/octet-stream');
-                header('Content-Disposition: attachment; filename="'.basename($file).'"');
-                header('Pragma: no-cache');
-                header('Expires: 0');
-                readfile("/home/webservice/Reports/$file");
-                exit;
-            } */
 
             // create file and send email
             $job="python3 job.py $month $year $uid > /dev/null &";
@@ -75,7 +62,7 @@ if( A_checkpermission(array(0,2,0,4)) ) {
             $year=($_POST['year']);
             $uid=$_SESSION['uid'];
 
-            $dir="/home/webservice/Zeiterfassung/EinzelAbrechnungPDF/";
+            $dir=$GLOBALS["SYSPATH_scripts"]."EinzelAbrechnungPDF/";
             chdir($dir);
             $job="python3 job.py $month $year $uid > /dev/null &";
             exec($job,$script_output);
@@ -84,17 +71,17 @@ if( A_checkpermission(array(0,2,0,4)) ) {
         } elseif(isset($_POST['get_report_single_date'])) {
             $date=($_POST['date']);
             
-            $dir="/home/webservice/Zeiterfassung/TagesReportPDF/";
+            $dir=$GLOBALS["SYSPATH_scripts"]."TagesReportPDF/";
             chdir($dir);
             $job="python3 job.py '$date'";
             exec($job,$script_output);
             $file=$script_output[0];
-            if( file_exists("/home/webservice/Reports/$file") ) {
+            if( file_exists($GLOBALS["SYSPATH_reports"].$file) ) {
                 header('Content-Type: application/octet-stream');
                 header('Content-Disposition: attachment; filename="'.basename($file).'"');
                 header('Pragma: no-cache');
                 header('Expires: 0');
-                readfile("/home/webservice/Reports/$file");
+                readfile($GLOBALS["SYSPATH_reports"].$file);
                 exit;
             }
         }

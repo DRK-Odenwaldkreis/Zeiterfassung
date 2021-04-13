@@ -236,17 +236,17 @@ if( isset($_POST['button-reset']) ) {
 			S_set_data($Db,'INSERT INTO li_token (id_user,timestamp,token) VALUES ('.$uid.',\''.$timestamp.'\',\''.$tokenhash.'\');');
 			$token_id=S_get_entry($Db,'SELECT id FROM li_token WHERE id_user='.$uid.' AND timestamp=\''.$timestamp.'\' AND token=\''.$tokenhash.'\';');
 			
-			$header = "From: info@impfzentrum-odenwald.de\r\n";
+			$header = "From: ".$GLOBALS["SYSNAME_mail_sending"]."\r\n";
 			$header .= "Content-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit";
 			$content="Lieber Nutzer, liebe Nutzerin,\n
-es wurde eine Anfrage zum Zurücksetzen Ihres Passwortes für die DRK Impfzentrum Zeiterfassung gestellt. Falls diese Anfrage von Ihnen nicht initiiert wurde, können Sie diese Nachricht ignorieren.\n
+es wurde eine Anfrage zum Zurücksetzen Ihres Passwortes für die ".$GLOBALS["SYSNAME_preheaddisplay"].' '.$GLOBALS["SYSNAME_display"]." gestellt. Falls diese Anfrage von Ihnen nicht initiiert wurde, können Sie diese Nachricht ignorieren.\n
 Bitte mit diesem Link das Passwort neu setzen:\n";
 			$content.=$FLAG_http.'://'.$hostname.($path == '/' ? '' : $path)."/login.php?u=$uid&t=$token&tid=$token_id";
 			$content.="\n\n
 	Mit freundlichen Grüßen\n
 	Das Team vom DRK";
-			$title='DRK Impfzentrum Zeiterfassung - Passwort zurücksetzen';
-			$res=mail($email, $title, $content, $header, "-r info@impfzentrum-odenwald.de");
+			$title=''.$GLOBALS["SYSNAME_preheaddisplay"].' '.$GLOBALS["SYSNAME_display"].' - Passwort zurücksetzen';
+			$res=mail($email, $title, $content, $header, "-r ".$GLOBALS["SYSNAME_mail_sending"]."");
 			
 			
 		}
