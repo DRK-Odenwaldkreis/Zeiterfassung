@@ -418,7 +418,9 @@ echo '<div style="padding-top:25px;"></div>';
 echo $html_box_login;
 echo '</div>';
 
-echo '<img src="img/logo.jpg"></img>';
+echo '<div class="row"><div class="col-sm-12">
+<img style="width: 40%;" src="img/logo.jpg"></img>
+</div></div>';
 
 echo '</div>';
 echo '</div>';
