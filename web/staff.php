@@ -150,6 +150,9 @@ if( A_checkpermission(array(0,2,0,4)) ) {
                         }
                         //  edit staff data
                         S_set_data($Db,'UPDATE Personal SET Personalnummer=\''.$pnr.'\', Vorname=\''.$u_vname.'\', Nachname=\''.$u_nname.'\', Aktiv='.$u_active.', Gruppe=\''.$u_lohngruppe.'\', Taetigkeit=\''.$u_taetigkeit.'\', Hauptamtlich='.$u_hauptamtlich.' WHERE Personalnummer=CAST('.$old_pnr.' AS int);');
+                        if($pnr!=$old_pnr) {
+                            S_set_data($Db,'UPDATE Dienste SET Personalnummer=\''.$pnr.'\' WHERE Personalnummer=CAST('.$old_pnr.' AS int);');
+                        }
                         $errorhtml3 =  H_build_boxinfo( 0, 'Änderungen wurden gespeichert.', 'green' );
                     } else {
                         // Message email exists already

@@ -337,14 +337,51 @@ if( A_checkpermission(array(0,2,0,4)) ) {
             </select>
             ';
           }
-
           echo '
 
             <span class="input-group-btn">
             <input type="submit" class="btn btn-success" value="Speichern" name="save_times" />
             </span>
           </div></form>';
+
+          
         }
+        
+        // Zeiten nachtragen
+        echo '
+        
+        ';
+      echo '<form action="'.$current_site.'.php" method="post">
+    <div class="input-group">
+      <input type="text" value="'.$pnr.'" name="pnr" style="display:none;">
+      <input type="text" value="'.$u_date.'" name="date" style="display:none;">
+      <span class="input-group-addon" id="basic-addon4">Kommen</span>
+      <input type="time" class="form-control" placeholder="Kommenzeit" aria-describedby="basic-addon4" name="start_time">
+      <span class="input-group-addon" id="basic-addon5">Gehen</span>
+      <input type="time" class="form-control" placeholder="Gehenzeit" aria-describedby="basic-addon5" name="end_time">
+      
+      <span class="input-group-addon" id="basic-addon6">Lohnart</span>
+      <select class="custom-select" id="inputGroupSelect01" name="lohnart">
+        <option value="Normal" selected>Normal</option>
+        <option value="Krank">Krank</option>
+        <option value="Urlaub">Urlaub</option>
+        <option value="Rufbereitschaft">Rufbereitschaft</option>
+      </select>
+      ';
+      if($GLOBALS["SYSMOD_Verrechnung"]) {
+        echo '<span class="input-group-addon" id="basic-addon6">Verrechnung</span>
+        <select class="custom-select" id="inputGroupSelect02" name="verrechnung">
+          <option value="Intern" selected>Intern</option>
+          <option value="Extern">Extern</option>
+        </select>
+        ';
+      }
+
+      echo '
+      <span class="input-group-btn">
+      <input type="submit" class="btn btn-danger" value="Eintragen" name="submit_times" />
+      </span>
+    </div></form>';
       }
       echo '</div>';
     }

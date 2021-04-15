@@ -50,14 +50,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $dir="Reports";   
     }
     
-    if( file_exists("/home/webservice/$dir/$file") ) {
+    if( file_exists($GLOBALS["SYSPATH_main"]."$dir/$file") ) {
         //header('Content-Description: File Transfer');
         header('Content-Type: application/octet-stream');
         header('Content-Disposition: attachment; filename="'.basename($file).'"');
         header('Pragma: no-cache');
         header('Expires: 0');
         //header('Content-Length: ' . filesize($file));
-        readfile("/home/webservice/$dir/$file");
+        readfile($GLOBALS["SYSPATH_main"]."$dir/$file");
         exit;
     }
 }
