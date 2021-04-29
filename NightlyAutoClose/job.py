@@ -37,3 +37,5 @@ if __name__ == "__main__":
         logger.debug('Done')
     except Exception as e:
         logging.error("Error")
+    finally:
+        DatabaseConnect.close_connection()

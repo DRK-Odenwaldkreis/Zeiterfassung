@@ -104,7 +104,15 @@ class Database(object):
                 'The following error occured in read all: %s' % (e))
             raise QueryError
 
-
+    def close_connection(self):
+        try:
+            logger.debug("Closing Cursor and connection")
+            self.cursor.close()
+            self.connection.close()
+            logger.debug('Connection and Cursor closed')
+        except Exception as e:
+            logger.error('The following error occured: %s' % (e))
+            
 if __name__ == "__main__":
     test = Database()
     sql = 'Select * from Personal'

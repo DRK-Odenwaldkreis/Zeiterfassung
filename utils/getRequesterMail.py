@@ -29,6 +29,8 @@ def get_Mail_from_UserID(id):
         return userMail[0]
     except:
         return "service@impfzentrum-odw.de"
+    finally:
+        DatabaseConnect.close_connection()
 
 
 def get_Mail_List(idList):
@@ -42,3 +44,5 @@ def get_Mail_List(idList):
         return mailingList
     except Exception as e:
         print("The following error occured in reminder job: %s" % (e))
+    finally:
+        DatabaseConnect.close_connection()

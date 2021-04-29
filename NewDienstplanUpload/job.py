@@ -55,3 +55,5 @@ if __name__ == "__main__":
     except Exception as e:
        logging.error("The following error occured in reminder job: %s" % (e))
        print("Error")
+    finally:
+        DatabaseConnect.close_connection()
