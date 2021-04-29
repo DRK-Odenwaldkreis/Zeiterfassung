@@ -20,6 +20,7 @@ import csv
 import logging
 
 from datetime import datetime
+from datetime import timedelta
 sys.path.append("..")
 from utils.pausen import calculate_net_shift_time
 from utils.lohnart import get_lohnart
@@ -52,6 +53,10 @@ def create_row(entry,lohnart,month):
         elif entry[6] == 1 and lohnart == 567:
             logger.debug("In entry[6]== 1 and lohnart == 567")
             return False
+        elif lohnart == 555:
+            logger.debug("Lohnart == 555")
+            date = entry[2].replace(hour=21,minute=0,second=0)
+            return ["[VARTAB]", "INSERT", "800", "4", entry[0], entry[4], entry[3], "1", lohnart, "", str(round((entry[2]-date).seconds/3600, 2)).replace(".", ","), str(stundensatz), "", "", "", "", entry[1].replace(day=1).strftime("%Y-%m-%d"), entry[1].replace(day=1).strftime("%Y-%m-%d"), "IMPVAR1", entry[1].replace(day=1).strftime("%Y-%m-%d")]
         elif entry[6] == 1 and lohnart == 558:
             logger.debug("In entry[6]== 1 and lohnart == 558")
             return ["[VARTAB]", "INSERT", "800", "4", entry[0], entry[4], entry[3], "1", lohnart, "", str(round(netShiftTime.seconds/3600, 2)).replace(".", ","), str(stundensatz), "", "", "", "", entry[1].replace(day=1).strftime("%Y-%m-%d"), entry[1].replace(day=1).strftime("%Y-%m-%d"), "IMPVAR1", entry[1].replace(day=1).strftime("%Y-%m-%d")]
@@ -127,7 +132,7 @@ def create_sum_CSV(content,month,year):
         writeEntry = csv.writer(file, delimiter=';')
         writeEntry.writerow(["Personalnummer", "Summe"])
         for key, value in content.items():
-            writeEntry.writerow([key,value])
+            writeEntry.writerow([key,str(value).replace(".",",")])
         return filename
 
 

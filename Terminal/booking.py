@@ -93,7 +93,7 @@ class ScanEvent(object):
         
     
     def check_dead_time(self):
-        self.sql = "Select * from Dienste where Personalnummer=%s and Updated > (NOW() - INTERVAL 5 SECOND);" % (self.personalnummer)
+        self.sql = "Select * from Dienste where Personalnummer=%s and Updated > (NOW() - INTERVAL 10 SECOND);" % (self.personalnummer)
         logger.debug('Checking if same code was scanned the last 5 secondsusing the following query: %s'%(self.sql))
         if self.DatabaseConnect.read_single(self.sql) != None:
             logger.warning('Code was scanned in the last 5 seconds, dropping scan event.')
@@ -171,6 +171,15 @@ class ScanEvent(object):
             logger.error('The following error occured, setting times to display to 00: %s' % (e))
             self.shiftDurationHours = '00'
             self.shiftDurationMinutes = '00'
+    
+    def close_db_conncetion(self):
+        try:
+            logger.debug("Closing Cursor and connection")
+            self.DatabaseConnect.cursor.close()
+            self.DatabaseConnect.connection.close()
+            logger.debug('Connection and Cursor closed')
+        except Exception as e:
+            logger.error('The following error occured: %s' % (e))
 
 
 

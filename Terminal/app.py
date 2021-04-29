@@ -144,3 +144,4 @@ class App:
                 waitingTime, lambda: self.subInfoLabel.config(bg='white', text=""))
             logger.debug('Wiping all information from screen')
             self.inputTextField.delete(0, END)
+            self.event.close_db_conncetion()
