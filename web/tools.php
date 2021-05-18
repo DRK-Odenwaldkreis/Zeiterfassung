@@ -100,6 +100,8 @@ function S_get_shift_single_date ($Db,$pnr,$date) {
 	//get all shifts
 	if($GLOBALS["SYSMOD_Verrechnung"]) {
 		$shifts=S_get_multientry($Db,'SELECT id, Dienstbeginn, Dienstende, Art, AutoClosed, Verrechnung FROM Dienste WHERE Personalnummer='.$pnr.' AND Date(Dienstbeginn)="'.$date.'";');
+	} elseif($GLOBALS["SYSMOD_Kostenstelle"]) {
+		$shifts=S_get_multientry($Db,'SELECT id, Dienstbeginn, Dienstende, Art, AutoClosed, Kostenstelle_id FROM Dienste WHERE Personalnummer='.$pnr.' AND Date(Dienstbeginn)="'.$date.'";');
 	} else {
 		$shifts=S_get_multientry($Db,'SELECT id, Dienstbeginn, Dienstende, Art, AutoClosed FROM Dienste WHERE Personalnummer='.$pnr.' AND Date(Dienstbeginn)="'.$date.'";');
 	}
