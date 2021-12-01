@@ -78,6 +78,8 @@ $SYSPATH_scripts = '/home/webservice/Zeiterfassung/';
 // modules - can be switched on and off
 // // Show "Verrechnung" in Dropdown and in List
 $SYSMOD_Verrechnung=false;
+// // Show "Kostenstelle" in Dropdown and in List
+$SYSMOD_Kostenstelle=false;
 
 
 
