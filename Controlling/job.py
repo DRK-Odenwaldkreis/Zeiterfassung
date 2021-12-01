@@ -32,7 +32,7 @@ from utils.getRequesterMail import get_Mail_from_UserID
 from createCSV import create_CSV
 from createCSV import create_sum_CSV
 
-logFile = '../../Logs/CSVExportJob.log'
+logFile = '../../Logs/CSVExportJob-Controlling.log'
 logging.basicConfig(filename=logFile,level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('CSV Export')
