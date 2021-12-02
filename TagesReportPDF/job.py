@@ -42,7 +42,7 @@ if __name__ == "__main__":
         else:
             dailyReport = True
             requestedDate = datetime.datetime.now().strftime("%Y-%m-%d")
-            sql = "Select Dienste.Personalnummer, Dienste.Dienstbeginn, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art, Dienste.AutoClosed FROM Dienste JOIN Personal ON Personal.Personalnummer = Dienste.Personalnummer where Dienstende is not Null AND Dienstbeginn > (NOW() - INTERVAL 24 HOUR) ORDER BY Dienstbeginn ASC;"
+            sql = "Select Dienste.Personalnummer, Dienste.Dienstbeginn, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art, Dienste.AutoClosed FROM Dienste JOIN Personal ON Personal.Personalnummer = Dienste.Personalnummer where Dienstende is not Null AND Date(Dienstbeginn)=CURDATE() ORDER BY Dienstbeginn ASC;"
         logger.debug('Getting all Events from Yesterday with the following query: %s' % (sql))
         content = DatabaseConnect.read_all(sql)
         logger.debug('Received the following entries: %s' % (str(content)))
