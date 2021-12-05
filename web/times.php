@@ -109,12 +109,16 @@ if( A_checkpermission(array(0,2,0,4)) ) {
           $u_shift_type=$_POST['lohnart'];
           if($GLOBALS["SYSMOD_Verrechnung"]) {
             $u_shift_verrechnung=$_POST['verrechnung'];
+          } elseif($GLOBALS["SYSMOD_Kostenstelle"]) {
+            $u_shift_kst=$_POST['kst'];
           }
           // Make sql timestamps
           $u_s_start=$u_date.' '.$u_shift_start.':00';
           $u_s_end=$u_date.' '.$u_shift_end.':00';
           if($GLOBALS["SYSMOD_Verrechnung"]) {
             $res=S_set_data($Db,'INSERT INTO Dienste (Personalnummer,Dienstbeginn,Dienstende,Art,Verrechnung) VALUES (CAST('.$pnr.' AS int),\''.$u_s_start.'\',\''.$u_s_end.'\',\''.$u_shift_type.'\',\''.$u_shift_verrechnung.'\');');
+          } elseif($GLOBALS["SYSMOD_Kostenstelle"]) {
+            $res=S_set_data($Db,'INSERT INTO Dienste (Personalnummer,Dienstbeginn,Dienstende,Art,Kostenstelle_id) VALUES (CAST('.$pnr.' AS int),\''.$u_s_start.'\',\''.$u_s_end.'\',\''.$u_shift_type.'\',\''.$u_shift_kst.'\');');
           } else {
             $res=S_set_data($Db,'INSERT INTO Dienste (Personalnummer,Dienstbeginn,Dienstende,Art) VALUES (CAST('.$pnr.' AS int),\''.$u_s_start.'\',\''.$u_s_end.'\',\''.$u_shift_type.'\');');
           }
@@ -134,12 +138,16 @@ if( A_checkpermission(array(0,2,0,4)) ) {
           $u_shift_type=$_POST['lohnart'];
           if($GLOBALS["SYSMOD_Verrechnung"]) {
             $u_shift_verrechnung=$_POST['verrechnung'];
+          } elseif($GLOBALS["SYSMOD_Kostenstelle"]) {
+            $u_shift_kst=$_POST['kst'];
           }
           // Make sql timestamps
           $u_s_start=$u_date.' '.$u_shift_start.':00';
           $u_s_end=$u_date.' '.$u_shift_end.':00';
           if($GLOBALS["SYSMOD_Verrechnung"]) {
             $res=S_set_data($Db,'UPDATE Dienste SET Dienstbeginn=\''.$u_s_start.'\', Dienstende=\''.$u_s_end.'\', Art=\''.$u_shift_type.'\', Verrechnung=\''.$u_shift_verrechnung.'\', AutoClosed=0  WHERE id=CAST('.$id.' AS int);');
+          } elseif($GLOBALS["SYSMOD_Kostenstelle"]) {
+            $res=S_set_data($Db,'UPDATE Dienste SET Dienstbeginn=\''.$u_s_start.'\', Dienstende=\''.$u_s_end.'\', Art=\''.$u_shift_type.'\', Kostenstelle_id=\''.$u_shift_kst.'\', AutoClosed=0  WHERE id=CAST('.$id.' AS int);');
           } else {
             $res=S_set_data($Db,'UPDATE Dienste SET Dienstbeginn=\''.$u_s_start.'\', Dienstende=\''.$u_s_end.'\', Art=\''.$u_shift_type.'\', AutoClosed=0  WHERE id=CAST('.$id.' AS int);');
           }
@@ -252,6 +260,17 @@ if( A_checkpermission(array(0,2,0,4)) ) {
               <option value="Extern">Extern</option>
             </select>
             ';
+          } elseif($GLOBALS["SYSMOD_Kostenstelle"]) {
+            $selection_array=S_get_multientry($Db,'SELECT id, Kostenstelle FROM Kostenstelle;');
+            echo '<span class="input-group-addon" id="basic-addon6">Kst</span>
+            <select class="custom-select" id="inputGroupSelect02" name="kst">';
+            foreach($selection_array as $j) {
+              //if($u_kst==$j[0]) { $selected='selected'; } else { $selected=''; }
+              $selected='';
+              echo '<option value="'.$j[0].'" '.$selected.'>'.$j[1].'</option>';
+            }
+            echo '</select>
+            ';
           }
 
           echo '
@@ -336,6 +355,17 @@ if( A_checkpermission(array(0,2,0,4)) ) {
               <option value="Extern" '.$selected_verr[1].'>Extern</option>
             </select>
             ';
+          } elseif($GLOBALS["SYSMOD_Kostenstelle"]) {
+            $selection_array=S_get_multientry($Db,'SELECT id, Kostenstelle FROM Kostenstelle;');
+            echo '<span class="input-group-addon" id="basic-addon6">Kst</span>
+            <select class="custom-select" id="inputGroupSelect02" name="kst">';
+            foreach($selection_array as $j) {
+              if($i[5]==$j[0]) { $selected='selected'; } else { $selected=''; }
+              //$selected='';
+              echo '<option value="'.$j[0].'" '.$selected.'>'.$j[1].'</option>';
+            }
+            echo '</select>
+            ';
           }
           echo '
 
@@ -374,6 +404,17 @@ if( A_checkpermission(array(0,2,0,4)) ) {
           <option value="Intern" selected>Intern</option>
           <option value="Extern">Extern</option>
         </select>
+        ';
+      } elseif($GLOBALS["SYSMOD_Kostenstelle"]) {
+        $selection_array=S_get_multientry($Db,'SELECT id, Kostenstelle FROM Kostenstelle;');
+        echo '<span class="input-group-addon" id="basic-addon6">Kst</span>
+        <select class="custom-select" id="inputGroupSelect02" name="kst">';
+        foreach($selection_array as $j) {
+          //if($u_kst==$j[0]) { $selected='selected'; } else { $selected=''; }
+          $selected='';
+          echo '<option value="'.$j[0].'" '.$selected.'>'.$j[1].'</option>';
+        }
+        echo '</select>
         ';
       }
 

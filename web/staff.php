@@ -62,6 +62,9 @@ if( A_checkpermission(array(0,2,0,4)) ) {
                     $u_email=($_POST['email']);
                     $u_lohngruppe=$_POST['lohngruppe'];
                     $u_taetigkeit=$_POST['taetigkeit'];
+                    $u_vertrag=$_POST['vertrag'];
+                    $u_mandant=$_POST['mandant'];
+                    $u_abrechnungskreis=$_POST['abrechnungskreis'];
                     if(isset($_POST['hauptamtlich'])) { $u_hauptamtlich=1;} else {$u_hauptamtlich=0;}
                     // check unique email
                     if( !(S_get_entry($Db,'SELECT id FROM li_user WHERE username=\''.$u_email.'\';')>0) ) {
@@ -80,7 +83,7 @@ if( A_checkpermission(array(0,2,0,4)) ) {
                             $new_uid=0;
                         }
                         //  create staff
-                        S_set_data($Db,'INSERT INTO Personal (Vorname,Nachname,Personalnummer,Hash,id_li_user,Taetigkeit,Gruppe,Hauptamtlich) VALUES (
+                        S_set_data($Db,'INSERT INTO Personal (Vorname, Nachname, Personalnummer, Hash, id_li_user, Taetigkeit, Gruppe, Vertragsnummer, Mandant, Abrechnungskreis,Hauptamtlich) VALUES (
                         \''.$u_vname.'\',
                         \''.$u_nname.'\',
                         CAST('.$pnr.' AS int),
@@ -88,6 +91,9 @@ if( A_checkpermission(array(0,2,0,4)) ) {
                         '.$new_uid.',
                         \''.$u_taetigkeit.'\',
                         \''.$u_lohngruppe.'\',
+                        CAST('.$u_vertrag.' AS int),
+                        CAST('.$u_mandant.' AS int),
+                        CAST('.$u_abrechnungskreis.' AS int),
                         '.$u_hauptamtlich.');');
                         $errorhtml2 =  H_build_boxinfo( 0, 'Personaldaten wurden erstellt.', 'green' );
                         // Welcome email
@@ -124,6 +130,9 @@ if( A_checkpermission(array(0,2,0,4)) ) {
                     $u_old_email=($_POST['old_email']);
                     $u_lohngruppe=$_POST['e_lohngruppe'];
                     $u_taetigkeit=$_POST['e_taetigkeit'];
+                    $u_vertrag=$_POST['e_vertrag'];
+                    $u_mandant=$_POST['e_mandant'];
+                    $u_abrechnungskreis=$_POST['e_abrechnungskreis'];
                     if(isset($_POST['e_hauptamtlich'])) { $u_hauptamtlich=1;} else {$u_hauptamtlich=0;}
                     // check unique email or same email
                     if( $u_email==$u_old_email || !(S_get_entry($Db,'SELECT id FROM li_user WHERE username=\''.$u_email.'\';')>0) ) {
@@ -149,7 +158,7 @@ if( A_checkpermission(array(0,2,0,4)) ) {
                             }
                         }
                         //  edit staff data
-                        S_set_data($Db,'UPDATE Personal SET Personalnummer=\''.$pnr.'\', Vorname=\''.$u_vname.'\', Nachname=\''.$u_nname.'\', Aktiv='.$u_active.', Gruppe=\''.$u_lohngruppe.'\', Taetigkeit=\''.$u_taetigkeit.'\', Hauptamtlich='.$u_hauptamtlich.' WHERE Personalnummer=CAST('.$old_pnr.' AS int);');
+                        S_set_data($Db,'UPDATE Personal SET Personalnummer=\''.$pnr.'\', Vorname=\''.$u_vname.'\', Nachname=\''.$u_nname.'\', Aktiv='.$u_active.', Gruppe=\''.$u_lohngruppe.'\', Taetigkeit=\''.$u_taetigkeit.'\', Vertragsnummer=CAST('.$u_vertrag.' AS int), Mandant=CAST('.$u_mandant.' AS int), Abrechnungskreis=CAST('.$u_abrechnungskreis.' AS int), Hauptamtlich='.$u_hauptamtlich.' WHERE Personalnummer=CAST('.$old_pnr.' AS int);');
                         if($pnr!=$old_pnr) {
                             S_set_data($Db,'UPDATE Dienste SET Personalnummer=\''.$pnr.'\' WHERE Personalnummer=CAST('.$old_pnr.' AS int);');
                         }
@@ -182,6 +191,9 @@ if( A_checkpermission(array(0,2,0,4)) ) {
                     $u_nname=S_get_entry($Db,'SELECT Nachname FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
                     $u_taetigkeit=S_get_entry($Db,'SELECT Taetigkeit FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
                     $u_lohngruppe=S_get_entry($Db,'SELECT Gruppe FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
+                    $u_vertrag=S_get_entry($Db,'SELECT Vertragsnummer FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
+                    $u_mandant=S_get_entry($Db,'SELECT Mandant FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
+                    $u_abrechnungskreis=S_get_entry($Db,'SELECT Abrechnungskreis FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
                     $u_hauptamtlich=S_get_entry($Db,'SELECT Hauptamtlich FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
                     $u_id_li_user=S_get_entry($Db,'SELECT id_li_user FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
                     $u_active=S_get_entry($Db,'SELECT Aktiv FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
@@ -200,6 +212,9 @@ if( A_checkpermission(array(0,2,0,4)) ) {
                     $u_nname=S_get_entry($Db,'SELECT Nachname FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
                     $u_taetigkeit=S_get_entry($Db,'SELECT Taetigkeit FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
                     $u_lohngruppe=S_get_entry($Db,'SELECT Gruppe FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
+                    $u_vertrag=S_get_entry($Db,'SELECT Vertragsnummer FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
+                    $u_mandant=S_get_entry($Db,'SELECT Mandant FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
+                    $u_abrechnungskreis=S_get_entry($Db,'SELECT Abrechnungskreis FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
                     $u_hauptamtlich=S_get_entry($Db,'SELECT Hauptamtlich FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
                     $u_id_li_user=S_get_entry($Db,'SELECT id_li_user FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
                     $u_active=S_get_entry($Db,'SELECT Aktiv FROM Personal WHERE Personalnummer=CAST('.$pnr.' AS int);');
@@ -333,8 +348,10 @@ if( A_checkpermission(array(0,2,0,4)) ) {
         <input type="checkbox" aria-label="MA aktiv" name="e_active" '.$u_act_selected.'>
         <label for="active">MA aktiv</label>
         </span>
-        <span class="input-group-addon" id="basic-addon1">Nr.</span>
+        <span class="input-group-addon" id="basic-addon1">Personalnr.</span>
         <input type="text" class="form-control" placeholder="Personalnummer" aria-describedby="basic-addon1" name="e_pnr" autocomplete="off" value="'.$pnr.'">
+        <span class="input-group-addon" id="basic-addon1">Vertragsnr.</span>
+        <input type="text" class="form-control" placeholder="Vertrag" aria-describedby="basic-addon1" name="e_vertrag" autocomplete="off" value="'.$u_vertrag.'">
         </div><div class="input-group">
         <span class="input-group-addon" id="basic-addon1">Vorname</span>
         <input type="text" class="form-control" placeholder="Vorname" aria-describedby="basic-addon1" name="e_vname" autocomplete="off" value="'.$u_vname.'">
@@ -365,6 +382,26 @@ if( A_checkpermission(array(0,2,0,4)) ) {
             echo '<option value="'.$l[0].'" '.$selected.'>'.$l[0].'</option>';
         }
         echo '</select>
+        </div><div class="input-group">
+        <span class="input-group-addon" id="basic-addon6">Mandant</span>
+        <select class="custom-select" id="inputGroupSelect03" name="e_mandant" style="margin-top:0px;">';
+        if($u_mandant=='0') {$selected="selected";} else {$selected="";}
+        echo '<option value="0" '.$selected.'>n/v</option>';
+        if($u_mandant=='800') {$selected="selected";} else {$selected="";}
+        echo '<option value="800" '.$selected.'>800</option>';
+        if($u_mandant=='801') {$selected="selected";} else {$selected="";}
+        echo '<option value="801" '.$selected.'>801</option>';
+        echo '</select>
+        <span class="input-group-addon" id="basic-addon6">AK</span>
+        <select class="custom-select" id="inputGroupSelect04" name="e_abrechnungskreis" style="margin-top:0px;">';
+        if($u_abrechnungskreis=='0') {$selected="selected";} else {$selected="";}
+        echo '<option value="0" '.$selected.'>n/v</option>';
+        if($u_abrechnungskreis=='4') {$selected="selected";} else {$selected="";}
+        echo '<option value="4" '.$selected.'>4 (Impfen)</option>';
+        if($u_abrechnungskreis=='5') {$selected="selected";} else {$selected="";}
+        echo '<option value="5" '.$selected.'>5 (Testen)</option>';
+        echo '</select>
+
         </div>
         <div class="FAIR-si-button">
         <input type="submit" class="btn btn-danger" value="Änderung speichern" name="edit_staff" />
@@ -412,6 +449,8 @@ if( A_checkpermission(array(0,2,0,4)) ) {
         <div class="input-group">
         <span class="input-group-addon" id="basic-addon1">Nr.</span>
         <input type="text" class="form-control" placeholder="Personalnummer" aria-describedby="basic-addon1" name="pnr" autocomplete="off">
+        <span class="input-group-addon" id="basic-addon1">Vertragsnr.</span>
+        <input type="text" class="form-control" placeholder="Vertrag" aria-describedby="basic-addon1" name="vertrag" autocomplete="off">
         </div><div class="input-group">
         <span class="input-group-addon" id="basic-addon1">Vorname</span>
         <input type="text" class="form-control" placeholder="Vorname" aria-describedby="basic-addon1" name="vname" autocomplete="off">
@@ -427,19 +466,30 @@ if( A_checkpermission(array(0,2,0,4)) ) {
         <label for="Hauptamtlich">Hauptamtlich</label>
         </span>
         <span class="input-group-addon" id="basic-addon6">Tätigkeit</span>
-        <select class="custom-select" id="inputGroupSelect01" name="taetigkeit" style="margin-top:0px;">
+        <select class="custom-select" id="inputGroupSelect01n" name="taetigkeit" style="margin-top:0px;">
           <option value="Medizinisch">Medizinisch</option>
           <option value="Rettungssanitäter">Rettungssanitäter</option>
           <option value="Verwaltung">Verwaltung</option>
           <option value="Sanitätshelfer">Sanitätshelfer</option>
         </select>
         <span class="input-group-addon" id="basic-addon6">Lohngruppe</span>
-        <select class="custom-select" id="inputGroupSelect01" name="lohngruppe" style="margin-top:0px;">';
+        <select class="custom-select" id="inputGroupSelect02n" name="lohngruppe" style="margin-top:0px;">';
         // get values from Lohngruppe
         //echo '<option value="">n/v</option>';
         foreach($array_salary as $l) {
             echo '<option value="'.$l[0].'">'.$l[0].'</option>';
         }
+        echo '</select>
+        </div><div class="input-group">
+        <span class="input-group-addon" id="basic-addon6">Mandant</span>
+        <select class="custom-select" id="inputGroupSelect03n" name="mandant" style="margin-top:0px;">';
+        echo '<option value="800">800</option>';
+        echo '<option value="801">801</option>';
+        echo '</select>
+        <span class="input-group-addon" id="basic-addon6">AK</span>
+        <select class="custom-select" id="inputGroupSelect04n" name="abrechnungskreis" style="margin-top:0px;">';
+        echo '<option value="4">4 (Impfen)</option>';
+        echo '<option value="5">5 (Testen)</option>';
         echo '</select>
         </div>
         <div class="FAIR-si-button">
