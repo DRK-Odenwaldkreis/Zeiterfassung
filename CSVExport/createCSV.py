@@ -45,14 +45,17 @@ def create_row(entry,lohnart,month):
     try:
         personalAK = int(entry[9])
     except:
+        logger.debug("Abrechnugnskreis not set, setting to 4")
         personalAK = '4'
     try:
         personalVTNR = int(entry[10])
     except:
+        logger.debug("Vertragsnummer not set, setting to 1")
         personalVTNR = '1'
     try:
         personalMAN = int(entry[11])
     except:
+        logger.debug("Mandant not set, setting to 801")
         personalMAN = '801'
     netShiftTime, netShiftTimeHours, netShiftTimeMinutes, breakTimes = calculate_net_shift_time(dienstBegin, dienstEnde)
     if not lohnSatz:
