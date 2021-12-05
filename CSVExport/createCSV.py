@@ -32,8 +32,6 @@ netShiftTimeMinutes=0
 logger = logging.getLogger('CSV Export')
 logger.debug('Logger for createCSV was initialised')
 
-Dienste.Personalnummer, Dienste.Dienstbeginn, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art, Personal.Hauptamtlich, Lohngruppe.Stundensatz, Lohngruppe.SFN, Personal.AK, Personal.VTNR, Personal.MAN
-
 def create_row(entry,lohnart,month):
     personalNummer = int(entry[0])
     dienstBegin = entry[1]
@@ -44,9 +42,18 @@ def create_row(entry,lohnart,month):
     dienstHauptamtlich = entry[6]
     lohnSatz = entry[7]
     lohnSFN = entry[8]
-    personalAK = int(entry[9])
-    personalVTNR = int(entry[10])
-    personalMAN = int(entry[11])
+    try:
+        personalAK = int(entry[9])
+    except:
+        personalAK = '4'
+    try:
+        personalVTNR = int(entry[10])
+    except:
+        personalVTNR = '1'
+    try:
+        personalMAN = int(entry[11])
+    except:
+        personalMAN = '801'
     netShiftTime, netShiftTimeHours, netShiftTimeMinutes, breakTimes = calculate_net_shift_time(dienstBegin, dienstEnde)
     if not lohnSatz:
         logger.debug("Stundensatz not set, setting to xx,yy")

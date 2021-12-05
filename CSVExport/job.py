@@ -55,7 +55,7 @@ if __name__ == "__main__":
         requestedYear = sys.argv[2]
         requester = sys.argv[3]
         DatabaseConnect = Database()
-        sql = "Select Dienste.Personalnummer, Dienste.Dienstbeginn, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art, Personal.Hauptamtlich, Lohngruppe.Stundensatz, Lohngruppe.SFN, Personal.AK, Personal.VTNR, Personal.MAN FROM Dienste as Dienste JOIN Personal as Personal ON Personal.Personalnummer = Dienste.Personalnummer LEFT JOIN Lohngruppe ON Personal.Gruppe = Lohngruppe.Bezeichnung WHERE MONTH(Dienste.Dienstbeginn)=%s AND YEAR(Dienste.Dienstbeginn)= %s AND Dienste.Dienstende is not Null AND Personal.Aktiv = 1 ORDER BY Dienste.Dienstbeginn ASC;" % (
+        sql = "Select Dienste.Personalnummer, Dienste.Dienstbeginn, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art, Personal.Hauptamtlich, Lohngruppe.Stundensatz, Lohngruppe.SFN, Personal.Abrechnungskreis, Personal.Vertragsnummer, Personal.Mandant FROM Dienste as Dienste JOIN Personal as Personal ON Personal.Personalnummer = Dienste.Personalnummer LEFT JOIN Lohngruppe ON Personal.Gruppe = Lohngruppe.Bezeichnung WHERE MONTH(Dienste.Dienstbeginn)=%s AND YEAR(Dienste.Dienstbeginn)= %s AND Dienste.Dienstende is not Null AND Personal.Aktiv = 1 ORDER BY Dienste.Dienstbeginn ASC;" % (
             requestedMonth, requestedYear)
         logger.debug('Getting all Events for employee of the month and year with the following query: %s' % (sql))
         exportEvents = DatabaseConnect.read_all(sql)
