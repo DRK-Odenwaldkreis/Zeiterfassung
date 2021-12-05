@@ -62,28 +62,28 @@ def create_row(entry,lohnart,month):
         elif lohnart == 555:
             logger.debug("Lohnart == 555")
             date = entry[2].replace(hour=21,minute=0,second=0)
-            return ["[VARTAB]", "INSERT", "800", "4", entry[0], entry[4], entry[3], "1", lohnart, "", str(round((entry[2]-date).seconds/3600, 2)).replace(".", ","), "", "", "", "", "", entry[1].replace(day=1).strftime("%Y-%m-%d"), entry[1].replace(day=1).strftime("%Y-%m-%d"), "IMPVAR1", entry[1].replace(day=1).strftime("%Y-%m-%d")]
+            return ["[VARTAB]", "INSERT", "800", "5", entry[0], entry[4], entry[3], "1", lohnart, "", str(round((entry[2]-date).seconds/3600, 2)).replace(".", ","), "", "", "", "", "", entry[1].replace(day=1).strftime("%Y-%m-%d"), entry[1].replace(day=1).strftime("%Y-%m-%d"), "IMPVAR1", entry[1].replace(day=1).strftime("%Y-%m-%d")]
         elif entry[6] == 1 and lohnart == 558:
             logger.debug("In entry[6]== 1 and lohnart == 558")
-            return ["[VARTAB]", "INSERT", "800", "4", entry[0], entry[4], entry[3], "1", lohnart, "", str(round(netShiftTime.seconds/3600, 2)).replace(".", ","), str(sfn), "", "", "", "", entry[1].replace(day=1).strftime("%Y-%m-%d"), entry[1].replace(day=1).strftime("%Y-%m-%d"), "IMPVAR1", entry[1].replace(day=1).strftime("%Y-%m-%d")]
+            return ["[VARTAB]", "INSERT", "800", "5", entry[0], entry[4], entry[3], "1", lohnart, "", str(round(netShiftTime.seconds/3600, 2)).replace(".", ","), str(sfn), "", "", "", "", entry[1].replace(day=1).strftime("%Y-%m-%d"), entry[1].replace(day=1).strftime("%Y-%m-%d"), "IMPVAR1", entry[1].replace(day=1).strftime("%Y-%m-%d")]
         elif entry[6] == 1 and lohnart == 556:
             logger.debug("In entry[6]== 1 and lohnart == 556")
-            return ["[VARTAB]", "INSERT", "800", "4", entry[0], entry[4], entry[3], "1", lohnart, "", str(round(netShiftTime.seconds/3600, 2)).replace(".", ","), str(sfn), "", "", "", "", entry[1].replace(day=1).strftime("%Y-%m-%d"), entry[1].replace(day=1).strftime("%Y-%m-%d"), "IMPVAR1", entry[1].replace(day=1).strftime("%Y-%m-%d")]
+            return ["[VARTAB]", "INSERT", "800", "5", entry[0], entry[4], entry[3], "1", lohnart, "", str(round(netShiftTime.seconds/3600, 2)).replace(".", ","), str(sfn), "", "", "", "", entry[1].replace(day=1).strftime("%Y-%m-%d"), entry[1].replace(day=1).strftime("%Y-%m-%d"), "IMPVAR1", entry[1].replace(day=1).strftime("%Y-%m-%d")]
         elif entry[6] == 0 and lohnart == 490:
             logger.debug("In entry[6]== 0 and lohnart == 490")
-            return ["[VARTAB]", "INSERT", "800", "4", entry[0], entry[4], entry[3], "1", lohnart, "", str(round(netShiftTime.seconds/3600, 2)).replace(".", ","), "", "", "", "", "", entry[1].replace(day=1).strftime("%Y-%m-%d"), entry[1].replace(day=1).strftime("%Y-%m-%d"), "IMPVAR1", entry[1].replace(day=1).strftime("%Y-%m-%d")]
+            return ["[VARTAB]", "INSERT", "800", "5", entry[0], entry[4], entry[3], "1", lohnart, "", str(round(netShiftTime.seconds/3600, 2)).replace(".", ","), "", "", "", "", "", entry[1].replace(day=1).strftime("%Y-%m-%d"), entry[1].replace(day=1).strftime("%Y-%m-%d"), "IMPVAR1", entry[1].replace(day=1).strftime("%Y-%m-%d")]
         elif entry[6] == 0 and lohnart == 558:
             logger.debug("In entry[6]== 0 and lohnart == 558")
-            return ["[VARTAB]", "INSERT", "800", "4", entry[0], entry[4], entry[3], "1", lohnart, "", str(round(netShiftTime.seconds/3600, 2)).replace(".", ","), str(sfn), "", "", "", "", entry[1].replace(day=1).strftime("%Y-%m-%d"), entry[1].replace(day=1).strftime("%Y-%m-%d"), "IMPVAR1", entry[1].replace(day=1).strftime("%Y-%m-%d")]
+            return ["[VARTAB]", "INSERT", "800", "5", entry[0], entry[4], entry[3], "1", lohnart, "", str(round(netShiftTime.seconds/3600, 2)).replace(".", ","), str(sfn), "", "", "", "", entry[1].replace(day=1).strftime("%Y-%m-%d"), entry[1].replace(day=1).strftime("%Y-%m-%d"), "IMPVAR1", entry[1].replace(day=1).strftime("%Y-%m-%d")]
         elif entry[6] == 0 and lohnart == 556:
             logger.debug("In entry[6]== 0 and lohnart == 556")
-            return ["[VARTAB]", "INSERT", "800", "4", entry[0], entry[4], entry[3], "1", lohnart, "", str(round(netShiftTime.seconds/3600, 2)).replace(".", ","), str(sfn), "", "", "", "", entry[1].replace(day=1).strftime("%Y-%m-%d"), entry[1].replace(day=1).strftime("%Y-%m-%d"), "IMPVAR1", entry[1].replace(day=1).strftime("%Y-%m-%d")]
+            return ["[VARTAB]", "INSERT", "800", "5", entry[0], entry[4], entry[3], "1", lohnart, "", str(round(netShiftTime.seconds/3600, 2)).replace(".", ","), str(sfn), "", "", "", "", entry[1].replace(day=1).strftime("%Y-%m-%d"), entry[1].replace(day=1).strftime("%Y-%m-%d"), "IMPVAR1", entry[1].replace(day=1).strftime("%Y-%m-%d")]
         elif entry[6] == 0 and lohnart == 567:
             logger.debug("In entry[6]== 0 and lohnart == 567")
-            return ["[VARTAB]", "INSERT", "800", "4", entry[0], entry[4], entry[3], "1", lohnart, "", str(round(netShiftTime.seconds/3600, 2)).replace(".", ","), "", "", "", "", "", entry[1].replace(day=1).strftime("%Y-%m-%d"), entry[1].replace(day=1).strftime("%Y-%m-%d"), "IMPVAR1", entry[1].replace(day=1).strftime("%Y-%m-%d")]
+            return ["[VARTAB]", "INSERT", "800", "5", entry[0], entry[4], entry[3], "1", lohnart, "", str(round(netShiftTime.seconds/3600, 2)).replace(".", ","), "", "", "", "", "", entry[1].replace(day=1).strftime("%Y-%m-%d"), entry[1].replace(day=1).strftime("%Y-%m-%d"), "IMPVAR1", entry[1].replace(day=1).strftime("%Y-%m-%d")]
         elif entry[6] == 0 and lohnart == 566:
             logger.debug("In entry[6]== 0 and lohnart == 566")
-            return ["[VARTAB]", "INSERT", "800", "4", entry[0], entry[4], entry[3], "1", lohnart, "", str(round(netShiftTime.seconds/3600, 2)).replace(".", ","), "", "", "", "", "", entry[1].replace(day=1).strftime("%Y-%m-%d"), entry[1].replace(day=1).strftime("%Y-%m-%d"), "IMPVAR1", entry[1].replace(day=1).strftime("%Y-%m-%d")]
+            return ["[VARTAB]", "INSERT", "800", "5", entry[0], entry[4], entry[3], "1", lohnart, "", str(round(netShiftTime.seconds/3600, 2)).replace(".", ","), "", "", "", "", "", entry[1].replace(day=1).strftime("%Y-%m-%d"), entry[1].replace(day=1).strftime("%Y-%m-%d"), "IMPVAR1", entry[1].replace(day=1).strftime("%Y-%m-%d")]
         else:
             logger.debug("In else, did not find a matching value")
             return False

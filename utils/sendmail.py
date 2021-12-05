@@ -46,11 +46,11 @@ def send_mail_report(filename, day):
             fileContent = f.read()
         messageContent = fileContent.replace('[[DAY]]', str(day))
         message.attach(MIMEText(messageContent, 'html'))
-        recipients = ['dienstplan.impfzentrum@drk-odenwaldkreis.de', 'schichtleitung.impfzentrum@drk-odenwaldkreis.de']
+        recipients = ['testzentrum@drk-odenwaldkreis.de']
         message['Subject'] = "Neue Tagesreport für: %s" % (str(day))
-        message['From'] = 'report@impfzentrum-odw.de'
-        message['reply-to'] = 'schichtleitung.impfzentrum@drk-odenwaldkreis.de'
-        message['Cc'] = 'report@impfzentrum-odw.de'
+        message['From'] = 'info@testzentrum-odenwald.de'
+        message['reply-to'] = 'testzentrum@drk-odenwaldkreis.de'
+        message['Cc'] = 'info@testzentrum-odenwald.de'
         message['To'] = ", ".join(recipients)
         filenameRaw = filename
         filename = '../../Reports/' + str(filenameRaw)
@@ -87,10 +87,10 @@ def send_mail_reminder(listRecipients, week, year):
         messageContent = fileContent.replace('[[KW]]',str(week)).replace('[[YEAR]]',str(year))
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Erinnerung für Planung KW %s in %s" % (str(week), str(year))
-        message['From'] = 'planung@impfzentrum-odw.de'
-        message['reply-to']= 'dienstplan.impfzentrum@drk-odenwaldkreis.de'
+        message['From'] = 'planung@testzentrum-odenwald.de'
+        message['reply-to']= 'testzentrum@drk-odenwaldkreis.de'
         message['Bcc'] = ", ".join(listRecipients)
-        message['Cc'] = 'report@impfzentrum-odw.de'
+        message['Cc'] = 'info@testzentrum-odenwald.de'
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
@@ -115,10 +115,10 @@ def send_mail_new_dienstplan(listRecipients, week, year):
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Neue Planung für KW %s in %s" % (
             str(week), str(year))
-        message['From'] = 'dienstplan@impfzentrum-odw.de'
+        message['From'] = 'dienstplan@testzentrum-odenwald.de'
         message['Bcc'] = ", ".join(listRecipients)
-        message['Cc'] = 'report@impfzentrum-odw.de'
-        message['reply-to']= 'dienstplan.impfzentrum@drk-odenwaldkreis.de'
+        message['Cc'] = 'info@testzentrum-odenwald.de'
+        message['reply-to']= 'testzentrum@drk-odenwaldkreis.de'
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
@@ -136,16 +136,16 @@ def send_mail_download(filename, requester):
     try:
         logging.debug("Receviced the following filename %s to be sent to %s" % (filename, requester))
         message = MIMEMultipart()
-        url = 'https://impfzentrum-odw.de/download.php?file=' + str(filename)
+        url = 'https://dienst.testzentrum-odw.de/download.php?file=' + str(filename)
         logging.debug("The created url is %s" % (url))
         with open('../utils/MailLayout/NewDownload.html', encoding='utf-8') as f:
             fileContent = f.read()
         messageContent = fileContent.replace('[[LINK]]', str(url))
         message.attach(MIMEText(messageContent, 'html'))        
         message['Subject'] = "Einzelnachweise sind zum Download verfügbar"
-        message['From'] = 'report@impfzentrum-odw.de'
+        message['From'] = 'info@testzentrum-odenwald.de'
         message['To'] = requester
-        message['Cc'] = 'report@impfzentrum-odw.de'
+        message['Cc'] = 'info@testzentrum-odenwald.de'
         smtp = smtplib.SMTP(SMTP_SERVER,port=587)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
@@ -165,16 +165,16 @@ def send_mail_csvexport_download(filename, requester):
         logging.debug("Receviced the following filename %s to be sent to %s" % (
             filename, requester))
         message = MIMEMultipart()
-        url = 'https://impfzentrum-odw.de/download.php?file=' + str(filename)
+        url = 'https://dienst.testzentrum-odw.de/download.php?file=' + str(filename)
         logging.debug("The created url is %s" % (url))
         with open('../utils/MailLayout/NewExport.html', encoding='utf-8') as f:
             fileContent = f.read()
         messageContent = fileContent.replace('[[LINK]]', str(url))
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "CSV Export ist zum Download verfügbar"
-        message['From'] = 'report@impfzentrum-odw.de'
+        message['From'] = 'info@testzentrum-odenwald.de'
         message['To'] = requester
-        message['Cc'] = 'report@impfzentrum-odw.de'
+        message['Cc'] = 'info@testzentrum-odenwald.de'
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)

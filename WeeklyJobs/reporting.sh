@@ -16,7 +16,7 @@
 # along with DRK Zeiterfassung.  If not, see <http://www.gnu.org/licenses/>.
 
 echo "Starting Report"
-cd /home/webservice/Zeiterfassung/TagesReportPDF
+cd /home/webservice_testz/Zeiterfassung/TagesReportPDF
 python3 job.py
-chown www-data:www-data /home/webservice/Reports/Tagesreport_*
+chown www-data:www-data /home/webservice_testz/Reports/Tagesreport_*
 echo "Reporting complete"

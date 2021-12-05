@@ -104,22 +104,29 @@ class PDFgenerator:
 				if count == 0:
 					logger.debug('Writing the frueh shift')
 					try:
-						self.pdf.cell(60, 5, value[line][:20], ln=0)
+						self.pdf.cell(70, 5, value[line][:20], ln=0)
 					except:
-						self.pdf.cell(60, 5, '', ln=0)
+						self.pdf.cell(70, 5, '', ln=0)
 				elif count == 1:
 					logger.debug('Writing the spaet shift')
 					try:
-						self.pdf.cell(60, 5, value[line][:20], ln=0)
+						self.pdf.cell(70, 5, value[line][:20], ln=0)
 					except:
-						self.pdf.cell(60, 5, '', ln=0)
+						self.pdf.cell(70, 5, '', ln=0)
 				elif count == 2:
 					logger.debug('Writing the variable shift')
 					self.pdf.set_font('GNU', '', 10)
 					try:
-						self.pdf.cell(60, 5, value[line][:35], ln=1)
+						self.pdf.cell(70, 5, value[line][:35], ln=1)
 					except:
-						self.pdf.cell(60, 5, '', ln=1)
+						self.pdf.cell(70, 5, '', ln=1)
+				elif count == 3:
+					logger.debug('Writing the variable shift')
+					self.pdf.set_font('GNU', '', 10)
+					try:
+						self.pdf.cell(80, 5, value[line][:45], ln=1)
+					except:
+						self.pdf.cell(80, 5, '', ln=1)
 					finally:
 						logger.debug('Resetting font size')
 						self.pdf.set_font('GNU', '', 14)
@@ -132,18 +139,21 @@ class PDFgenerator:
 		self.pdf.cell(20, 10, '%s - %s' %
                     (dayInt_to_string(self.day.weekday()), self.day), ln=1)
 		self.pdf.set_font('GNU', '', 14)
-		self.pdf.cell(60, 10, 'Früh', ln=0)
+		self.pdf.cell(70, 10, 'Früh', ln=0)
 		self.pdf.dashed_line(self.pdf.get_x()-5, self.pdf.get_y(),
-                       self.pdf.get_x()-5, self.pdf.get_y()+210)
-		self.pdf.cell(60, 10, 'Spät', ln=0)
+                       self.pdf.get_x()-5, self.pdf.get_y()+150)
+		self.pdf.cell(70, 10, 'Mittel', ln=0)
 		self.pdf.dashed_line(self.pdf.get_x()-5, self.pdf.get_y(),
-                       self.pdf.get_x()-5, self.pdf.get_y()+210)
-		self.pdf.cell(60, 10, 'Variabel', ln=1)
+                       self.pdf.get_x()-5, self.pdf.get_y()+150)
+		self.pdf.cell(70, 10, 'Spät', ln=0)
+		self.pdf.dashed_line(self.pdf.get_x()-5, self.pdf.get_y(),
+                       self.pdf.get_x()-5, self.pdf.get_y()+150)
+		self.pdf.cell(70, 10, 'Variabel', ln=1)
 		self.pdf.line(self.pdf.get_x(), self.pdf.get_y(),
-                    self.pdf.get_x()+180, self.pdf.get_y())
+                    self.pdf.get_x()+280, self.pdf.get_y())
 		self.pdf.cell(0, 1, '', ln=1)
 		self.pdf.line(self.pdf.get_x(), self.pdf.get_y(),
-                    self.pdf.get_x()+180, self.pdf.get_y())
+                    self.pdf.get_x()+280, self.pdf.get_y())
 
 	def create_day(self, day):
 		self.day = day
@@ -162,6 +172,8 @@ class PDFgenerator:
 				self.pdf.set_font('GNU', '', 14)
 				if self.shift == 1:
 					self.leftColumn.append('%s, %s' % (self.currentNachname, self.currentVorname))
+				elif self.shift == 4:
+					self.centerColumn.append('%s, %s' % (self.currentNachname, self.currentVorname))
 				elif self.shift == 2:
 					self.centerColumn.append('%s, %s' % (self.currentNachname, self.currentVorname))
 				elif self.shift == 3:
@@ -178,7 +190,7 @@ class PDFgenerator:
 
 	def generate(self):
 
-		self.pdf=MyPDF()
+		self.pdf=MyPDF('L', 'mm', 'A4')
 		self.pdf.time = self.date
 		self.pdf.alias_nb_pages()
 		self.pdf.add_page()
@@ -190,5 +202,3 @@ class PDFgenerator:
 		self.filename = "../../Planung/Planung_" + self.year + '_' + self.week + ".pdf"
 		self.pdf.output(self.filename)
 		return self.filename
-
-aux=FPDF('P', 'mm', 'A4')

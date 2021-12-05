@@ -44,7 +44,7 @@ def get_lohnart(begin, art, ende):
                 code.append(490)
             else:
                 code.append(000)
-        if ende.hour >= 21:
+        if ende.hour >= 21 and ende.minute >= 1:
             code.append(555)
     except:
         code.append(000)
