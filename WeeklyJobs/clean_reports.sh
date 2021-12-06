@@ -16,5 +16,5 @@
 # along with DRK Zeiterfassung.  If not, see <http://www.gnu.org/licenses/>.
 
 echo "Starting Cleanup"
-rm -rf /home/webservice/Reports/*
+rm -rf /home/webservice_testz/Reports/*
 echo "Cleanup complete"

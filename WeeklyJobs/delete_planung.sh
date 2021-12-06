@@ -16,5 +16,5 @@
 # along with DRK Zeiterfassung.  If not, see <http://www.gnu.org/licenses/>.
 
 echo "Starting Cleanup of old Verfuegbarkeiten"
-find /home/webservice/Planung/* -mtime +21 -exec rm {} \;
+find /home/webservice_testz/Planung/* -mtime +21 -exec rm {} \;
 echo "Cleanup Done complete"

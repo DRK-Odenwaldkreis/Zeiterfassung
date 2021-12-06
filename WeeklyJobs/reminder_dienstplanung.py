@@ -39,7 +39,7 @@ if __name__ == "__main__":
         remindingYear = int((today + datetime.timedelta(weeks=3)).strftime("%G"))
         logger.debug('Starting reminding for KW: %s and Year: %s' %(remindingWeek, remindingYear))
         DatabaseConnect = Database()
-        sql = "Select  Personal.id_li_user FROM Planung JOIN Personal ON Personal.Personalnummer = Planung.Personalnummer where WEEK(Datum,5) = '%s' and YEAR(Datum) = '%s' and Personal.Aktiv=1 group by Personal.id_li_user;" % (
+        sql = "Select  Personal.id_li_user FROM Planung JOIN Personal ON Personal.Personalnummer = Planung.Personalnummer where WEEK(Datum,5) = '%s' and YEAR(Datum) = '%s' and Personal.Aktiv=1 and Personal.Abrechnungskreis='5' group by Personal.id_li_user;" % (
             remindingWeek, remindingYear)
         positiveFeedback = []
         for i in DatabaseConnect.read_all(sql):

@@ -22,7 +22,7 @@ sys.path.append("..")
 from utils.database import Database
 
 logFile = '../../Logs/rotationJob.log'
-logging.basicConfig(filename=logFile,level=logging.DEBUG,
+logging.basicConfig(filename=logFile,level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Besetzung Reporting')
 logger.debug('Starting')

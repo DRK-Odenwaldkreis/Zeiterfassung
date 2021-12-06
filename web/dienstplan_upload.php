@@ -48,16 +48,21 @@ if( A_checkpermission(array(0,0,3,4)) ) {
         $filename = pathinfo($_FILES['userfile']['name'], PATHINFO_FILENAME);
         $extension = strtolower(pathinfo($_FILES['userfile']['name'], PATHINFO_EXTENSION));
         $week=$_POST['week'];
+        $zentrum=$_POST['zentrum'];
         if($week!="") {
-            $new_file = $uploaddir.'Dienstplan_'.$week.'.'.$extension;
+            if($zentrum!="") {
+                $new_file = $uploaddir.'Dienstplan_'.$week.'_'.$zentrum.'.'.$extension;
 
-            if (move_uploaded_file($_FILES['userfile']['tmp_name'], $new_file)) {
-                $errorhtml0 = H_build_boxinfo( 0, "Datei wurde erfolgreich hochgeladen.", 'green' );
-                // Send email to staff members
-                if($_POST['mailsending']=='mailsending') {
-                    A_send_staffroster_email($Db,$week);
+                if (move_uploaded_file($_FILES['userfile']['tmp_name'], $new_file)) {
+                    $errorhtml0 = H_build_boxinfo( 0, "Datei wurde erfolgreich hochgeladen.", 'green' );
+                    // Send email to staff members
+                    if($_POST['mailsending']=='mailsending') {
+                        A_send_staffroster_email($Db,$week);
+                    }
+
                 }
-
+            } else {
+                $errorhtml0 = H_build_boxinfo( 0, "Kein Zentrum ausgewählt.", 'red' );
             }
         } else {
             $errorhtml0 = H_build_boxinfo( 0, "Keine Kalenderwoche ausgewählt.", 'red' );
@@ -133,6 +138,12 @@ if( A_checkpermission(array(0,0,3,4)) ) {
         echo '<option value="'.$i[0].'_kw'.$i[1].'">'.$i[0].' KW'.$i[1].'</option>';
     }
     echo '
+    </select>
+    <span class="input-group-addon" id="basic-addon1">Zentrum</span>
+    <select class="custom-select" id="select-state" placeholder="Wähle ein Zentrum" name="zentrum">
+    <option value="" selected>Wähle...</option>
+    <option value="Test">Testzentrum</option>
+    <option value="Impf">Impfzentrum</option>
     </select>
     </div><div class="input-group">
     <input type="checkbox" id="mailsending" name="mailsending" value="mailsending"/>

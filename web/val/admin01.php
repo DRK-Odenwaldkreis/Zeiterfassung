@@ -81,6 +81,8 @@ $SYSMOD_Verrechnung=false;
 // // Show "Kostenstelle" in Dropdown and in List
 $SYSMOD_Kostenstelle=false;
 
+// Label text for shift wishes
+$SYSLABEL_shift_overview="Frühschicht von 05:30 bis 10:30<br>Mittelschicht von 10:30 bis 15:30<br>Spätschicht von 15:30 bis 20:30<br>Mobiles Testen von 09:30 bis 17:30 <br>weitere Dienste und Wochenende ggf. abweichend";
 
 
 // only for login and password reset function

@@ -162,12 +162,14 @@ if( A_checkpermission(array(1,0,3,4)) ) {
         $s[$i][1]=S_get_entry($Db,'SELECT id FROM Planung WHERE Personalnummer='.$pnr.' AND Datum=\''.date('Y-m-d', strtotime($start_date_sql. ' + '.($i-1).' days')).'\' AND Schicht=1;');
         $s[$i][2]=S_get_entry($Db,'SELECT id FROM Planung WHERE Personalnummer='.$pnr.' AND Datum=\''.date('Y-m-d', strtotime($start_date_sql. ' + '.($i-1).' days')).'\' AND Schicht=2;');
         $s[$i][3]=S_get_entry($Db,'SELECT id FROM Planung WHERE Personalnummer='.$pnr.' AND Datum=\''.date('Y-m-d', strtotime($start_date_sql. ' + '.($i-1).' days')).'\' AND Schicht=3;');
-        $s[$i][4]=S_get_entry($Db,'SELECT Comment FROM Planung WHERE Personalnummer='.$pnr.' AND Datum=\''.date('Y-m-d', strtotime($start_date_sql. ' + '.($i-1).' days')).'\' AND Schicht=3;');
+        $s[$i][4]=S_get_entry($Db,'SELECT id FROM Planung WHERE Personalnummer='.$pnr.' AND Datum=\''.date('Y-m-d', strtotime($start_date_sql. ' + '.($i-1).' days')).'\' AND Schicht=4;');
+        $s[$i][5]=S_get_entry($Db,'SELECT Comment FROM Planung WHERE Personalnummer='.$pnr.' AND Datum=\''.date('Y-m-d', strtotime($start_date_sql. ' + '.($i-1).' days')).'\' AND Schicht=3;');
         if($s[$i][1]>0) {$s_selected[$i][1]="checked";} else {$s_selected[$i][1]="";}
         if($s[$i][2]>0) {$s_selected[$i][2]="checked";} else {$s_selected[$i][2]="";}
         if($s[$i][3]>0) {$s_selected[$i][3]="checked";} else {$s_selected[$i][3]="";}
-        $s_selected[$i][4]=substr($s[$i][4],0,5);
-        $s_selected[$i][5]=substr($s[$i][4],8,5);
+        if($s[$i][4]>0) {$s_selected[$i][4]="checked";} else {$s_selected[$i][4]="";}
+        $s_selected[$i][5]=substr($s[$i][5],0,5);
+        $s_selected[$i][6]=substr($s[$i][5],8,5);
     }
 
 
@@ -251,7 +253,7 @@ if( A_checkpermission(array(1,0,3,4)) ) {
     <tr>
     <td class="FAIR-data-height1 FAIR-data-bottom">
     </td><td class="FAIR-data-height1 FAIR-data-bottom">
-    Schichtwunsch<br><span style="font-size:75%;">(Beide = ich kann den ganzen Tag)</span>
+    Schichtwunsch <span class="FAIR-text-red">NEU mit "Mittel"</span><br><span style="font-size:75%;">(Alle drei = ich kann den ganzen Tag)</span>
     </td><td class="FAIR-data-height1 FAIR-data-bottom" colspan="2">
     Alternative Angabe<br><span style="font-size:75%;">mit Uhrzeit von xx:xx bis xx:xx</span>
     </td>
@@ -269,6 +271,8 @@ if( A_checkpermission(array(1,0,3,4)) ) {
         </td><td class="FAIR-data-height1 FAIR-data-bottom">
         <input type="checkbox" id="e_'.$i.'1" name="e_'.$i.'1" value="1" '.$s_selected[$i][1].'/>
         <label for="e_'.$i.'1">Früh</label>
+        <input type="checkbox" id="e_'.$i.'4" name="e_'.$i.'4" value="4" '.$s_selected[$i][4].'/>
+        <label for="e_'.$i.'4">Mittel</label>
         <input type="checkbox" id="e_'.$i.'2" name="e_'.$i.'2" value="2" '.$s_selected[$i][2].'/>
         <label for="e_'.$i.'2">Spät</label>
         </td><td class="FAIR-data-height1 FAIR-data-bottom">
@@ -277,20 +281,20 @@ if( A_checkpermission(array(1,0,3,4)) ) {
         </td><td class="FAIR-data-height1 FAIR-data-bottom">
         <div class="input-group">
         <span class="input-group-addon" id="e_'.$i.'4_label">von</span>
-        <input type="time" id="e_'.$i.'4v" name="e_'.$i.'4v" class="form-control" autocomplete="off" value="'.$s_selected[$i][4].'"   />
+        <input type="time" id="e_'.$i.'4v" name="e_'.$i.'4v" class="form-control" autocomplete="off" value="'.$s_selected[$i][5].'"   />
         <span class="input-group-addon" id="e_'.$i.'4_label">bis</span>
-        <input type="time" id="e_'.$i.'4b" name="e_'.$i.'4b" class="form-control" autocomplete="off" value="'.$s_selected[$i][5].'"   />
+        <input type="time" id="e_'.$i.'4b" name="e_'.$i.'4b" class="form-control" autocomplete="off" value="'.$s_selected[$i][6].'"   />
         </div>
         </td>
         </tr>';
     }
 
     
-    echo'
+    echo '
     <tr>
     <td class="FAIR-data-height1 FAIR-data-bottom">
     </td><td class="FAIR-data-height1 FAIR-data-bottom">
-    <span style="font-size:75%;">Früh von 07:00 bis 15:30<br>Spät von 15:00 bis 22:00</span>
+    <span style="font-size:75%;">'.$GLOBALS["SYSLABEL_shift_overview"].'</span>
     </td><td class="FAIR-data-height1 FAIR-data-bottom" colspan="2">
     </td>
     </tr>
@@ -330,8 +334,16 @@ if( A_checkpermission(array(1,0,3,4)) ) {
     $array_files=scandir($log_path);
     foreach($kw_array as $i) {
         $a='Dienstplan_'.$i[0].'_kw'.$i[1].'.pdf';
+        $at='Dienstplan_'.$i[0].'_kw'.$i[1].'_Test.pdf';
+        $ai='Dienstplan_'.$i[0].'_kw'.$i[1].'_Impf.pdf';
         if(file_exists($log_path.$a)) {
-            echo '<a class="list-group-item list-group-item-action list-group-item-redtext" href="https://'.$GLOBALS["HOSTNAME_WEB"].'download.php?dir=d&file='.$a.'">KW '.$i[1].' gültig ab '.$i[2].'<span class="FAIR-sep-l"></span><span class="FAIR-text-med">(Erstellt: '.date ("d.m.Y H:i", filemtime($log_path.$a)).')</a>';
+            echo '<a class="list-group-item list-group-item-action list-group-item-redtext" href="https://'.$GLOBALS["HOSTNAME_WEB"].'download.php?dir=d&file='.$a.'">Testz./Impfz. KW '.$i[1].' gültig ab '.$i[2].'<span class="FAIR-sep-l"></span><span class="FAIR-text-med">(Erstellt: '.date ("d.m.Y H:i", filemtime($log_path.$a)).')</a>';
+        }
+        if(file_exists($log_path.$at)) {
+            echo '<a class="list-group-item list-group-item-action list-group-item-redtext" href="https://'.$GLOBALS["HOSTNAME_WEB"].'download.php?dir=d&file='.$at.'">Testzentrum KW '.$i[1].' gültig ab '.$i[2].'<span class="FAIR-sep-l"></span><span class="FAIR-text-med">(Erstellt: '.date ("d.m.Y H:i", filemtime($log_path.$at)).')</a>';
+        }
+        if(file_exists($log_path.$ai)) {
+            echo '<a class="list-group-item list-group-item-action list-group-item-redtext" href="https://'.$GLOBALS["HOSTNAME_WEB"].'download.php?dir=d&file='.$ai.'">Impfzentrum KW '.$i[1].' gültig ab '.$i[2].'<span class="FAIR-sep-l"></span><span class="FAIR-text-med">(Erstellt: '.date ("d.m.Y H:i", filemtime($log_path.$ai)).')</a>';
         }
     }
 
