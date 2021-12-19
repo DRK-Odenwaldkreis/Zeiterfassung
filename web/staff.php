@@ -63,6 +63,7 @@ if( A_checkpermission(array(0,2,0,4)) ) {
                     $u_lohngruppe=$_POST['lohngruppe'];
                     $u_taetigkeit=$_POST['taetigkeit'];
                     $u_vertrag=$_POST['vertrag'];
+                    if($u_vertrag=='') {$u_vertrag=0;}
                     $u_mandant=$_POST['mandant'];
                     $u_abrechnungskreis=$_POST['abrechnungskreis'];
                     if(isset($_POST['hauptamtlich'])) { $u_hauptamtlich=1;} else {$u_hauptamtlich=0;}
@@ -287,7 +288,7 @@ if( A_checkpermission(array(0,2,0,4)) ) {
 
 
     echo '<div class="card"><div class="row">
-    <div class="col-sm-3">
+    <div class="col-lg-3">
     <h3>Personal wählen</h3>';
 
     echo'<form action="'.$current_site.'.php" method="post">
@@ -323,7 +324,7 @@ if( A_checkpermission(array(0,2,0,4)) ) {
 
     if($bool_staff_display) {
         // Show data of staff member
-        echo '<div class="col-sm-5">
+        echo '<div class="col-lg-5">
         <h3>Personal '.$pnr.'</h3>';
         if($u_active==1) {$u_act_selected="checked";} else {$u_act_selected="";}
         if($u_hauptamtlich==1) {$u_hauptamtlich_selected="checked";} else {$u_hauptamtlich_selected="";}
@@ -410,7 +411,7 @@ if( A_checkpermission(array(0,2,0,4)) ) {
         echo '</div>';
 
         // Show QR code
-        echo '<div class="col-sm-2">
+        echo '<div class="col-lg-2">
         <h3>QR Code</h3>';
         echo '<img src="qrcode.php?id='.$u_hash.'" />';
         echo '</div>';
@@ -418,7 +419,7 @@ if( A_checkpermission(array(0,2,0,4)) ) {
         // Show report
         $today_month=date("n",time());
         $today_year=date("Y",time());
-        echo '<div class="col-sm-2">
+        echo '<div class="col-lg-2">
         <h3>Report</h3>';
         echo '<form action="'.$current_site.'.php" method="post">
         <div class="input-group">
