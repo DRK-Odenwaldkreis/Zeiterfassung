@@ -26,7 +26,7 @@ import logging
 
 
 logFile = '../../Logs/planning.log'
-logging.basicConfig(filename=logFile,level=logging.DEBUG,
+logging.basicConfig(filename=logFile,level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Dienstplanung Report')
 logger.debug('Starting')
@@ -46,8 +46,7 @@ if __name__ == "__main__":
         requestedWeek = sys.argv[1]
         requestedYear = sys.argv[2]
         DatabaseConnect = Database()
-        sql = "Select  Personal.Vorname, Personal.Nachname, Planung.Schicht, Planung.Datum, Planung.Comment FROM Planung JOIN Personal ON Personal.Personalnummer = Planung.Personalnummer where WEEK(Datum,5) = '%s' and YEAR(Datum) = '%s' order by Datum;" % (
-            requestedWeek, requestedYear)
+        sql = "Select  Personal.Vorname, Personal.Nachname, Planung.Schicht, Planung.Datum, Planung.Comment FROM Planung JOIN Personal ON Personal.Personalnummer = Planung.Personalnummer where WEEK(Datum,3) = '%s' order by Datum;" % (requestedWeek)
         logger.debug(
             'Getting all planning data with the following query: %s' % (sql))
         content = DatabaseConnect.read_all(sql)

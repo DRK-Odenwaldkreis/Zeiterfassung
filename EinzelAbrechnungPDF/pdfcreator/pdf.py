@@ -68,19 +68,22 @@ class MyPDF(FPDF):
 
 class PDFgenerator:
 
-	def __init__(self, content, nachname, vorname, personalnummer, taetigkeit, monat, year):
+	def __init__(self, content, nachname, vorname, personalnummer, taetigkeit, vetragsnummer, mandant, abrechnungskreis, monat, year):
 		self.content=content
 		self.nachname=nachname
 		self.vorname=vorname
 		self.personalnummer=personalnummer
 		self.taetigkeit = taetigkeit
+		self.vetragsnummer = vetragsnummer
+		self.vetragsnummer
+		self.mandant = mandant
+		self.abrechnungskreis = abrechnungskreis
 		self.date = datetime.date.today()
 		self.year = year
 		self.monat=monthInt_to_string(int(monat))
 		self.totalSeconds = 0
 
 	def generate(self):
-
 		pdf=MyPDF()
 		pdf.time = self.date
 		# pdf.name=self.name
@@ -93,9 +96,15 @@ class PDFgenerator:
 		pdf.cell(10, 10, '', ln=1)
 		pdf.cell(20, 10, 'Arbeitszeitabrechnung', ln=1)
 		pdf.set_font('GNU', '', 14)
-		pdf.cell(20, 10, 'Mitarbeiter: {}'.format(self.nachname)+", "+self.vorname, ln=1)
+		pdf.cell(20, 10, 'Mitarbeiter: {}'.format(self.nachname)+", "+self.vorname, ln=0)
+		pdf.cell(80)
 		pdf.cell(20, 10, 'Personalnummer: {}'.format(self.personalnummer), ln=1)
-		pdf.cell(20, 10, 'Tätigkeit: {}'.format(self.taetigkeit), ln=1)
+		pdf.cell(20, 10, 'Tätigkeit: {}'.format(self.taetigkeit), ln=0)
+		pdf.cell(80)
+		pdf.cell(20, 10, 'Vertragsnummer: {}'.format(self.vetragsnummer), ln=1)
+		pdf.cell(20, 10, 'Abrechnungskreis: {}'.format(self.abrechnungskreis), ln=0)
+		pdf.cell(80)
+		pdf.cell(20, 10, 'Mandant: {}'.format(self.mandant), ln=1)
 		pdf.cell(20, 10, 'Arbeitszeitnachweis: {}'.format(self.monat)+", "+ self.year, ln=1)
 		pdf.set_font('GNU', 'B' , 14)
 		pdf.ln(10)

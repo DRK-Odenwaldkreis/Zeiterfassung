@@ -32,8 +32,6 @@ netShiftTimeMinutes=0
 logger = logging.getLogger('CSV Export')
 logger.debug('Logger for createCSV was initialised')
 
-Dienste.Personalnummer, Dienste.Dienstbeginn, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art, Personal.Hauptamtlich, Lohngruppe.Stundensatz, Lohngruppe.SFN, Personal.AK, Personal.VTNR, Personal.MAN
-
 def create_row(entry,lohnart,month):
     personalNummer = int(entry[0])
     dienstBegin = entry[1]
@@ -44,9 +42,21 @@ def create_row(entry,lohnart,month):
     dienstHauptamtlich = entry[6]
     lohnSatz = entry[7]
     lohnSFN = entry[8]
-    personalAK = int(entry[9])
-    personalVTNR = int(entry[10])
-    personalMAN = int(entry[11])
+    try:
+        personalAK = int(entry[9])
+    except:
+        logger.debug("Abrechnugnskreis not set, setting to 4")
+        personalAK = '4'
+    try:
+        personalVTNR = int(entry[10])
+    except:
+        logger.debug("Vertragsnummer not set, setting to 1")
+        personalVTNR = '1'
+    try:
+        personalMAN = int(entry[11])
+    except:
+        logger.debug("Mandant not set, setting to 801")
+        personalMAN = '801'
     netShiftTime, netShiftTimeHours, netShiftTimeMinutes, breakTimes = calculate_net_shift_time(dienstBegin, dienstEnde)
     if not lohnSatz:
         logger.debug("Stundensatz not set, setting to xx,yy")
@@ -76,28 +86,28 @@ def create_row(entry,lohnart,month):
         elif lohnart == 555:
             logger.debug("Lohnart == 555")
             date = dienstEnde.replace(hour=21,minute=0,second=0)
-            return ["[VARTAB]", "INSERT", personalVTNR, personalAK, personalNummer, personalNachname, personalVorname, personalMAN, lohnart, "", str(round((dienstEnde-date).seconds/3600, 2)).replace(".", ","), "", "", "", "", "", dienstBegin.replace(day=1).strftime("%Y-%m-%d"), dienstBegin.replace(day=1).strftime("%Y-%m-%d"), "IMPVAR1", dienstBegin.replace(day=1).strftime("%Y-%m-%d")]
+            return ["[VARTAB]", "INSERT", personalMAN, personalAK, personalNummer, personalNachname, personalVorname, personalVTNR, lohnart, "", str(round((dienstEnde-date).seconds/3600, 2)).replace(".", ","), "", "", "", "", "", dienstBegin.replace(day=1).strftime("%Y-%m-%d"), dienstBegin.replace(day=1).strftime("%Y-%m-%d"), "IMPVAR1", dienstBegin.replace(day=1).strftime("%Y-%m-%d")]
         elif dienstHauptamtlich == 1 and lohnart == 558:
             logger.debug("In dienstHauptamtlich== 1 and lohnart == 558")
-            return ["[VARTAB]", "INSERT", personalVTNR, personalAK, personalNummer, personalNachname, personalVorname, personalMAN, lohnart, "", str(round(netShiftTime.seconds/3600, 2)).replace(".", ","), str(sfn), "", "", "", "", dienstBegin.replace(day=1).strftime("%Y-%m-%d"), dienstBegin.replace(day=1).strftime("%Y-%m-%d"), "IMPVAR1", dienstBegin.replace(day=1).strftime("%Y-%m-%d")]
+            return ["[VARTAB]", "INSERT", personalMAN, personalAK, personalNummer, personalNachname, personalVorname, personalVTNR, lohnart, "", str(round(netShiftTime.seconds/3600, 2)).replace(".", ","), str(sfn), "", "", "", "", dienstBegin.replace(day=1).strftime("%Y-%m-%d"), dienstBegin.replace(day=1).strftime("%Y-%m-%d"), "IMPVAR1", dienstBegin.replace(day=1).strftime("%Y-%m-%d")]
         elif dienstHauptamtlich == 1 and lohnart == 556:
             logger.debug("In dienstHauptamtlich== 1 and lohnart == 556")
-            return ["[VARTAB]", "INSERT", personalVTNR, personalAK, personalNummer, personalNachname, personalVorname, personalMAN, lohnart, "", str(round(netShiftTime.seconds/3600, 2)).replace(".", ","), str(sfn), "", "", "", "", dienstBegin.replace(day=1).strftime("%Y-%m-%d"), dienstBegin.replace(day=1).strftime("%Y-%m-%d"), "IMPVAR1", dienstBegin.replace(day=1).strftime("%Y-%m-%d")]
+            return ["[VARTAB]", "INSERT", personalMAN, personalAK, personalNummer, personalNachname, personalVorname, personalVTNR, lohnart, "", str(round(netShiftTime.seconds/3600, 2)).replace(".", ","), str(sfn), "", "", "", "", dienstBegin.replace(day=1).strftime("%Y-%m-%d"), dienstBegin.replace(day=1).strftime("%Y-%m-%d"), "IMPVAR1", dienstBegin.replace(day=1).strftime("%Y-%m-%d")]
         elif dienstHauptamtlich == 0 and lohnart == 490:
             logger.debug("In dienstHauptamtlich== 0 and lohnart == 490")
-            return ["[VARTAB]", "INSERT", personalVTNR, personalAK, personalNummer, personalNachname, personalVorname, personalMAN, lohnart, "", str(round(netShiftTime.seconds/3600, 2)).replace(".", ","), "", "", "", "", "", dienstBegin.replace(day=1).strftime("%Y-%m-%d"), dienstBegin.replace(day=1).strftime("%Y-%m-%d"), "IMPVAR1", dienstBegin.replace(day=1).strftime("%Y-%m-%d")]
+            return ["[VARTAB]", "INSERT", personalMAN, personalAK, personalNummer, personalNachname, personalVorname, personalVTNR, lohnart, "", str(round(netShiftTime.seconds/3600, 2)).replace(".", ","), "", "", "", "", "", dienstBegin.replace(day=1).strftime("%Y-%m-%d"), dienstBegin.replace(day=1).strftime("%Y-%m-%d"), "IMPVAR1", dienstBegin.replace(day=1).strftime("%Y-%m-%d")]
         elif dienstHauptamtlich == 0 and lohnart == 558:
             logger.debug("In dienstHauptamtlich== 0 and lohnart == 558")
-            return ["[VARTAB]", "INSERT", personalVTNR, personalAK, personalNummer, personalNachname, personalVorname, personalMAN, lohnart, "", str(round(netShiftTime.seconds/3600, 2)).replace(".", ","), str(sfn), "", "", "", "", dienstBegin.replace(day=1).strftime("%Y-%m-%d"), dienstBegin.replace(day=1).strftime("%Y-%m-%d"), "IMPVAR1", dienstBegin.replace(day=1).strftime("%Y-%m-%d")]
+            return ["[VARTAB]", "INSERT", personalMAN, personalAK, personalNummer, personalNachname, personalVorname, personalVTNR, lohnart, "", str(round(netShiftTime.seconds/3600, 2)).replace(".", ","), str(sfn), "", "", "", "", dienstBegin.replace(day=1).strftime("%Y-%m-%d"), dienstBegin.replace(day=1).strftime("%Y-%m-%d"), "IMPVAR1", dienstBegin.replace(day=1).strftime("%Y-%m-%d")]
         elif dienstHauptamtlich == 0 and lohnart == 556:
             logger.debug("In dienstHauptamtlich== 0 and lohnart == 556")
-            return ["[VARTAB]", "INSERT", personalVTNR, personalAK, personalNummer, personalNachname, personalVorname, personalMAN, lohnart, "", str(round(netShiftTime.seconds/3600, 2)).replace(".", ","), str(sfn), "", "", "", "", dienstBegin.replace(day=1).strftime("%Y-%m-%d"), dienstBegin.replace(day=1).strftime("%Y-%m-%d"), "IMPVAR1", dienstBegin.replace(day=1).strftime("%Y-%m-%d")]
+            return ["[VARTAB]", "INSERT", personalMAN, personalAK, personalNummer, personalNachname, personalVorname, personalVTNR, lohnart, "", str(round(netShiftTime.seconds/3600, 2)).replace(".", ","), str(sfn), "", "", "", "", dienstBegin.replace(day=1).strftime("%Y-%m-%d"), dienstBegin.replace(day=1).strftime("%Y-%m-%d"), "IMPVAR1", dienstBegin.replace(day=1).strftime("%Y-%m-%d")]
         elif dienstHauptamtlich == 0 and lohnart == 567:
             logger.debug("In dienstHauptamtlich== 0 and lohnart == 567")
-            return ["[VARTAB]", "INSERT", personalVTNR, personalAK, personalNummer, personalNachname, personalVorname, personalMAN, lohnart, "", str(round(netShiftTime.seconds/3600, 2)).replace(".", ","), "", "", "", "", "", dienstBegin.replace(day=1).strftime("%Y-%m-%d"), dienstBegin.replace(day=1).strftime("%Y-%m-%d"), "IMPVAR1", dienstBegin.replace(day=1).strftime("%Y-%m-%d")]
+            return ["[VARTAB]", "INSERT", personalMAN, personalAK, personalNummer, personalNachname, personalVorname, personalVTNR, lohnart, "", str(round(netShiftTime.seconds/3600, 2)).replace(".", ","), "", "", "", "", "", dienstBegin.replace(day=1).strftime("%Y-%m-%d"), dienstBegin.replace(day=1).strftime("%Y-%m-%d"), "IMPVAR1", dienstBegin.replace(day=1).strftime("%Y-%m-%d")]
         elif dienstHauptamtlich == 0 and lohnart == 566:
             logger.debug("In dienstHauptamtlich== 0 and lohnart == 566")
-            return ["[VARTAB]", "INSERT", personalVTNR, personalAK, personalNummer, personalNachname, personalVorname, personalMAN, lohnart, "", str(round(netShiftTime.seconds/3600, 2)).replace(".", ","), "", "", "", "", "", dienstBegin.replace(day=1).strftime("%Y-%m-%d"), dienstBegin.replace(day=1).strftime("%Y-%m-%d"), "IMPVAR1", dienstBegin.replace(day=1).strftime("%Y-%m-%d")]
+            return ["[VARTAB]", "INSERT", personalMAN, personalAK, personalNummer, personalNachname, personalVorname, personalVTNR, lohnart, "", str(round(netShiftTime.seconds/3600, 2)).replace(".", ","), "", "", "", "", "", dienstBegin.replace(day=1).strftime("%Y-%m-%d"), dienstBegin.replace(day=1).strftime("%Y-%m-%d"), "IMPVAR1", dienstBegin.replace(day=1).strftime("%Y-%m-%d")]
         else:
             logger.debug("In else, did not find a matching value")
             return False
