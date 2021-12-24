@@ -36,7 +36,11 @@ if __name__ == "__main__":
     try:
         DatabaseConnect = Database()
         logger.debug(len(sys.argv))
-        if len(sys.argv) == 3:
+        if len(sys.argv) == 2:
+            requestedDate = sys.argv[1]
+            requestedAK = "ALL"
+            sql = "Select Dienste.Personalnummer, Dienste.Dienstbeginn, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art, Dienste.AutoClosed FROM Dienste JOIN Personal ON Personal.Personalnummer = Dienste.Personalnummer WHERE Date(Dienste.Dienstbeginn)='%s' AND Dienstende IS NOT NULL ORDER BY Dienste.Dienstbeginn ASC;" % (requestedDate)
+        elif len(sys.argv) == 3:
             requestedDate = sys.argv[1]
             requestedAK = sys.argv[2]
             sql = "Select Dienste.Personalnummer, Dienste.Dienstbeginn, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art, Dienste.AutoClosed FROM Dienste JOIN Personal ON Personal.Personalnummer = Dienste.Personalnummer WHERE Date(Dienste.Dienstbeginn)='%s' AND Dienstende IS NOT NULL AND Personal.Abrechnungskreis = %s ORDER BY Dienste.Dienstbeginn ASC;" % (requestedDate, requestedAK)

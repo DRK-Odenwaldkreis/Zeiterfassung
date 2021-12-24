@@ -51,7 +51,7 @@ class PDFgenerator(FPDF):
 		elif abrechnungskreis == '4':
 			self.abrechnungskreis = 'Impfzentrum'
 		else:
-			self.abrechnungskreis = ''
+			self.abrechnungskreis = 'Test- und Impfzentrum'
 		self.totalSeconds=0
 	
 	def header(self):
@@ -63,6 +63,9 @@ class PDFgenerator(FPDF):
 		elif self.abrechnungskreis == "Testzentrum":
 			self.cell(40, 10, 'Testzentrum Odenwaldkreis:', ln=1)
 			self.image(LogoTesten, x=7, y=10, w=100, h=24, type='PNG')
+		else :
+			self.cell(40, 10, 'Test- und Impfzentrum Odenwaldkreis:', ln=1)
+			self.image(LogoImpfen, x=7, y=10, w=100, h=24, type='PNG')
 		self.ln(10)
 
 
