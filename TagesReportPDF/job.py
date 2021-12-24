@@ -36,17 +36,20 @@ if __name__ == "__main__":
     try:
         DatabaseConnect = Database()
         logger.debug(len(sys.argv))
-        if len(sys.argv) == 2:
+        if len(sys.argv) == 3:
             requestedDate = sys.argv[1]
-            sql = "Select Dienste.Personalnummer, Dienste.Dienstbeginn, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art, Dienste.AutoClosed FROM Dienste JOIN Personal ON Personal.Personalnummer = Dienste.Personalnummer WHERE Date(Dienste.Dienstbeginn)='%s' AND Dienstende IS NOT NULL ORDER BY Dienste.Dienstbeginn ASC;" % (requestedDate)
-        else:
+            requestedAK = sys.argv[2]
+            sql = "Select Dienste.Personalnummer, Dienste.Dienstbeginn, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art, Dienste.AutoClosed FROM Dienste JOIN Personal ON Personal.Personalnummer = Dienste.Personalnummer WHERE Date(Dienste.Dienstbeginn)='%s' AND Dienstende IS NOT NULL AND Personal.Abrechnungskreis = %s ORDER BY Dienste.Dienstbeginn ASC;" % (requestedDate, requestedAK)
+        elif len(sys.argv) == 4:
+            requestedAK = sys.argv[2]
             dailyReport = True
             requestedDate = datetime.datetime.now().strftime("%Y-%m-%d")
-            sql = "Select Dienste.Personalnummer, Dienste.Dienstbeginn, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art, Dienste.AutoClosed FROM Dienste JOIN Personal ON Personal.Personalnummer = Dienste.Personalnummer where Dienstende is not Null AND Date(Dienstbeginn)=CURDATE() ORDER BY Dienstbeginn ASC;"
+            sql = "Select Dienste.Personalnummer, Dienste.Dienstbeginn, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art, Dienste.AutoClosed, Personal.Mandant FROM Dienste JOIN Personal ON Personal.Personalnummer = Dienste.Personalnummer where Dienstende is not Null AND Personal.Abrechnungskreis = %s and Date(Dienstbeginn)=CURDATE() ORDER BY Dienstbeginn ASC;" % (requestedAK)
         logger.debug('Getting all Events from Yesterday with the following query: %s' % (sql))
         content = DatabaseConnect.read_all(sql)
         logger.debug('Received the following entries: %s' % (str(content)))
-        PDF = PDFgenerator(content, requestedDate)
+        PDF = PDFgenerator()
+        PDF.start(content, requestedDate, requestedAK)
         result = PDF.generate()
         logger.debug('Done')
         if dailyReport:
