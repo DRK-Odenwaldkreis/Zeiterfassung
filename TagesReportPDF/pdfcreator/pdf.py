@@ -162,7 +162,7 @@ class PDFgenerator(FPDF):
 		self.cell(135,20,'',0,0)
 		self.cell(40,20,'Gesamtsumme',0,0)
 		self.cell(40, 20, '%s:%s' % (self.totalHours, self.totalMinutes), 0, 1)
-		self.filename = "../../Reports/Tagesreport_" + self.abrechnungskreis + "_" + str(self.date) + ".pdf"
+		self.filename = "../../Reports/Tagesreport_" + self.abrechnungskreis.replace(' ','') + "_" + str(self.date) + ".pdf"
 		self.output(self.filename)
 		return self.filename.replace('../../Reports/','')
 
