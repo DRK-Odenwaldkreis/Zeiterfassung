@@ -42,6 +42,9 @@ class UpdateError(Exception):
 class QueryError(Exception):
     pass
 
+class DeleteError(Exception):
+    pass
+
 
 class Database(object):
 
