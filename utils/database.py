@@ -103,6 +103,17 @@ class Database(object):
             logger.error(
                 'The following error occured in read all: %s' % (e))
             raise QueryError
+    
+    def delete(self, query):
+        try:
+            self.cursor.execute(query)
+            self.connection.commit()
+            return True
+        except Exception as e:
+            logger.error(
+                'The following error occured in deleting: %s' % (e))
+            self.connection.rollback()
+            raise DeleteError
 
     def close_connection(self):
         try:
