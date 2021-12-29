@@ -47,8 +47,8 @@ if __name__ == "__main__":
         elif len(sys.argv) == 4:
             requestedAK = sys.argv[2]
             dailyReport = True
-            requestedDate = datetime.datetime.now().strftime("%Y-%m-%d")
-            sql = "Select Dienste.Personalnummer, Dienste.Dienstbeginn, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art, Dienste.AutoClosed, Personal.Mandant FROM Dienste JOIN Personal ON Personal.Personalnummer = Dienste.Personalnummer where Dienstende is not Null AND Personal.Abrechnungskreis = %s and Date(Dienstbeginn)=CURDATE() ORDER BY Dienstbeginn ASC;" % (requestedAK)
+            requestedDate = sys.argv[1]
+            sql = "Select Dienste.Personalnummer, Dienste.Dienstbeginn, Dienste.Dienstende, Personal.Vorname, Personal.Nachname, Dienste.Art, Dienste.AutoClosed, Personal.Mandant FROM Dienste JOIN Personal ON Personal.Personalnummer = Dienste.Personalnummer where Dienstende is not Null AND Personal.Abrechnungskreis = %s and Date(Dienstbeginn)='%s' ORDER BY Dienstbeginn ASC;" % (requestedAK,requestedDate)
         logger.debug('Getting all Events from Yesterday with the following query: %s' % (sql))
         content = DatabaseConnect.read_all(sql)
         logger.debug('Received the following entries: %s' % (str(content)))
@@ -57,7 +57,7 @@ if __name__ == "__main__":
         result = PDF.generate()
         logger.debug('Done')
         if dailyReport:
-            send_mail_report(result, datetime.datetime.now().date())
+            send_mail_report(result, requestedDate)
         print(result)
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
