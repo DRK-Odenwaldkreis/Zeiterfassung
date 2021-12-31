@@ -85,7 +85,7 @@ if( A_checkpermission(array(1,0,3,4)) ) {
             for($i=1; $i <= 7; $i++) {
                 $date=$_POST['day'.$i];
                 // 2 shifts
-                for($j=1; $j<=2; $j++) {
+                for($j=1; $j<=4; $j++) {
                     if(isset($_POST['e_'.$i.$j])) {$shift_value=$j;} else {$shift_value=0;}
                     // entry in DB existing?
                     $shift_in_db=S_get_entry($Db,'SELECT Schicht FROM Planung WHERE Personalnummer=\''.$pnr.'\' AND Datum=\''.$date.'\' AND Schicht='.$j.';');
