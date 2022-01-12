@@ -17,20 +17,19 @@
 # along with DRK Zeiterfassung.  If not, see <http://www.gnu.org/licenses/>.
 
 
+from datetime import datetime, timedelta
 import sys
 from tkinter import *
 from app import App
+import requests
+import json
 import sqlite3
 from os import path,makedirs
 import logging
 from logging.handlers import RotatingFileHandler
-from readconfig import read_config
-
-def init_local_failover_database():
-    connection = sqlite3.connect("./Backup.db")
-    cursor = connection.cursor()
-    sql = '''CREATE TABLE IF NOT EXISTS Dienste (id INTEGER,Hash	Char(64), Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,PRIMARY KEY(id AUTOINCREMENT));'''
-    cursor.execute(sql)
+from utils.readconfig import read_config
+from utils.failoverdatabase import init_local_failover_database
+from utils.token import request_token,check_token
 
 window = Tk()
 try:
@@ -67,12 +66,12 @@ rotate_handler = RotatingFileHandler(filename=logFile, maxBytes=10000000,backupC
 logger.addHandler(rotate_handler)
 logger.info('Starting Terminal')
 
-
 try:
     logging.debug("Thats a debug message")
     logging.info("Thats an info message")
     logging.error("Thats an error message")
-    #init_local_failover_database()
+    request_token()
+    init_local_failover_database()
     window.mainloop()
 except KeyboardInterrupt():
     logger.warning('Quitting application, received keyboard interrupt')

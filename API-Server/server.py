@@ -15,7 +15,8 @@ jwt = JWTManager(app)
 logger = logging.getLogger('ScanEvent')
 logger.debug('Logger for ScanEvent was initialised')
 
-@app.route("/request_token", methods=["POST"])
+
+@app.route("/login", methods=["POST"])
 def login():
     print(request.json)
     username = request.json.get("username", None)
@@ -74,3 +75,7 @@ def booking():
          except Exception as e:
            logger.error('The following error occured: %s' % (e))
            return jsonify({'type': 'Error', 'textMain':'Unbekannter Fehler', 'textSub': '', 'mainLabel': 'Red'})
+
+
+if __name__ == '__main__':
+    app.run(host="0.0.0.0", port=80)

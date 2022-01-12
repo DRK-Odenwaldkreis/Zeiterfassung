@@ -18,14 +18,15 @@
 
 from tkinter import *
 import time
-from readconfig import read_config
-from failoverdatabase import create_backup_event
-#from booking import *
+from utils.readconfig import read_config
+from utils.failoverdatabase import create_backup_event
 import logging
 import threading
 import requests
+import json
 from PIL import Image, ImageTk
 from io import BytesIO
+from utils.token import request_token, get_token
 
 logger = logging.getLogger(__name__)
 logger.debug('Logger for UI Application was initialised')
@@ -81,21 +82,30 @@ class App:
                     self.subInfoLabel.config(bg='white', text="")
                     afterIDMainLabel = None
                     subInfoIDLabel = None
-            header = headers = {
-                                'Content-Type': 'application/json',
-                                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY0MTkwODA4MywianRpIjoiYWI3NDM1MWYtYmUwYy00Yjk5LTljNGUtZDZhMTVhNzgxNzQ4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6InRlc3QiLCJuYmYiOjE2NDE5MDgwODN9.jsNrU3kA6kCX99pwZOxrqI8Ex1LksYJ8EExGTlst9Nw'
-                               }
+            headers = {}
+            headers['Content-Type'] = 'application/json'
+            headers['Authorization'] = f'Bearer {get_token()}'
             payload = {}
             url = read_config('Server','endpoint')
             response = requests.request("POST", url + self.hash, headers=headers, data=payload)
-            self.content = response.json()
-            self.textMain = self.content['textMain']
-            self.textSub = self.content['textSub']
-            self.mainLabelColor = self.content['mainLabel']
-            self.type = self.content['type']
+            if response.status_code != 200:
+                create_backup_event(self.hash)
+                self.textMain = "Server offline, Scan gespeichert"
+                self.textSub = ''
+                self.mainLabelColor = 'Red'
+                self.type = 'Error'
+                request_token()
+            else:
+                self.content = response.json()
+                self.textMain = self.content['textMain']
+                self.textSub = self.content['textSub']
+                self.mainLabelColor = self.content['mainLabel']
+                self.type = self.content['type']
             self.mainLabel.configure(text=self.textMain, bg=self.mainLabelColor)
             self.subInfoLabel.configure(text=self.textSub)
-            afterIDMainLabel = self.mainLabel.after(waitingTime, lambda: self.mainLabel.config(bg='white', text=""))
+        except Exception as e:
+            logger.error('The following error occured: %s' % (e))
+            self.mainLabel.configure(text="Bitte IT informieren", bg="Red")
         finally:
             self.subInfoLabel.after(
                 waitingTime, lambda: self.subInfoLabel.config(bg='white', text=""))
@@ -103,4 +113,3 @@ class App:
                 waitingTime, lambda: self.mainLabel.config(bg='white', text=""))
             logger.debug('Wiping all information from screen')
             self.inputTextField.delete(0, END)
-            #self.event.close_db_conncetion()
