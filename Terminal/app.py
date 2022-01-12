@@ -33,8 +33,7 @@ logger.debug('Logger for UI Application was initialised')
 
 afterIDMainLabel = None
 subInfoIDLabel = None
-#waitingTime = read_config('Terminal','waitingTime')
-waitingTime = 2500
+waitingTime = read_config('Terminal','waitingTime')
 class App:
     def __init__(self, master):
         logger.debug('Constructor was called')
@@ -68,6 +67,7 @@ class App:
         self.subInfoLabel.grid(column=1, row=6, padx=0, pady=50)
         logger.debug('Setting the focus to text field')
         self.inputTextField.focus_set()
+
     
     def enter_input(self,hash):
         global afterIDMainLabel

@@ -30,6 +30,7 @@ from logging.handlers import RotatingFileHandler
 from utils.readconfig import read_config
 from utils.failoverdatabase import init_local_failover_database
 from utils.token import request_token,check_token
+import threading
 
 window = Tk()
 try:
@@ -66,16 +67,20 @@ rotate_handler = RotatingFileHandler(filename=logFile, maxBytes=10000000,backupC
 logger.addHandler(rotate_handler)
 logger.info('Starting Terminal')
 
-try:
-    logging.debug("Thats a debug message")
-    logging.info("Thats an info message")
-    logging.error("Thats an error message")
-    request_token()
-    init_local_failover_database()
-    window.mainloop()
-except KeyboardInterrupt():
-    logger.warning('Quitting application, received keyboard interrupt')
-    sys.exit(0)
-except Exception as e:
-    logger.error('Setting labels for Messages')
-    pass
+if __name__ == "__main__":
+    try:
+        logging.debug("Thats a debug message")
+        logging.info("Thats an info message")
+        logging.error("Thats an error message")
+        thread = threading.Thread(target=check_token)
+        thread.deamon = False
+        thread.start()
+        request_token()                                                        
+        init_local_failover_database()
+        window.mainloop()
+    except KeyboardInterrupt():
+        logger.warning('Quitting application, received keyboard interrupt')
+        sys.exit(0)
+    except Exception as e:
+        logger.error('Setting labels for Messages')
+        pass

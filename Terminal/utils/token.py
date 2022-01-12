@@ -2,6 +2,7 @@ from utils.readconfig import read_config
 import requests
 import json
 from datetime import datetime, timedelta
+import time
 
 def request_token():
     url = read_config('Server','token')
@@ -23,7 +24,12 @@ def request_token():
             f.close
 
 def check_token():
-    pass
+    while True:
+        try:
+            time.sleep(86400)
+            request_token()
+        except:
+            pass
 
 def get_token():
     f=open("./credentials.key")
