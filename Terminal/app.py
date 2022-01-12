@@ -83,7 +83,7 @@ class App:
                     subInfoIDLabel = None
             header = headers = {
                                 'Content-Type': 'application/json',
-                                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY0MTkwODA4MywianRpIjoiYWI3NDM1MWYtYmUwYy00Yjk5LTljNGUtZDZhMTVhNzgxNzQ4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6InRlc3QiLCJuYmYiOjE2NDE5MDgwODN9.jsNrU3kA6kCX99pwZOxrqI8Ex1LksYJ8EExGTlst9Nw'
+                                'Authorization': 'Bearer 1234Token'
                                }
             payload = {}
             url = read_config('Server','endpoint')
