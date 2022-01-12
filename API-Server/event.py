@@ -26,6 +26,8 @@ import datetime
 import logging
 from flask import json
 import jsonify
+sys.path.append("..")
+from utils.database import Database
 
 logger = logging.getLogger('ScanEvent')
 logger.debug('Logger for ScanEvent was initialised')
