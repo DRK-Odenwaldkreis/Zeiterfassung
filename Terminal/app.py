@@ -26,7 +26,7 @@ import requests
 import json
 from PIL import Image, ImageTk
 from io import BytesIO
-from utils.token import request_token, get_token
+from utils.token import refresh_token, get_token
 
 logger = logging.getLogger(__name__)
 logger.debug('Logger for UI Application was initialised')
@@ -51,13 +51,13 @@ class App:
         self.frame.pack(side='top')
         logger.debug('Setting Textfield for input')
         self.inputTextField = Entry(
-            self.frame, width=0, font=("Helvetica", 0), bg='white', justify=CENTER, bd=0, fg='white', insertontime=0)
+            self.frame, width=0, font=("Helvetica", 0), bg='white', justify=CENTER, bd=0, fg='white', insertontime=0, borderwidth=0, border=0)
         self.inputTextField.grid(column=1, row=1)
         self.inputTextField.bind(
             '<Return>', lambda event: self.enter_input(self.inputTextField.get()))
         logger.debug('Setting labels for Messages')
         self.scanLabel = Label(
-            self.frame, text="Bitte scannen!", font=("Helvetica", 48), bg='white')
+            self.frame, text="Bitte scannen!", font=("Helvetica", 48), bg='white', fg='black')
         self.scanLabel.grid(column=1, row=2, padx=0, pady=20)
         self.mainLabel = Label(
             self.frame, text="", font=("Helvetica", 86),bg='white')
@@ -93,23 +93,26 @@ class App:
                 self.textMain = "Server offline, Scan gespeichert"
                 self.textSub = ''
                 self.mainLabelColor = 'Red'
+                self.textColor = 'black'
                 self.type = 'Error'
-                request_token()
+                refresh_token()
             else:
                 self.content = response.json()
                 self.textMain = self.content['textMain']
                 self.textSub = self.content['textSub']
                 self.mainLabelColor = self.content['mainLabel']
+                self.textColor = self.content['textColor']
                 self.type = self.content['type']
-            self.mainLabel.configure(text=self.textMain, bg=self.mainLabelColor)
-            self.subInfoLabel.configure(text=self.textSub)
+            self.mainLabel.configure(text=self.textMain, bg=self.mainLabelColor, fg=self.textColor)
+            if len(self.textSub) > 0:
+                self.subInfoLabel.configure(text=self.textSub, bg=self.mainLabelColor, fg=self.textColor)
         except Exception as e:
             logger.error('The following error occured: %s' % (e))
-            self.mainLabel.configure(text="Bitte IT informieren", bg="Red")
+            self.mainLabel.configure(text="Bitte IT informieren", bg="Red",fg=self.textColor)
         finally:
             self.subInfoLabel.after(
-                waitingTime, lambda: self.subInfoLabel.config(bg='white', text=""))
+                waitingTime, lambda: self.subInfoLabel.config(bg='white', text="", fg=self.textColor))
             afterIDMainLabel = self.mainLabel.after(
-                waitingTime, lambda: self.mainLabel.config(bg='white', text=""))
+                waitingTime, lambda: self.mainLabel.config(bg='white', text="", fg=self.textColor))
             logger.debug('Wiping all information from screen')
             self.inputTextField.delete(0, END)

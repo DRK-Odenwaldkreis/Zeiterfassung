@@ -3,8 +3,9 @@ import requests
 import json
 from datetime import datetime, timedelta
 import time
+import sys
 
-def request_token():
+def refresh_token():
     url = read_config('Server','token')
     _username = read_config('Server','username')
     _password = read_config('Server','password')
@@ -27,7 +28,7 @@ def check_token():
     while True:
         try:
             time.sleep(86400)
-            request_token()
+            refresh_token()
         except:
             pass
 

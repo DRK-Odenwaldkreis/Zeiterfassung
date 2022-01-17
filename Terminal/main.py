@@ -29,7 +29,7 @@ import logging
 from logging.handlers import RotatingFileHandler
 from utils.readconfig import read_config
 from utils.failoverdatabase import init_local_failover_database
-from utils.token import request_token,check_token
+from utils.token import refresh_token, check_token
 import threading
 
 window = Tk()
@@ -69,18 +69,16 @@ logger.info('Starting Terminal')
 
 if __name__ == "__main__":
     try:
-        logging.debug("Thats a debug message")
-        logging.info("Thats an info message")
-        logging.error("Thats an error message")
         thread = threading.Thread(target=check_token)
         thread.deamon = False
         thread.start()
-        request_token()                                                        
+        refresh_token()                                                        
         init_local_failover_database()
         window.mainloop()
     except KeyboardInterrupt():
+        thread.join()
         logger.warning('Quitting application, received keyboard interrupt')
-        sys.exit(0)
+        sys.exit(1)
     except Exception as e:
         logger.error('Setting labels for Messages')
         pass
