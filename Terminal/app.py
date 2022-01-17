@@ -51,7 +51,7 @@ class App:
         self.frame.pack(side='top')
         logger.debug('Setting Textfield for input')
         self.inputTextField = Entry(
-            self.frame, width=0, font=("Helvetica", 0), bg='white', justify=CENTER, bd=0, fg='white', insertontime=0, borderwidth=0, border=0)
+            self.frame, width=0, font=("Helvetica", 0), bg='white', justify=CENTER, bd=0, fg='white', insertontime=0)
         self.inputTextField.grid(column=1, row=1)
         self.inputTextField.bind(
             '<Return>', lambda event: self.enter_input(self.inputTextField.get()))
@@ -110,7 +110,7 @@ class App:
             logger.error('The following error occured: %s' % (e))
             self.mainLabel.configure(text="Bitte IT informieren", bg="Red",fg=self.textColor)
         finally:
-            self.subInfoLabel.after(
+            subInfoIDLabel= self.subInfoLabel.after(
                 waitingTime, lambda: self.subInfoLabel.config(bg='white', text="", fg=self.textColor))
             afterIDMainLabel = self.mainLabel.after(
                 waitingTime, lambda: self.mainLabel.config(bg='white', text="", fg=self.textColor))
