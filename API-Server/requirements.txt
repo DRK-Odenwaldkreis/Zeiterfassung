@@ -1,0 +1,6 @@
+Flask  
+datetime 
+uuid
+PyJWT
+Flask-JWT-Extended
+jsonify

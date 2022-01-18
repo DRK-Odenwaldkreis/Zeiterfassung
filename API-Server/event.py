@@ -24,7 +24,13 @@ import math
 import sys
 import datetime
 import logging
-from database import Database
+from flask import json
+import jsonify
+sys.path.append("..")
+from utils.database import Database
+
+logger = logging.getLogger('ScanEvent')
+logger.debug('Logger for ScanEvent was initialised')
 
 class PersonUnknown(Exception):
     pass
@@ -46,9 +52,6 @@ class UnknownError(Exception):
 
 class DatabaseDisconnect(Exception):
     pass
-
-logger = logging.getLogger('ScanEvent')
-logger.debug('Logger for ScanEvent was initialised')
 
 class ScanEvent(object):
 
@@ -72,6 +75,7 @@ class ScanEvent(object):
         logger.debug('QR is valid')
 
     def get_personal_number(self):
+        logger.debug('Checking which Person is behind the hash')
         self.sql = "Select Personalnummer, Vorname, Nachname from Personal where Hash='%s';" % (
             self.hash)
         logger.debug(
@@ -93,16 +97,18 @@ class ScanEvent(object):
         
     
     def check_dead_time(self):
+        logger.debug('Checking if same Person already scanned within the last 10 s')
         self.sql = "Select * from Dienste where Personalnummer=%s and Updated > (NOW() - INTERVAL 10 SECOND);" % (self.personalnummer)
         logger.debug('Checking if same code was scanned the last 5 secondsusing the following query: %s'%(self.sql))
         if self.DatabaseConnect.read_single(self.sql) != None:
-            logger.warning('Code was scanned in the last 5 seconds, dropping scan event.')
+            logger.warning('Code was scanned in the last 10 seconds, dropping scan event.')
             raise DeadTime
-        logger.debug('Code was not scanned within the last 5 seconds')
+        logger.debug('Code was not scanned within the last 10 seconds')
 
 
     def check_open_entries(self):
         try:
+            logger.debug('Finding out if end or beginning of shift')
             self.sql = "Select * from Dienste where Personalnummer=%s and Dienstende is NULL" % (self.personalnummer)
             logger.debug(
                 'Checking whether there are open entries, using the following query: %s' % (self.sql))
@@ -124,6 +130,7 @@ class ScanEvent(object):
                 self.startTime = self.openEntries[0][2]
                 logger.debug('Found shift start at: %s' % (self.startTime))
                 self.AutoClosed = 1
+            return jsonify
         except Exception as e:
             logger.error('The following error occured in check open entries: %s' % (e))
             raise UnknownState
@@ -172,14 +179,6 @@ class ScanEvent(object):
             self.shiftDurationHours = '00'
             self.shiftDurationMinutes = '00'
     
-    def close_db_conncetion(self):
-        try:
-            logger.debug("Closing Cursor and connection")
-            self.DatabaseConnect.cursor.close()
-            self.DatabaseConnect.connection.close()
-            logger.debug('Connection and Cursor closed')
-        except Exception as e:
-            logger.error('The following error occured: %s' % (e))
 
 
 

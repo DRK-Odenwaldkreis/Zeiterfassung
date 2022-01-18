@@ -17,54 +17,68 @@
 # along with DRK Zeiterfassung.  If not, see <http://www.gnu.org/licenses/>.
 
 
+from datetime import datetime, timedelta
 import sys
 from tkinter import *
 from app import App
+import requests
+import json
 import sqlite3
-from os import path
+from os import path,makedirs
 import logging
 from logging.handlers import RotatingFileHandler
-from readconfig import read_config
-
-def init_local_failover_database():
-    connection = sqlite3.connect("./Backup.db")
-    cursor = connection.cursor()
-    sql = '''CREATE TABLE IF NOT EXISTS Dienste (id INTEGER,Hash	Char(64), Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,PRIMARY KEY(id AUTOINCREMENT));'''
-    cursor.execute(sql)
+from utils.readconfig import read_config
+from utils.failoverdatabase import init_local_failover_database
+from utils.token import refresh_token, check_token
+import threading
 
 window = Tk()
-window.title("Zeitenbuchungssystem DRK Odenwaldkreis")
+try:
+    window.title(read_config('Terminal','windowTitel'))
+except:
+    window.title("Zeitenbuchungssystem")
 width = window.winfo_screenwidth()
 height = window.winfo_screenheight()
 window.geometry(str(width) + "x" + str(height))
-window.config(cursor="none")
+if read_config('Terminal','mouseCurserDeactivated') == 'True':
+    window.config(cursor="none")
 app = App(window)
 
-
-logFile = './Log/output.log'
-
-try:
-    logLevel = read_config("Terminal", "logLevel")
-    if logLevel == "Error":
-        logging.basicConfig(filename=logFile, level=logging.ERROR,
-                            format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    elif logLevel == "Debug":
-        logging.basicConfig(filename=logFile,level=logging.DEBUG,format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    else:
-        logging.basicConfig(filename=logFile, level=logging.INFO,
-                            format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-except:
-    logging.basicConfig(filename=logFile,level=logging.DEBUG,
-                        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-logger = logging.getLogger('Main')
-logger.debug('Starting')
+log_level_dict = {'logging.DEBUG': logging.DEBUG, 
+                        'logging.INFO': logging.INFO,
+                        'logging.WARNING': logging.WARNING,
+                        'logging.ERROR': logging.ERROR,
+                 }
 
 try:
-    init_local_failover_database()
-    window.mainloop()
-except KeyboardInterrupt():
-    logger.warning('Quitting application, received keyboard interrupt')
-    sys.exit(0)
+    basedir = read_config('Terminal','logPath')
+    logFile = f'{basedir}Terminal.log'
+    if not path.exists(basedir):
+        print("Directory does not excist, creating it.")
+        makedirs(basedir)
+    if not path.exists(logFile):
+        print("File for logging does not excist, creating it.")
+        open(logFile, 'w+')
+    logging.basicConfig(filename=logFile,level=log_level_dict.get(read_config('Terminal','logLevel'),logging.INFO),format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 except Exception as e:
-    logger.error('Setting labels for Messages')
-    pass
+    logging.basicConfig(level=logging.DEBUG,format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+rotate_handler = RotatingFileHandler(filename=logFile, maxBytes=10000000,backupCount=5)
+logger.addHandler(rotate_handler)
+logger.info('Starting Terminal')
+
+if __name__ == "__main__":
+    try:
+        thread = threading.Thread(target=check_token)
+        thread.deamon = False
+        thread.start()
+        refresh_token()                                                        
+        init_local_failover_database()
+        window.mainloop()
+    except KeyboardInterrupt():
+        thread.join()
+        logger.warning('Quitting application, received keyboard interrupt')
+        sys.exit(1)
+    except Exception as e:
+        logger.error('Setting labels for Messages')
+        pass

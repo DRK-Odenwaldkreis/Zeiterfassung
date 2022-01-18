@@ -18,18 +18,22 @@
 
 from tkinter import *
 import time
-from failoverdatabase import create_backup_event
-from booking import *
+from utils.readconfig import read_config
+from utils.failoverdatabase import create_backup_event
 import logging
 import threading
+import requests
+import json
+from PIL import Image, ImageTk
+from io import BytesIO
+from utils.token import refresh_token, get_token
 
-logger = logging.getLogger('Application')
+logger = logging.getLogger(__name__)
 logger.debug('Logger for UI Application was initialised')
 
 afterIDMainLabel = None
 subInfoIDLabel = None
-waitingTime = 2500
-
+waitingTime = read_config('Terminal','waitingTime')
 class App:
     def __init__(self, master):
         logger.debug('Constructor was called')
@@ -37,7 +41,9 @@ class App:
         self.master.configure(background='white')
         logger.debug('Setting frame')
         self.frame = Frame(self.master)
-        self.image = PhotoImage(file="./logo.png")
+        logoURL = read_config('Terminal','logo')
+        u = requests.get(logoURL)
+        self.image = ImageTk.PhotoImage(Image.open(BytesIO(u.content)))
         logger.debug('Setting Logo')
         self.logoLabel = Label(self.frame, image=self.image, borderwidth=0)
         self.logoLabel.grid(column=1, row=0, padx=0, pady=10)
@@ -51,7 +57,7 @@ class App:
             '<Return>', lambda event: self.enter_input(self.inputTextField.get()))
         logger.debug('Setting labels for Messages')
         self.scanLabel = Label(
-            self.frame, text="Bitte scannen!", font=("Helvetica", 48), bg='white')
+            self.frame, text="Bitte scannen!", font=("Helvetica", 48), bg='white', fg='black')
         self.scanLabel.grid(column=1, row=2, padx=0, pady=20)
         self.mainLabel = Label(
             self.frame, text="", font=("Helvetica", 86),bg='white')
@@ -63,85 +69,50 @@ class App:
         self.inputTextField.focus_set()
 
     
-    def enter_input(self, hash):
+    def enter_input(self,hash):
         global afterIDMainLabel
         global subInfoIDLabel
         self.hash = hash
         logger.debug('The following input was received, starting event process: %s' % (self.hash))
         try:
             if afterIDMainLabel is not None:
-                self.mainLabel.after_cancel(afterIDMainLabel)
-                if subInfoIDLabel is not None:
-                    self.subInfoLabel.after_cancel(subInfoIDLabel)
-                self.subInfoLabel.config(bg='white', text="")
-                afterIDMainLabel = None
-                subInfoIDLabel = None
-            self.event = ScanEvent(self.hash)
-            self.event.check_validity()
-            #After check validity he backup inside local database can already be writen due to the fact that only hash is required.
-            threadFailoverDatabase = threading.Thread(target=create_backup_event, kwargs=dict(hash=self.hash), daemon=True)
-            threadFailoverDatabase.start()
-            self.event.get_personal_number()
-            self.event.check_dead_time()
-            self.event.check_open_entries()
-            if self.event.direction == "Dienstbeginn":
-                self.event.create_shift()
-                self.textMain = "KOMMEN"
-                self.textSub = "Hallo %s %s" %(self.event.vorname, self.event.nachname)
-                self.mainLabel.configure(text=self.textMain, bg="Green")
-            elif self.event.direction == "Dienstende":
-                self.event.close_shift()
-                self.textMain = "GEHEN"
-                self.textSub = "Danke %s %s - Dienstdauer: %s:%s" % (
-                    self.event.vorname, self.event.nachname, self.event.shiftDurationHours, self.event.shiftDurationMinutes)
-                self.mainLabel.configure(text=self.textMain, bg="Yellow")
+                    self.mainLabel.after_cancel(afterIDMainLabel)
+                    if subInfoIDLabel is not None:
+                        self.subInfoLabel.after_cancel(subInfoIDLabel)
+                    self.subInfoLabel.config(bg='white', text="")
+                    afterIDMainLabel = None
+                    subInfoIDLabel = None
+            headers = {}
+            headers['Content-Type'] = 'application/json'
+            headers['Authorization'] = f'Bearer {get_token()}'
+            payload = {}
+            url = read_config('Server','endpoint')
+            response = requests.request("POST", url + self.hash, headers=headers, data=payload)
+            if response.status_code != 200:
+                create_backup_event(self.hash)
+                self.textMain = "Server offline, Scan gespeichert"
+                self.textSub = ''
+                self.mainLabelColor = 'Red'
+                self.textColor = 'black'
+                self.type = 'Error'
+                refresh_token()
             else:
-                logging.error("This is an abnormal state within enter input") 
-                raise UnknownState
-            self.subInfoLabel.configure(text=self.textSub)
-            afterIDMainLabel = self.mainLabel.after(
-                waitingTime, lambda: self.mainLabel.config(bg='white', text=""))
-        except DatabaseDisconnect:
-            logger.warning('Displaying that no connectivity but values will be stored')
-            self.mainLabel.configure(
-                text="Server offline, Scan gespeichert", bg="Red")
-            afterIDMainLabel = self.mainLabel.after(
-                waitingTime, lambda: self.mainLabel.config(bg='white', text=""))
-        except QRInvalid:
-            logger.debug('Displaying that QR is not valid')
-            self.mainLabel.configure(text="Ungültiger QR Code", bg="Red")
-            afterIDMainLabel = self.mainLabel.after(
-                waitingTime, lambda: self.mainLabel.config(bg='white', text=""))
-        except PersonUnknown:
-            logger.debug('Displaying Person is unknown')
-            self.mainLabel.configure(text="Mitarbeiter unbekannt", bg="Red")
-            afterIDMainLabel = self.mainLabel.after(
-                waitingTime, lambda: self.mainLabel.config(bg='white', text=""))
-        except DeadTime:
-            logger.debug('Displaying that code was already scanned')
-            self.mainLabel.configure(text="Zeit bereits gebucht", bg="Blue")
-            afterIDMainLabel = self.mainLabel.after(
-                waitingTime, lambda: self.mainLabel.config(bg='white', text=""))
-        except UnknownState:
-            logger.debug('Displaying that state is unknown')
-            self.mainLabel.configure(text="Unbekannter Fehler", bg="Red")
-            afterIDMainLabel = self.mainLabel.after(
-                waitingTime, lambda: self.mainLabel.config(bg='white', text=""))
-        except UnableToWrite:
-            logger.debug('Displaying that time could not be stored')
-            self.mainLabel.configure(text="Zeiten konnten nicht gebucht werden", bg="Red")
-            afterIDMainLabel = self.mainLabel.after(
-                waitingTime, lambda: self.mainLabel.config(bg='white', text=""))
-        except UnknownError:
-            logger.debug('Displaying that unknown error occured')
-            self.mainLabel.configure(text="Unbekannter Fehler", bg="Red")
-            afterIDMainLabel = self.mainLabel.after(
-                waitingTime, lambda: self.mainLabel.config(bg='white', text=""))
+                self.content = response.json()
+                self.textMain = self.content['textMain']
+                self.textSub = self.content['textSub']
+                self.mainLabelColor = self.content['mainLabel']
+                self.textColor = self.content['textColor']
+                self.type = self.content['type']
+            self.mainLabel.configure(text=self.textMain, bg=self.mainLabelColor, fg=self.textColor)
+            if len(self.textSub) > 0:
+                self.subInfoLabel.configure(text=self.textSub, bg=self.mainLabelColor, fg=self.textColor)
         except Exception as e:
-            logger.error('The following error occured in enter input: %s' % (e))
+            logger.error('The following error occured: %s' % (e))
+            self.mainLabel.configure(text="Bitte IT informieren", bg="Red",fg=self.textColor)
         finally:
-            self.subInfoLabel.after(
-                waitingTime, lambda: self.subInfoLabel.config(bg='white', text=""))
+            subInfoIDLabel= self.subInfoLabel.after(
+                waitingTime, lambda: self.subInfoLabel.config(bg='white', text="", fg=self.textColor))
+            afterIDMainLabel = self.mainLabel.after(
+                waitingTime, lambda: self.mainLabel.config(bg='white', text="", fg=self.textColor))
             logger.debug('Wiping all information from screen')
             self.inputTextField.delete(0, END)
-            self.event.close_db_conncetion()

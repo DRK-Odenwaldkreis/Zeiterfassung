@@ -22,6 +22,6 @@ import sys
 import configparser
 
 def read_config(section,variable):
-    config = configparser.ConfigParser()
+    config = configparser.ConfigParser(interpolation=None)
     config.read('./config.ini')
     return config.get(section,variable)

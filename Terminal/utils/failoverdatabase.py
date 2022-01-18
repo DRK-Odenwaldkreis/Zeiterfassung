@@ -20,9 +20,18 @@ import os
 import sqlite3
 import sys
 import logging
+from utils.readconfig import read_config
 
 logger = logging.getLogger('Failover in local DB')
 logger.debug('Logger for failover database was initialised')
+
+
+def init_local_failover_database():
+    filepath = read_config('LocalDB','filepath')
+    connection = sqlite3.connect(filepath)
+    cursor = connection.cursor()
+    sql = '''CREATE TABLE IF NOT EXISTS Dienste (id INTEGER,Hash	Char(64), Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,PRIMARY KEY(id AUTOINCREMENT));'''
+    cursor.execute(sql)
 
 def create_backup_event(hash):
     try:
